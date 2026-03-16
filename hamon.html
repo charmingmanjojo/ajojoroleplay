@@ -1465,6 +1465,37 @@
   .foot-credit a{color:var(--gold-d);text-decoration:none;} .foot-credit a:hover{color:var(--gold-l);}
   @media(max-width:640px){.pw{padding-left:1rem;padding-right:1rem;}.ds{padding:1rem;}.tg,.qrc{grid-template-columns:1fr;}}
 
+
+  /* ── LEGACY CLASSES from old pages ────────────────────── */
+  /* req-grid / req-card — used on hamon/spin pages */
+  .req-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.65rem;margin:.85rem 0;}
+  .req-card{background:rgba(0,0,0,.3);border:1px solid var(--border);padding:.85rem 1rem;display:flex;flex-direction:column;gap:.3rem;}
+  .req-icon{font-size:1.4rem;}
+  .req-title{font-family:'Cinzel',serif;font-size:.88rem;font-weight:700;color:var(--gold-l);}
+  .req-text{font-size:.8rem;color:var(--text-dim);line-height:1.5;}
+
+  /* badge — used on stand-overview */
+  .badge{display:inline-block;font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;padding:.2rem .55rem;border-radius:0;margin:.15rem;}
+  .badge-gold{color:var(--gold-l);background:rgba(200,150,12,.1);border:1px solid rgba(200,150,12,.25);}
+  .badge-pink{color:var(--pink-l);background:rgba(200,0,74,.1);border:1px solid rgba(200,0,74,.25);}
+  .badge-purple{color:var(--purple-l);background:rgba(94,26,122,.12);border:1px solid rgba(126,58,160,.3);}
+  .badge-red{color:#EF9A9A;background:rgba(200,0,0,.08);border:1px solid rgba(200,0,0,.2);}
+  .badge-cyan{color:var(--cyan);background:rgba(0,153,176,.08);border:1px solid rgba(0,153,176,.22);}
+  .badge-lime{color:#76C800;background:rgba(90,184,0,.08);border:1px solid rgba(90,184,0,.22);}
+
+  /* infobox — kept from old pages, now mapped to callout */
+  .infobox{background:rgba(94,26,122,.1);border:1px solid rgba(126,58,160,.28);
+    padding:.8rem 1rem;margin:.85rem 0;font-size:.83rem;color:var(--text-dim);line-height:1.65;}
+  .infobox-title{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--purple-l);margin-bottom:.35rem;}
+
+  /* cta-box */
+  .cta-box{background:rgba(200,150,12,.05);border:1px solid rgba(200,150,12,.2);
+    padding:1.1rem 1.4rem;margin:1.5rem 0;display:flex;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+  .cta-box p{font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text-dim);}
+
 </style>
 </head>
 <body>
@@ -2259,8 +2290,6 @@ window.addEventListener('load', () => {
 /* ---- Boot ---- */
 initAuth();
 buildTicker();
-buildSliders('standStatSliders');
-buildSliders('sStatSliders');
 initBgRotator();
 </script>
 
