@@ -1698,10 +1698,42 @@
           </div>
         </div>
 
+        <div class="fg3">
+          <div class="fg">
+            <label class="fl">Height</label>
+            <input class="fi" id="ocHeight" placeholder="e.g. 6'1&quot;"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Hair Color</label>
+            <input class="fi" id="ocHair" placeholder="e.g. Silver, Black"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Eye Color</label>
+            <input class="fi" id="ocEyes" placeholder="e.g. Green, heterochromia"/>
+          </div>
+        </div>
+
+        <div class="fg2">
+          <div class="fg">
+            <label class="fl">Skin Tone</label>
+            <input class="fi" id="ocSkin" placeholder="e.g. Olive, Pale, Dark brown"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Voice <span style="opacity:.5;font-weight:400;">(optional)</span></label>
+            <input class="fi" id="ocVoice" placeholder="Tone, accent, speech quirks…"/>
+          </div>
+        </div>
+
         <div class="fg">
           <label class="fl">Appearance</label>
           <textarea class="fta" id="ocAppearance" style="min-height:72px;"
-            placeholder="Height, build, hair, eyes, clothing, any standout features…"></textarea>
+            placeholder="Build, clothing style, distinguishing features, how they carry themselves…"></textarea>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Reference Image URL <span style="opacity:.5;font-weight:400;">(optional)</span></label>
+          <input class="fi" id="ocImageUrl" type="url" placeholder="https://… paste a link to art or a face claim"/>
+          <p class="fhint">Link to an image — art, faceclaim, or description sketch. Not required.</p>
         </div>
 
         <div class="oc-step-nav">
@@ -1911,6 +1943,43 @@
           <label class="fl">Personality <span class="req">*</span></label>
           <textarea class="fta" id="ocPersonality" style="min-height:72px;"
             placeholder="How do they carry themselves? Speech patterns, quirks, what drives them day to day…"></textarea>
+        </div>
+
+        <div class="fg2">
+          <div class="fg">
+            <label class="fl">Ideals <span class="req">*</span></label>
+            <textarea class="fta" id="ocIdeals" style="min-height:64px;"
+              placeholder="What do they believe in? What principles guide them?"></textarea>
+          </div>
+          <div class="fg">
+            <label class="fl">Flaws <span class="req">*</span></label>
+            <textarea class="fta" id="ocFlaws" style="min-height:64px;"
+              placeholder="What holds them back? Their weakness of character, blind spot, or vice."></textarea>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Passion / Background</label>
+          <select class="fsel" id="ocPassion">
+            <option value="">— Select background (optional) —</option>
+            <option value="athlete">Athlete — physical training, competitive drive</option>
+            <option value="chef">Chef — culinary expertise, nurturing instinct</option>
+            <option value="criminal">Criminal — street smarts, survival instinct</option>
+            <option value="investigator">Investigator — deductive reasoning, keen observation</option>
+            <option value="leader">Leader — charisma, tactical thinking</option>
+            <option value="medic">Medic — healing knowledge, calm under pressure</option>
+            <option value="mercenary">Mercenary — combat experience, pragmatism</option>
+            <option value="noble">Noble — wealth, social connections, pride</option>
+            <option value="scholar">Scholar — academic knowledge, analytical mind</option>
+            <option value="scientist">Scientist — technical expertise, curiosity</option>
+            <option value="soldier">Soldier — discipline, battlefield experience</option>
+            <option value="student">Student — adaptability, still learning</option>
+            <option value="traveler">Traveler — worldly experience, resourcefulness</option>
+            <option value="warrior">Warrior — combat-hardened, tactical instinct</option>
+            <option value="weightlifter">Weightlifter — raw strength, physical peak</option>
+            <option value="other">Other — describe in backstory</option>
+          </select>
+          <p class="fhint">Directly from JoJo D&amp;D — your character's lifestyle and how they see the world. Informs RP tone, not mechanics.</p>
         </div>
 
         <div class="fg">
@@ -2448,7 +2517,9 @@ async function submitOC(){
   const b=document.getElementById('ocBio')?.value.trim();
   const bo=document.getElementById('ocBoard')?.value;
   const msg=document.getElementById('ocMsg');
-  if(!n||!u||!b||!bo){msg.style.color='var(--pink-l)';msg.textContent='Fill all required fields.';return;}
+  const ideals=document.getElementById('ocIdeals')?.value.trim();
+  const flaws=document.getElementById('ocFlaws')?.value.trim();
+  if(!n||!u||!b||!bo||!ideals||!flaws){msg.style.color='var(--pink-l)';msg.textContent='Fill all required fields.';return;}
   msg.style.color='var(--text-dim)';msg.textContent='Checking…';
   if(!await checkRateLimit('submit_oc')){msg.style.color='var(--pink-l)';msg.textContent='Rate limit: max 3 OCs/day.';return;}
   msg.textContent='Submitting…';
@@ -2456,6 +2527,22 @@ async function submitOC(){
     const {error}=await sb.from('ocs').insert([{
       name:n, player_username:u, backstory:b, board_name:bo,
       auth_id:currentUser.id, ability_type:selAb,
+      race:document.getElementById('ocRace')?.value||'human',
+      gender:document.getElementById('ocGender')?.value.trim()||null,
+      height:document.getElementById('ocHeight')?.value.trim()||null,
+      hair_color:document.getElementById('ocHair')?.value.trim()||null,
+      eye_color:document.getElementById('ocEyes')?.value.trim()||null,
+      skin_tone:document.getElementById('ocSkin')?.value.trim()||null,
+      voice:document.getElementById('ocVoice')?.value.trim()||null,
+      image_url:document.getElementById('ocImageUrl')?.value.trim()||null,
+      appearance:document.getElementById('ocAppearance')?.value.trim()||null,
+      personality:document.getElementById('ocPersonality')?.value.trim()||null,
+      ideals:document.getElementById('ocIdeals')?.value.trim()||null,
+      flaws:document.getElementById('ocFlaws')?.value.trim()||null,
+      passion:document.getElementById('ocPassion')?.value||null,
+      goal:document.getElementById('ocGoal')?.value.trim()||null,
+      relations:document.getElementById('ocRelations')?.value.trim()||null,
+      notes:document.getElementById('ocNotes')?.value.trim()||null,
       stand_name:document.getElementById('standName')?.value.trim()||null,
       stand_type:document.getElementById('standType')?.value||null,
       stand_ability:document.getElementById('standAbility')?.value.trim()||null,
