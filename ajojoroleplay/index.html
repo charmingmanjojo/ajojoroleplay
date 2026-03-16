@@ -633,9 +633,116 @@
     .fg2,.fg3{ grid-template-columns:1fr; }
     .bcard-tt{ max-width:220px; min-width:160px; }
   }
-  </style>
+  
+  /* ============================================================
+     AUTH SYSTEM STYLES
+  ============================================================ */
+  #authBar {
+    position: fixed; top: 56px; right: 0; left: 0; z-index: 850;
+    height: 36px;
+    background: rgba(7,0,13,.94);
+    border-bottom: 1px solid rgba(200,150,12,.1);
+    display: flex; align-items: center;
+    justify-content: flex-end;
+    padding: 0 1rem; gap: .6rem;
+    backdrop-filter: blur(16px);
+    font-family: 'Inter', sans-serif;
+    font-size: .68rem;
+    transition: all .2s;
+  }
+
+  #authBar.gm-active {
+    border-bottom-color: rgba(200,150,12,.35);
+    background: rgba(12,4,24,.96);
+  }
+
+  .auth-user {
+    display: flex; align-items: center; gap: .5rem;
+    color: var(--text-dim);
+  }
+  .auth-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid var(--border);
+    object-fit: cover;
+  }
+  .auth-username {
+    color: var(--text); font-weight: 500;
+    max-width: 140px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .auth-role {
+    font-size: .58rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .1rem .38rem;
+  }
+  .role-gm    { color: var(--gold-l); background: rgba(200,150,12,.12); border: 1px solid rgba(200,150,12,.25); }
+  .role-admin { color: #FF6B35;       background: rgba(255,107,53,.1);  border: 1px solid rgba(255,107,53,.25); }
+  .role-owner { color: var(--pink-l); background: rgba(200,0,74,.1);    border: 1px solid rgba(200,0,74,.25); }
+  .role-player{ color: var(--text-dim); background: rgba(100,80,120,.1); border: 1px solid rgba(100,80,120,.2); }
+
+  .auth-sep { width: 1px; height: 16px; background: var(--border); }
+
+  #loginBtn {
+    background: rgba(88,28,135,.4);
+    border: 1px solid rgba(126,58,160,.5);
+    color: var(--purple-viv);
+    font-family: 'Inter', sans-serif; font-size: .67rem;
+    font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    padding: .28rem .75rem; cursor: pointer;
+    display: flex; align-items: center; gap: .35rem;
+    transition: all .18s;
+  }
+  #loginBtn:hover { background: rgba(94,26,122,.6); border-color: var(--purple-l); color: #fff; }
+
+  #logoutBtn {
+    background: transparent;
+    border: 1px solid rgba(200,150,12,.2);
+    color: var(--text-xs);
+    font-family: 'Inter', sans-serif; font-size: .63rem;
+    font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+    padding: .25rem .6rem; cursor: pointer;
+    transition: all .18s;
+  }
+  #logoutBtn:hover { color: var(--pink-l); border-color: var(--pink); }
+
+  /* Logged-out state: hide submission buttons */
+  body.logged-out .requires-auth { display: none !important; }
+  /* Logged-in state: hide login button */
+  body.logged-in  #loginBtn      { display: none !important; }
+  body.logged-out #logoutBtn     { display: none !important; }
+  body.logged-out .auth-user     { display: none !important; }
+
+  /* GM-only elements */
+  body:not(.is-gm) .gm-only { display: none !important; }
+
+  /* Auth required overlay on forms */
+  .auth-wall {
+    display: none;
+    padding: 1.5rem; text-align: center;
+    border: 1px dashed var(--border);
+    margin-bottom: .75rem;
+  }
+  .auth-wall p { font-size: .84rem; color: var(--text-dim); margin-bottom: .75rem; line-height: 1.6; }
+  body.logged-out .auth-wall { display: block; }
+  body.logged-out .auth-wall ~ .fg,
+  body.logged-out .auth-wall ~ .fg2,
+  body.logged-out .auth-wall ~ .ability-grid,
+  body.logged-out .auth-wall ~ button { opacity: .35; pointer-events: none; }
+
+  /* Rate limit warning */
+  .rate-warn {
+    background: rgba(200,0,74,.08); border: 1px solid rgba(200,0,74,.25);
+    padding: .55rem .85rem; font-size: .76rem; color: var(--pink-l);
+    font-family: 'Inter', sans-serif; margin-bottom: .75rem; display: none;
+  }
+
+  /* Adjust page padding for auth bar */
+  #ticker { margin-top: 92px !important; }
+  #hero   { padding-top: 92px !important; }
+
+</style>
 </head>
-<body>
+<body class="logged-out">
 
 <!-- Background rotator — furthest back -->
 <div id="bgRotator" aria-hidden="true"></div>
@@ -691,9 +798,32 @@
     <button class="btn btn-ghost btn-sm" onclick="openModal('ocModal')">+ OC</button>
     <button class="btn btn-ghost btn-sm" onclick="openModal('standModal')">+ Stand</button>
     <button class="btn btn-gold btn-sm" onclick="openModal('threadModal')">+ Thread</button>
-    <button class="btn btn-ghost btn-sm" id="gmToggleBtn" onclick="toggleGM()" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
+    <button class="btn btn-ghost btn-sm" id="gmToggleBtn" onclick="toggleGM()" class="btn btn-ghost btn-sm gm-only" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
   </div>
 </nav>
+
+<!-- ============================================================
+     AUTH BAR — always visible below nav
+============================================================ -->
+<div id="authBar">
+  <!-- Logged-out state -->
+  <button id="loginBtn" onclick="signInWithDiscord()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    Sign in with Discord
+  </button>
+
+  <!-- Logged-in state -->
+  <div class="auth-user">
+    <img id="authAvatar" class="auth-avatar" src="" alt=""/>
+    <span id="authUsername" class="auth-username"></span>
+    <span id="authRole" class="auth-role role-player">Player</span>
+  </div>
+
+  <div class="auth-sep"></div>
+
+  <button id="logoutBtn" onclick="signOut()">Sign out</button>
+</div>
+
 
 <!-- Ticker -->
 <div id="ticker" style="position:relative;z-index:2;margin-top:56px;">
@@ -1180,7 +1310,13 @@
     <div class="modal-body">
 
       <!-- Basic Info -->
-      <p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.75rem;">Character Info</p>
+            <div class="auth-wall">
+        <p>You must be signed in with Discord to submit an OC.<br/>Your submission will be reviewed by a GM before it appears on the site.</p>
+        <button class="btn btn-gold" onclick="signInWithDiscord()">
+          Sign in with Discord →
+        </button>
+      </div>
+<p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.75rem;">Character Info</p>
       <div class="fg2">
         <div class="fg"><label class="fl">Character Name *</label><input class="fi" id="ocName" placeholder="Your OC's full name"/></div>
         <div class="fg"><label class="fl">Player Username *</label><input class="fi" id="ocUser" placeholder="@yourname"/></div>
@@ -1504,12 +1640,141 @@
 
 <div id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ================================================================
-   CONFIG
-   const SUPABASE_URL  = 'https://azzonqzxmtoilhqsrshq.supabase.co';
-   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
-// ================================================================ 
+/* ================================================================
+   CONFIG — paste your Supabase anon key below
+================================================================ */
+ const SUPABASE_URL  = 'https://azzonqzxmtoilhqsrshq.supabase.co';
+ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
+
+/* ── Supabase client ─────────────────────────────────────────────── */
+const sb = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { autoRefreshToken:true, persistSession:true, detectSessionInUrl:true }
+    })
+  : null;
+
+/* ── Auth state ──────────────────────────────────────────────────── */
+let currentUser    = null;  // auth.User
+let currentProfile = null;  // public.profiles row
+let currentGMRole  = null;  // public.gm_roles row (null = not GM)
+let isGM           = false;
+let isAdmin        = false;
+
+/* ── Boot auth ───────────────────────────────────────────────────── */
+async function initAuth() {
+  if (!sb) { document.body.classList.add('logged-out'); return; }
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      currentUser = session.user;
+      await loadProfile(session.user.id);
+    } else {
+      currentUser = currentProfile = currentGMRole = null;
+      isGM = isAdmin = false;
+      refreshAuthUI();
+    }
+  });
+
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session?.user) { currentUser = session.user; await loadProfile(session.user.id); }
+  else refreshAuthUI();
+}
+
+async function loadProfile(uid) {
+  if (!sb) return;
+  try {
+    const { data:p } = await sb.from('profiles').select('*').eq('id', uid).single();
+    currentProfile = p;
+
+    // Ban check
+    if (p?.is_banned) {
+      const exp = p.banned_until;
+      if (!exp || new Date(exp) > new Date()) {
+        await sb.auth.signOut();
+        showToast('Account suspended.','err');
+        return;
+      }
+    }
+
+    const { data:gm } = await sb.from('gm_roles').select('*')
+      .eq('auth_id', uid).eq('is_active', true).single();
+    currentGMRole = gm || null;
+    isGM    = !!gm;
+    isAdmin = gm?.role === 'admin' || gm?.role === 'owner';
+  } catch(e) { console.warn('loadProfile:', e); }
+  refreshAuthUI();
+}
+
+function refreshAuthUI() {
+  const body = document.body;
+  if (currentUser) {
+    body.classList.replace('logged-out','logged-in') || (body.classList.add('logged-in'), body.classList.remove('logged-out'));
+    const name   = currentProfile?.username || currentUser.user_metadata?.full_name || 'Player';
+    const avatar = currentProfile?.avatar_url || currentUser.user_metadata?.avatar_url || '';
+    const roleEl = document.getElementById('authRole');
+    const avEl   = document.getElementById('authAvatar');
+    const unEl   = document.getElementById('authUsername');
+    if (avEl)   { avEl.src = avatar; avEl.style.display = avatar ? '' : 'none'; }
+    if (unEl)   unEl.textContent = name;
+    if (roleEl) {
+      const r = currentGMRole?.role;
+      const map = { owner:['Owner','role-owner'], admin:['Admin','role-admin'], gm:['GM','role-gm'] };
+      const [label, cls] = map[r] || ['Player','role-player'];
+      roleEl.textContent = label;
+      roleEl.className   = 'auth-role ' + cls;
+    }
+    if (isGM) { body.classList.add('is-gm'); document.getElementById('authBar')?.classList.add('gm-active'); }
+    else       { body.classList.remove('is-gm'); document.getElementById('authBar')?.classList.remove('gm-active'); }
+  } else {
+    body.classList.replace('logged-in','logged-out') || (body.classList.add('logged-out'), body.classList.remove('logged-in'));
+    body.classList.remove('is-gm');
+  }
+}
+
+async function signInWithDiscord() {
+  if (!sb) { showToast('Supabase not configured yet.','err'); return; }
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: window.location.href, scopes: 'identify email' }
+  });
+  if (error) showToast('Login error: ' + error.message, 'err');
+}
+
+async function signOut() {
+  if (sb) await sb.auth.signOut();
+  showToast('Signed out.','');
+}
+
+function requireAuth() {
+  if (!currentUser) {
+    showToast('Sign in with Discord first.','err');
+    setTimeout(signInWithDiscord, 700);
+    return false;
+  }
+  return true;
+}
+function requireGM() {
+  if (!isGM) { showToast('GM access required.','err'); return false; }
+  return true;
+}
+
+async function checkRateLimit(action) {
+  if (!sb || !currentUser) return false;
+  const { data, error } = await sb.rpc('check_rate_limit', { p_action: action });
+  if (error || data === false) {
+    const msgs = {
+      submit_oc:'Max 3 OC submissions per day.',
+      submit_stand:'Max 3 Stand submissions per day.',
+      new_thread:'Max 5 threads per hour.',
+      new_post:'Max 30 replies per hour.',
+    };
+    showToast(msgs[action] || 'Rate limit reached. Try again later.','err');
+    return false;
+  }
+  return true;
+}
 const TICKERS=['✦  Welcome to A JoJo Roleplay — Alpha','✦  Part "Phantom Brass" open for recruitment','✦  Stand submissions reviewed by GMs within 48 hours','✦  Hover over any banner to see what's inside','✦  "Crimson Veil" — 6 active players, threads welcome','✦  Hamon practitioners start at Apprentice — no approval needed','✦  Cross-Part visits allowed — tag with [CROSSOVER]'];
 const BOARD_INFO={
   'Crimson Veil':{color:'#C8004A',era:'1993 — Istanbul, Turkey',desc:"A rogue Stand user has been assassinating world leaders. The Speedwagon Foundation sends a team to investigate."},
@@ -1565,12 +1830,14 @@ function openPostModal(threadId,title){
   document.getElementById('postList').innerHTML=demo.map(p=>`<div class="post-item"><div class="post-hd"><span class="post-author">${escH(p.char)}</span><span class="post-time">${p.time}</span></div><div class="post-body">${escH(p.content)}</div></div>`).join('');
   openModal('postModal');
 }
-function submitReply(){
-  const c=document.getElementById('replyChar').value.trim();
-  const t=document.getElementById('replyText').value.trim();
-  if(!c||!t){showToast('Fill in character name and reply.','err');return;}
+async function submitReply(){
+  if(!requireAuth()) return;
+  const ch=document.getElementById('replyChar').value.trim();
+  const tx=document.getElementById('replyText').value.trim();
+  if(!ch||!tx){showToast('Fill in character name and reply.','err');return;}
+  if(!await checkRateLimit('new_post')) return;
   const now=new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('postList').insertAdjacentHTML('beforeend',`<div class="post-item"><div class="post-hd"><span class="post-author">${escH(c)}</span><span class="post-time">${now}</span></div><div class="post-body">${escH(t)}</div></div>`);
+  document.getElementById('postList').insertAdjacentHTML('beforeend',`<div class="post-item"><div class="post-hd"><span class="post-author">${escH(ch)}</span><span class="post-time">${now}</span></div><div class="post-body">${escH(tx)}</div></div>`);
   document.getElementById('postList').lastElementChild.scrollIntoView({behavior:'smooth'});
   document.getElementById('replyChar').value='';document.getElementById('replyText').value='';
   showToast('Reply posted.','ok');
@@ -1588,11 +1855,101 @@ function filterOCs(){
     card.style.display=(ab&&bo)?'':'none';
   });
 }
-function submitOC(){const n=document.getElementById('ocName')?.value.trim(),u=document.getElementById('ocUser')?.value.trim(),b=document.getElementById('ocBio')?.value.trim(),bo=document.getElementById('ocBoard')?.value,msg=document.getElementById('ocMsg');if(!n||!u||!b||!bo){msg.style.color='var(--pink-l)';msg.textContent='Please fill all required fields.';return;}msg.style.color='var(--text-dim)';msg.textContent='Submitting…';setTimeout(()=>{msg.style.color='#81C784';msg.textContent='Submitted for GM review.';showToast('OC submitted.','ok');setTimeout(()=>closeModal('ocModal'),1800);},700);}
-function submitStand(){const n=document.getElementById('sName')?.value.trim(),a=document.getElementById('sAbility')?.value.trim(),w=document.getElementById('sWeakness')?.value.trim(),msg=document.getElementById('standMsg');if(!n||!a||!w){msg.style.color='var(--pink-l)';msg.textContent='Name, Ability, and Weakness required.';return;}msg.style.color='var(--text-dim)';msg.textContent='Submitting…';setTimeout(()=>{msg.style.color='#81C784';msg.textContent='Stand submitted for review.';showToast('Stand submitted.','ok');setTimeout(()=>closeModal('standModal'),1600);},700);}
-function submitThread(){const t=document.getElementById('tTitle')?.value.trim(),p=document.getElementById('tPost')?.value.trim(),b=document.getElementById('tBoard')?.value,msg=document.getElementById('threadMsg');if(!t||!p||!b){msg.style.color='var(--pink-l)';msg.textContent='Title, Board, and Opening Post required.';return;}msg.style.color='#81C784';msg.textContent='Thread opened.';showToast('Thread created.','ok');setTimeout(()=>closeModal('threadModal'),1500);}
+async function submitOC(){
+  if(!requireAuth()) return;
+  const n=document.getElementById('ocName')?.value.trim();
+  const u=document.getElementById('ocUser')?.value.trim();
+  const b=document.getElementById('ocBio')?.value.trim();
+  const bo=document.getElementById('ocBoard')?.value;
+  const msg=document.getElementById('ocMsg');
+  if(!n||!u||!b||!bo){msg.style.color='var(--pink-l)';msg.textContent='Fill all required fields.';return;}
+  msg.style.color='var(--text-dim)';msg.textContent='Checking…';
+  if(!await checkRateLimit('submit_oc')){msg.style.color='var(--pink-l)';msg.textContent='Rate limit: max 3 OCs/day.';return;}
+  msg.textContent='Submitting…';
+  if(sb){
+    const {error}=await sb.from('ocs').insert([{
+      name:n, player_username:u, backstory:b, board_name:bo,
+      auth_id:currentUser.id, ability_type:selAb,
+      stand_name:document.getElementById('standName')?.value.trim()||null,
+      stand_type:document.getElementById('standType')?.value||null,
+      stand_ability:document.getElementById('standAbility')?.value.trim()||null,
+      stand_weakness:document.getElementById('standWeakness')?.value.trim()||null,
+      stand_cry:document.getElementById('standCry')?.value.trim()||null,
+      hamon_style:document.getElementById('hamonStyle')?.value.trim()||null,
+      hamon_rank:document.getElementById('hamonRank')?.value||null,
+      spin_background:document.getElementById('spinBg')?.value.trim()||null,
+      spin_tier:document.getElementById('spinTier')?.value||null,
+      vampire_origin:document.getElementById('vampBg')?.value.trim()||null,
+      vampire_ability:document.getElementById('vampAbility')?.value.trim()||null,
+    }]);
+    if(error){msg.style.color='var(--pink-l)';msg.textContent='Error: '+error.message;return;}
+  }
+  msg.style.color='#81C784';msg.textContent='Submitted — a GM will review it shortly.';
+  showToast('OC submitted for GM review.','ok');
+  setTimeout(()=>closeModal('ocModal'),1800);
+}
+async function submitStand(){
+  if(!requireAuth()) return;
+  const n=document.getElementById('sName')?.value.trim();
+  const a=document.getElementById('sAbility')?.value.trim();
+  const w=document.getElementById('sWeakness')?.value.trim();
+  const msg=document.getElementById('standMsg');
+  if(!n||!a||!w){msg.style.color='var(--pink-l)';msg.textContent='Name, Ability, and Weakness required.';return;}
+  msg.style.color='var(--text-dim)';msg.textContent='Checking…';
+  if(!await checkRateLimit('submit_stand')){msg.style.color='var(--pink-l)';msg.textContent='Rate limit: max 3 Stands/day.';return;}
+  msg.textContent='Submitting…';
+  if(sb){
+    const {error}=await sb.from('stands').insert([{
+      name:n, ability:a, weakness:w, auth_id:currentUser.id,
+      linked_character:document.getElementById('sChar')?.value.trim()||null,
+      type:document.getElementById('sType')?.value||null,
+      cry:document.getElementById('sCry')?.value.trim()||null,
+      owner_username:document.getElementById('sOwner')?.value.trim()||null,
+    }]);
+    if(error){msg.style.color='var(--pink-l)';msg.textContent='Error: '+error.message;return;}
+  }
+  msg.style.color='#81C784';msg.textContent='Stand submitted for GM review.';
+  showToast('Stand submitted.','ok');
+  setTimeout(()=>closeModal('standModal'),1600);
+}
+async function submitThread(){
+  if(!requireAuth()) return;
+  const t=document.getElementById('tTitle')?.value.trim();
+  const p=document.getElementById('tPost')?.value.trim();
+  const b=document.getElementById('tBoard')?.value;
+  const msg=document.getElementById('threadMsg');
+  if(!t||!p||!b){msg.style.color='var(--pink-l)';msg.textContent='Title, Board, and Opening Post required.';return;}
+  msg.style.color='var(--text-dim)';msg.textContent='Checking…';
+  if(!await checkRateLimit('new_thread')){msg.style.color='var(--pink-l)';msg.textContent='Rate limit: max 5 threads/hour.';return;}
+  msg.textContent='Opening thread…';
+  if(sb){
+    const {data:thread,error}=await sb.from('threads').insert([{
+      title:t, board_name:b, auth_id:currentUser.id,
+      category:document.getElementById('tCat')?.value||'social',
+      character_name:document.getElementById('tChar')?.value.trim()||'Anonymous',
+      tags:document.getElementById('tTags')?.value.trim()||null,
+    }]).select().single();
+    if(error){msg.style.color='var(--pink-l)';msg.textContent='Error: '+error.message;return;}
+    if(thread){
+      await sb.from('posts').insert([{
+        thread_id:thread.id, auth_id:currentUser.id,
+        character_name:document.getElementById('tChar')?.value.trim()||'Anonymous',
+        player_username:currentProfile?.username||null, content:p,
+      }]);
+      if(thread.board_id) await sb.rpc('on_new_thread',{p_board_id:thread.board_id}).catch(()=>{});
+    }
+  }
+  msg.style.color='#81C784';msg.textContent='Thread opened.';
+  showToast('Thread created.','ok');
+  setTimeout(()=>closeModal('threadModal'),1500);
+}
 function submitGMBoard(){const n=document.getElementById('gbName')?.value.trim(),d=document.getElementById('gbDesc')?.value.trim(),g=document.getElementById('gbGM')?.value.trim(),msg=document.getElementById('gbMsg');if(!n||!d||!g){msg.style.color='var(--pink-l)';msg.textContent='Name, Description, GM username required.';return;}msg.style.color='#81C784';msg.textContent='Board created.';showToast('Part board created.','ok');setTimeout(()=>closeModal('gmBoardModal'),1500);}
-function toggleGM(){const p=document.getElementById('gm-panel'),btn=document.getElementById('gmToggleBtn');if(p.classList.toggle('visible')){btn.style.color='var(--gold-l)';p.scrollIntoView({behavior:'smooth'});showToast('GM Panel','ok');}else btn.style.color='';}
+function toggleGM(){
+  if(!requireAuth()||!requireGM()) return;
+  const p=document.getElementById('gm-panel'),btn=document.getElementById('gmToggleBtn');
+  if(p.classList.toggle('visible')){btn.style.color='var(--gold-l)';p.scrollIntoView({behavior:'smooth'});showToast('GM Panel','ok');}
+  else btn.style.color='';
+}
 function openModal(id){document.getElementById(id)?.classList.add('open');document.body.style.overflow='hidden';}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
@@ -1657,6 +2014,7 @@ function togglePlayer(){if(!mpOpen&&!ytReady){initMP();return;}mpOpen=!mpOpen;do
 function closePlayer(){mpOpen=false;document.getElementById('mpPanel').classList.remove('open');document.getElementById('mpToggleLabel').textContent='Radio';}
 
 /* ---- Boot ---- */
+initAuth();
 buildTicker();
 buildSliders('standStatSliders');
 buildSliders('sStatSliders');
