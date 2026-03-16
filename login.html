@@ -252,20 +252,38 @@
 <script>
 /* ── Config ─────────────────────────────────────────────────── */
 const SUPABASE_URL  = 'https://azzonqzxmtoilhqsrshq.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME'; // ← paste anon key here
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
 
-const sb = SUPABASE_ANON !== 'YOUR_ANON_KEY'
+const sb = window.supabase
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-      auth: { autoRefreshToken:true, persistSession:true, detectSessionInUrl:true }
+      auth: {
+        autoRefreshToken: true,
+        persistSession:   true,
+        detectSessionInUrl: true,
+      }
     })
   : null;
 
 /* ── Tab switching ───────────────────────────────────────────── */
 function switchTab(name, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+/* ── Helpers ─────────────────────────────────────────────────── */
+function showMsg(id, text, isErr) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'form-msg ' + (isErr ? 'err' : 'ok');
+}
+function setLoading(btnId, loading, label) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Please wait…' : label;
 }
 
 /* ── Discord OAuth ───────────────────────────────────────────── */
@@ -275,29 +293,35 @@ async function discordLogin() {
     provider: 'discord',
     options: {
       redirectTo: window.location.origin + '/index.html',
-      scopes: 'identify email'
+      scopes: 'identify email',
     }
   });
   if (error) showMsg('loginMsg', 'Discord error: ' + error.message, true);
 }
 
-/* ── Email Login ─────────────────────────────────────────────── */
+/* ── Email Sign In ───────────────────────────────────────────── */
 async function emailLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass  = document.getElementById('loginPassword').value;
-  const msg   = document.getElementById('loginMsg');
-  const btn   = document.getElementById('loginBtn');
+  if (!email || !pass) { showMsg('loginMsg', 'Enter your email and password.', true); return; }
+  if (!sb)             { showMsg('loginMsg', 'Auth not available.', true); return; }
 
-  if (!email || !pass) { showMsg('loginMsg','Enter email and password.',true); return; }
-  if (!sb) { showMsg('loginMsg','Supabase not configured.',true); return; }
+  setLoading('loginBtn', true, 'Sign In');
+  showMsg('loginMsg', 'Signing in…', false);
 
-  btn.disabled = true; btn.textContent = 'Signing in…';
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Sign In';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
 
-  if (error) { showMsg('loginMsg', error.message, true); return; }
-  showMsg('loginMsg', 'Signed in! Redirecting…', false);
-  setTimeout(() => window.location.href = 'index.html', 800);
+  setLoading('loginBtn', false, 'Sign In');
+
+  if (error) {
+    showMsg('loginMsg', error.message, true);
+    return;
+  }
+
+  if (data?.session) {
+    showMsg('loginMsg', 'Signed in! Redirecting…', false);
+    setTimeout(() => { window.location.replace('index.html'); }, 600);
+  }
 }
 
 /* ── Email Register ──────────────────────────────────────────── */
@@ -306,68 +330,92 @@ async function emailRegister() {
   const email    = document.getElementById('regEmail').value.trim();
   const pass     = document.getElementById('regPassword').value;
   const confirm  = document.getElementById('regConfirm').value;
-  const btn      = document.getElementById('registerBtn');
 
-  if (!username) { showMsg('registerMsg','Username is required.',true); return; }
-  if (!email)    { showMsg('registerMsg','Email is required.',true); return; }
-  if (pass.length < 8) { showMsg('registerMsg','Password must be at least 8 characters.',true); return; }
-  if (pass !== confirm){ showMsg('registerMsg','Passwords do not match.',true); return; }
-  if (!sb)       { showMsg('registerMsg','Supabase not configured.',true); return; }
+  if (!username)        { showMsg('registerMsg', 'Username is required.', true); return; }
+  if (!email)           { showMsg('registerMsg', 'Email is required.', true); return; }
+  if (pass.length < 8)  { showMsg('registerMsg', 'Password must be at least 8 characters.', true); return; }
+  if (pass !== confirm) { showMsg('registerMsg', 'Passwords do not match.', true); return; }
+  if (!sb)              { showMsg('registerMsg', 'Auth not available.', true); return; }
 
-  btn.disabled = true; btn.textContent = 'Creating account…';
+  setLoading('registerBtn', true, 'Create Account');
+  showMsg('registerMsg', 'Creating account…', false);
 
-  const { error } = await sb.auth.signUp({
-    email, password: pass,
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pass,
     options: {
       data: { full_name: username },
-      emailRedirectTo: window.location.origin + '/index.html'
+      emailRedirectTo: window.location.origin + '/index.html',
     }
   });
 
-  btn.disabled = false; btn.textContent = 'Create Account';
+  setLoading('registerBtn', false, 'Create Account');
 
-  if (error) { showMsg('registerMsg', error.message, true); return; }
-  showMsg('registerMsg',
-    'Account created! Check your email to confirm, then sign in.',
-    false
-  );
+  if (error) {
+    showMsg('registerMsg', error.message, true);
+    return;
+  }
+
+  // Check if email confirmation is required
+  if (data?.user && !data?.session) {
+    showMsg('registerMsg',
+      '✓ Account created! Check your email to confirm, then sign in.',
+      false
+    );
+  } else if (data?.session) {
+    // Email confirmation disabled — auto sign in
+    showMsg('registerMsg', '✓ Account created! Redirecting…', false);
+    setTimeout(() => { window.location.replace('index.html'); }, 800);
+  }
 }
 
 /* ── Password strength ───────────────────────────────────────── */
 function checkPwStrength(pw) {
   const bar = document.getElementById('pwBar');
+  if (!bar) return;
   let score = 0;
-  if (pw.length >= 8)  score++;
-  if (pw.length >= 12) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
+  if (pw.length >= 8)          score++;
+  if (pw.length >= 12)         score++;
+  if (/[A-Z]/.test(pw))        score++;
+  if (/[0-9]/.test(pw))        score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
   const colors = ['#EF5350','#FF7043','#FFB300','#66BB6A','#26A69A'];
-  bar.style.width  = (score * 20) + '%';
-  bar.style.background = colors[score-1] || '#333';
+  bar.style.width      = (score * 20) + '%';
+  bar.style.background = colors[score - 1] || '#333';
 }
 
-/* ── Helpers ─────────────────────────────────────────────────── */
-function showMsg(id, text, isErr) {
-  const el = document.getElementById(id);
-  el.textContent = text;
-  el.className = 'form-msg ' + (isErr ? 'err' : 'ok');
-}
-
-/* ── Redirect if already logged in ──────────────────────────── */
-window.addEventListener('load', async () => {
-  if (!sb) return;
-  const { data:{ session } } = await sb.auth.getSession();
-  if (session) window.location.href = 'index.html';
-});
-
-/* ── Enter key support ───────────────────────────────────────── */
+/* ── Enter key ───────────────────────────────────────────────── */
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
-  const activeTab = document.querySelector('.tab-panel.active')?.id;
-  if (activeTab === 'tab-login')    emailLogin();
-  if (activeTab === 'tab-register') emailRegister();
+  const active = document.querySelector('.tab-panel.active')?.id;
+  if (active === 'tab-login')    emailLogin();
+  if (active === 'tab-register') emailRegister();
+});
+
+/* ── On load: only redirect if already authenticated ─────────── */
+// We check AFTER a short delay so Supabase can process any OAuth callback
+// embedded in the URL (detectSessionInUrl handles this automatically)
+window.addEventListener('load', async () => {
+  if (!sb) return;
+
+  // Listen for auth changes — SIGNED_IN means OAuth just completed
+  sb.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      // OAuth completed — go to main site
+      window.location.replace('index.html');
+    }
+  });
+
+  // Check if there's already a valid session (returning user)
+  // Only redirect if they have a session AND the URL has no OAuth params
+  const hasOAuthParams = window.location.hash.includes('access_token')
+    || window.location.search.includes('code=');
+
+  if (!hasOAuthParams) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      window.location.replace('index.html');
+    }
+  }
 });
 </script>
-</body>
-</html>
