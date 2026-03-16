@@ -250,19 +250,35 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ── Config ─────────────────────────────────────────────────── */
 const SUPABASE_URL  = 'https://azzonqzxmtoilhqsrshq.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
 
 const sb = window.supabase
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
       auth: {
-        autoRefreshToken: true,
-        persistSession:   true,
-        detectSessionInUrl: true,
+        autoRefreshToken:    true,
+        persistSession:      true,
+        detectSessionInUrl:  true,
       }
     })
   : null;
+
+/* ── Helpers ────────────────────────────────────────────────── */
+function showMsg(id, text, isErr) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'form-msg ' + (isErr ? 'err' : 'ok');
+}
+function setBusy(btnId, busy, label) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled  = busy;
+  btn.textContent = busy ? 'Please wait…' : label;
+}
+function goHome() {
+  window.location.replace('index.html');
+}
 
 /* ── Tab switching ───────────────────────────────────────────── */
 function switchTab(name, btn) {
@@ -272,29 +288,14 @@ function switchTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-/* ── Helpers ─────────────────────────────────────────────────── */
-function showMsg(id, text, isErr) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = text;
-  el.className = 'form-msg ' + (isErr ? 'err' : 'ok');
-}
-function setLoading(btnId, loading, label) {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  btn.disabled = loading;
-  btn.textContent = loading ? 'Please wait…' : label;
-}
-
 /* ── Discord OAuth ───────────────────────────────────────────── */
+// Redirect BACK to login.html so this page handles the token
 async function discordLogin() {
-  if (!sb) { alert('Supabase not configured.'); return; }
+  if (!sb) { showMsg('loginMsg','Auth not available.',true); return; }
+  const redirectTo = window.location.href.split('?')[0].split('#')[0];
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'discord',
-    options: {
-      redirectTo: window.location.origin + '/index.html',
-      scopes: 'identify email',
-    }
+    options: { redirectTo, scopes: 'identify email' }
   });
   if (error) showMsg('loginMsg', 'Discord error: ' + error.message, true);
 }
@@ -303,24 +304,20 @@ async function discordLogin() {
 async function emailLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass  = document.getElementById('loginPassword').value;
-  if (!email || !pass) { showMsg('loginMsg', 'Enter your email and password.', true); return; }
-  if (!sb)             { showMsg('loginMsg', 'Auth not available.', true); return; }
+  if (!email || !pass) { showMsg('loginMsg','Enter your email and password.',true); return; }
+  if (!sb)             { showMsg('loginMsg','Auth not available.',true); return; }
 
-  setLoading('loginBtn', true, 'Sign In');
-  showMsg('loginMsg', 'Signing in…', false);
-
+  setBusy('loginBtn', true, 'Sign In');
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-
-  setLoading('loginBtn', false, 'Sign In');
+  setBusy('loginBtn', false, 'Sign In');
 
   if (error) {
     showMsg('loginMsg', error.message, true);
     return;
   }
-
   if (data?.session) {
     showMsg('loginMsg', 'Signed in! Redirecting…', false);
-    setTimeout(() => { window.location.replace('index.html'); }, 600);
+    setTimeout(goHome, 600);
   }
 }
 
@@ -331,41 +328,34 @@ async function emailRegister() {
   const pass     = document.getElementById('regPassword').value;
   const confirm  = document.getElementById('regConfirm').value;
 
-  if (!username)        { showMsg('registerMsg', 'Username is required.', true); return; }
-  if (!email)           { showMsg('registerMsg', 'Email is required.', true); return; }
-  if (pass.length < 8)  { showMsg('registerMsg', 'Password must be at least 8 characters.', true); return; }
-  if (pass !== confirm) { showMsg('registerMsg', 'Passwords do not match.', true); return; }
-  if (!sb)              { showMsg('registerMsg', 'Auth not available.', true); return; }
+  if (!username)        { showMsg('registerMsg','Username is required.',true); return; }
+  if (!email)           { showMsg('registerMsg','Email is required.',true); return; }
+  if (pass.length < 8)  { showMsg('registerMsg','Password must be at least 8 characters.',true); return; }
+  if (pass !== confirm) { showMsg('registerMsg','Passwords do not match.',true); return; }
+  if (!sb)              { showMsg('registerMsg','Auth not available.',true); return; }
 
-  setLoading('registerBtn', true, 'Create Account');
-  showMsg('registerMsg', 'Creating account…', false);
-
+  setBusy('registerBtn', true, 'Create Account');
   const { data, error } = await sb.auth.signUp({
-    email,
-    password: pass,
+    email, password: pass,
     options: {
       data: { full_name: username },
-      emailRedirectTo: window.location.origin + '/index.html',
+      emailRedirectTo: window.location.href.split('?')[0].split('#')[0],
     }
   });
+  setBusy('registerBtn', false, 'Create Account');
 
-  setLoading('registerBtn', false, 'Create Account');
+  if (error) { showMsg('registerMsg', error.message, true); return; }
 
-  if (error) {
-    showMsg('registerMsg', error.message, true);
-    return;
-  }
-
-  // Check if email confirmation is required
-  if (data?.user && !data?.session) {
+  if (data?.session) {
+    // Email confirmation OFF — immediately signed in
+    showMsg('registerMsg', '✓ Account created! Redirecting…', false);
+    setTimeout(goHome, 700);
+  } else {
+    // Email confirmation ON — needs to verify
     showMsg('registerMsg',
-      '✓ Account created! Check your email to confirm, then sign in.',
+      '✓ Account created! Check your email to confirm, then sign in here.',
       false
     );
-  } else if (data?.session) {
-    // Email confirmation disabled — auto sign in
-    showMsg('registerMsg', '✓ Account created! Redirecting…', false);
-    setTimeout(() => { window.location.replace('index.html'); }, 800);
   }
 }
 
@@ -379,9 +369,9 @@ function checkPwStrength(pw) {
   if (/[A-Z]/.test(pw))        score++;
   if (/[0-9]/.test(pw))        score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
-  const colors = ['#EF5350','#FF7043','#FFB300','#66BB6A','#26A69A'];
+  const cols = ['#EF5350','#FF7043','#FFB300','#66BB6A','#26A69A'];
   bar.style.width      = (score * 20) + '%';
-  bar.style.background = colors[score - 1] || '#333';
+  bar.style.background = cols[score - 1] || '#333';
 }
 
 /* ── Enter key ───────────────────────────────────────────────── */
@@ -392,30 +382,39 @@ document.addEventListener('keydown', e => {
   if (active === 'tab-register') emailRegister();
 });
 
-/* ── On load: only redirect if already authenticated ─────────── */
-// We check AFTER a short delay so Supabase can process any OAuth callback
-// embedded in the URL (detectSessionInUrl handles this automatically)
-window.addEventListener('load', async () => {
+/* ── Session handling on page load ───────────────────────────── */
+// Supabase's detectSessionInUrl automatically exchanges the OAuth
+// code/token in the URL into a session. We just need to listen for it.
+(async () => {
   if (!sb) return;
 
-  // Listen for auth changes — SIGNED_IN means OAuth just completed
-  sb.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      // OAuth completed — go to main site
-      window.location.replace('index.html');
-    }
-  });
+  // If there's a code or token in the URL, Supabase is processing OAuth.
+  // Wait for it to complete via onAuthStateChange.
+  const url = window.location.href;
+  const hasOAuth = url.includes('#access_token') || url.includes('?code=') || url.includes('&code=');
 
-  // Check if there's already a valid session (returning user)
-  // Only redirect if they have a session AND the URL has no OAuth params
-  const hasOAuthParams = window.location.hash.includes('access_token')
-    || window.location.search.includes('code=');
+  if (hasOAuth) {
+    // Show a loading state while OAuth completes
+    document.querySelector('.card').innerHTML =
+      '<div style="padding:2.5rem;text-align:center;font-family:Inter,sans-serif;color:#9A8AB5;font-size:.9rem;">Signing you in…</div>';
 
-  if (!hasOAuthParams) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) {
-      window.location.replace('index.html');
-    }
+    const unsub = sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        unsub.data?.subscription?.unsubscribe();
+        goHome();
+      }
+      if (event === 'SIGNED_OUT') {
+        // Something went wrong — reload to show login form
+        window.location.replace('login.html');
+      }
+    });
+    return;
   }
-});
+
+  // No OAuth in URL — check if already logged in
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    goHome();
+  }
+})();
 </script>
