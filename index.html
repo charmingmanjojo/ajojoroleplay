@@ -1680,6 +1680,24 @@
           </div>
         </div>
 
+        <div class="fg2">
+          <div class="fg">
+            <label class="fl">Race <span class="req">*</span></label>
+            <select class="fsel" id="ocRace">
+              <option value="human">Human</option>
+              <option value="vampire">Vampire</option>
+              <option value="pillar_man">Pillar Man</option>
+              <option value="rock_human">Rock Human</option>
+              <option value="epm">Enhanced Pillar Man</option>
+            </select>
+            <p class="fhint">Non-Human races require GM approval. See <a href="dnd.html#races" target="_blank" style="color:var(--gold-d);">Races</a> on the D&D page.</p>
+          </div>
+          <div class="fg">
+            <label class="fl">Gender / Pronouns</label>
+            <input class="fi" id="ocGender" placeholder="e.g. He/him, She/her, They/them…"/>
+          </div>
+        </div>
+
         <div class="fg">
           <label class="fl">Appearance</label>
           <textarea class="fta" id="ocAppearance" style="min-height:72px;"
@@ -1703,8 +1721,9 @@
         </div>
 
         <p style="font-size:.82rem;color:var(--text-dim);line-height:1.6;margin-bottom:1rem;">
-          Not every character starts with a supernatural power. Choose what fits your story — 
-          some abilities require GM approval before use in combat.
+          Not every character needs a supernatural power — humans are fully viable.
+          Ability types follow the <a href="dnd.html" target="_blank" style="color:var(--gold-d);">JoJo D&amp;D system</a>.
+          Some require GM review or approval before use in combat threads.
         </p>
 
         <!-- Ability cards -->
@@ -1795,25 +1814,28 @@
             <div class="fg">
               <label class="fl">Stand Type</label>
               <select class="fsel" id="standType">
-                <option>Close-Range Power</option>
-                <option>Long-Range / Remote</option>
-                <option>Automatic</option>
-                <option>Colony</option>
-                <option>Bound / Object</option>
-                <option>Humanoid</option>
-                <option>Other / Unique</option>
+                <option value="">— Select Type —</option>
+                <option value="power">Power Type (Close-Range)</option>
+                <option value="ranged">Ranged Type (Long-Range)</option>
+                <option value="ability">Ability Type (Special Ability)</option>
+                <option value="remote">Remote Type (Automatic/Independent)</option>
+                <option value="enhancement">Enhancement Type (Body Enhancement)</option>
+                <option value="act">Act Type (Multi-Act) — GM approval</option>
+                <option value="hive">Hive Type (Colony/Swarm)</option>
+                <option value="bound">Bound Type (Object Stand)</option>
               </select>
+              <p class="fhint">Not sure? See <a href="dnd.html#types" target="_blank" style="color:var(--gold-d);">Stand Types</a> on the D&D page.</p>
             </div>
           </div>
           <div class="fg">
             <label class="fl">Primary Ability <span class="req">*</span></label>
             <textarea class="fta" id="standAbility"
-              placeholder="What does it do? How does it activate? What are the limits?"></textarea>
+              placeholder="What does your Stand do? How is it activated? What are its range and limits? Reference the D&amp;D rules for ability vs combat types."></textarea>
           </div>
           <div class="fg2">
             <div class="fg">
               <label class="fl">Weakness / Limitation <span class="req">*</span></label>
-              <input class="fi" id="standWeakness" placeholder="What can counter or defeat it?"/>
+              <input class="fi" id="standWeakness" placeholder="What makes it vulnerable? What conditions make it fail? Every strong ability needs a real weakness."/>
             </div>
             <div class="fg">
               <label class="fl">Stand Cry</label>
@@ -1823,7 +1845,7 @@
 
           <div class="stat-grid-label">
             <span>Stand Parameters</span>
-            <span class="fhint" style="margin:0;">Max 2× A · Every A needs a D or E · S requires mod approval</span>
+            <span class="fhint" style="margin:0;">Max 2 A grades · Each A offset by a D or E · S = GM approval only · <a href="dnd.html#stats" target="_blank" style="color:var(--gold-d);">Stat guide ↗</a></span>
           </div>
           <div class="stat-sliders" id="standStatSliders"></div>
         </div>
@@ -1952,14 +1974,17 @@
       <div class="fg">
         <label class="fl">Stand Type</label>
         <select class="fsel" id="sType">
-          <option>Close-Range Power Type</option>
-          <option>Long-Range / Remote Type</option>
-          <option>Automatic Type</option>
-          <option>Colony Type</option>
-          <option>Bound Stand</option>
-          <option>Humanoid Type</option>
-          <option>Other / Unique</option>
+          <option value="">— Select Type —</option>
+          <option value="power">Power Type (Close-Range)</option>
+          <option value="ranged">Ranged Type (Long-Range)</option>
+          <option value="ability">Ability Type (Special Ability)</option>
+          <option value="remote">Remote Type (Automatic/Independent)</option>
+          <option value="enhancement">Enhancement Type (Body Enhancement)</option>
+          <option value="act">Act Type (Multi-Act) — GM approval</option>
+          <option value="hive">Hive Type (Colony/Swarm)</option>
+          <option value="bound">Bound Type (Object Stand)</option>
         </select>
+        <p class="fhint">See <a href="dnd.html#types" target="_blank" style="color:var(--gold-d);">Stand Types</a> on the D&D page for descriptions and canon examples.</p>
       </div>
       <div class="fg"><label class="fl">Primary Ability *</label><textarea class="fta" style="min-height:110px;" id="sAbility" placeholder="Describe what the Stand does — primary power, activation conditions, range…"></textarea></div>
       <div class="fg"><label class="fl">Weakness / Limitation *</label><input class="fi" id="sWeakness" placeholder="What can defeat or counter it?"/></div>
