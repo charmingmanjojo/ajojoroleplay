@@ -627,12 +627,7 @@
       grid-template-areas:"dnd dnd""evt evt""tos tos""ann req""bey so""ham spi";
     }
   }
-  @media(max-width:680px){
-    .nav-links{ display:none; }
-    .hub-grid{ grid-template-columns:1fr; grid-template-areas:"dnd""evt""tos""ann""req""bey""so""ham""spi"; }
-    .fg2,.fg3{ grid-template-columns:1fr; }
-    .bcard-tt{ max-width:220px; min-width:160px; }
-  }
+  
   
   /* ============================================================
      AUTH SYSTEM STYLES
@@ -741,80 +736,98 @@
   #hero   { padding-top: 92px !important; }
 
 
-  /* ── MUSIC PLAYER — minimal persistent bottom bar ────────── */
+  /* ── MUSIC PLAYER ───────────────────────────────────────── */
+  /* The slide-up bar */
   #mp {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 850;
-    height: 38px;
-    background: rgba(7,0,13,.97);
-    border-top: 1px solid rgba(200,150,12,.15);
+    height: 40px;
+    background: rgba(7,0,13,.98);
+    border-top: 1px solid rgba(200,150,12,.2);
     display: flex; align-items: center;
-    padding: 0 .5rem;
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding: 0 .6rem;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     transform: translateY(100%);
-    transition: transform .3s cubic-bezier(.22,.8,.22,1);
-    font-family: 'Inter', sans-serif;
+    transition: transform .32s cubic-bezier(.22,.8,.22,1);
+    box-shadow: 0 -4px 24px rgba(0,0,0,.5);
   }
   #mp.visible { transform: translateY(0); }
 
   #mp > button {
     background: none; border: none;
-    color: var(--text-xs); font-size: .78rem;
-    cursor: pointer; padding: 0 .45rem; height: 38px;
+    color: var(--text-xs); font-size: .82rem;
+    cursor: pointer; padding: 0 .5rem; height: 40px;
     transition: color .15s; flex-shrink: 0; line-height: 1;
   }
   #mp > button:hover { color: var(--gold-l); }
 
+  /* Floating pill tab — sits above the bottom edge, fully bordered */
   #mpToggleBtn {
-    position: fixed; bottom: 0; right: 1.2rem;
-    height: 26px; width: 42px;
+    position: fixed;
+    bottom: 1rem;          /* floats above page content */
+    right: 1.25rem;
+    height: 30px;
+    padding: 0 .75rem;
     background: rgba(7,0,13,.96);
-    border: 1px solid rgba(200,150,12,.2);
-    border-bottom: none;
+    border: 1px solid rgba(200,150,12,.28);
+    border-radius: 15px;   /* full pill */
     color: var(--gold-d);
-    font-size: .7rem;
-    border-radius: 4px 4px 0 0;
-    padding: 0; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: .64rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
     z-index: 851;
-    transition: color .15s, bottom .3s cubic-bezier(.22,.8,.22,1);
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; gap: .35rem;
+    transition: color .15s, border-color .15s, bottom .32s cubic-bezier(.22,.8,.22,1), box-shadow .15s;
+    box-shadow: 0 2px 12px rgba(0,0,0,.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    white-space: nowrap;
   }
-  #mp.visible ~ * #mpToggleBtn,
-  #mp.visible #mpToggleBtn { bottom: 38px; }
-  #mpToggleBtn:hover { color: var(--gold-l); }
+  /* When player bar is open, lift the pill up */
+  #mp.visible + #mpToggleBtn,
+  #mpToggleBtn.raised { bottom: 48px; }
+
+  #mpToggleBtn:hover {
+    color: var(--gold-l);
+    border-color: rgba(200,150,12,.55);
+    box-shadow: 0 2px 18px rgba(200,150,12,.15);
+  }
 
   #mpTrackWrap {
     flex: 1; min-width: 0; display: flex;
     flex-direction: column; justify-content: center;
-    gap: 3px; padding: 0 .4rem; overflow: hidden;
+    gap: 3px; padding: 0 .5rem; overflow: hidden;
   }
   #mpTrackName {
-    font-size: .63rem; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: .65rem; font-weight: 500;
     color: var(--text-dim); white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-    letter-spacing: .02em;
+    overflow: hidden; text-overflow: ellipsis; letter-spacing: .02em;
   }
   #mpProgressBar {
     height: 2px; background: rgba(94,26,122,.3);
     cursor: pointer; position: relative; border-radius: 1px;
+    transition: height .15s;
   }
   #mpProgressBar:hover { height: 4px; margin: -1px 0; }
   #mpProgressFill {
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 0%; background: linear-gradient(90deg,var(--purple-l),var(--pink));
-    border-radius: 1px; transition: width .5s linear;
-    pointer-events: none;
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+    background: linear-gradient(90deg, var(--purple-l), var(--pink));
+    border-radius: 1px; transition: width .5s linear; pointer-events: none;
   }
   #mpVol {
-    width: 55px; flex-shrink: 0; -webkit-appearance: none;
+    width: 60px; flex-shrink: 0; -webkit-appearance: none;
     height: 2px; background: rgba(94,26,122,.28);
-    border: none; outline: none; cursor: pointer; margin: 0 .3rem;
+    border: none; outline: none; cursor: pointer; margin: 0 .35rem;
   }
   #mpVol::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 8px; height: 8px;
+    -webkit-appearance: none; width: 9px; height: 9px;
     background: var(--gold-d); border-radius: 50%;
   }
   #ytContainer { display: none; }
-  body { padding-bottom: 38px; }
+  body { padding-bottom: 0; }
 
   
   /* ── FORUM ROWS ────────────────────────────────────────────── */
@@ -973,14 +986,121 @@
     transform: translateX(2px);
   }
 
-  @media (max-width: 640px) {
-    .fr-img { width: 140px; }
+  
     .fr-tip { width: 140px; font-size: .7rem; }
     .fr-title { font-size: .85rem; }
     .forum-list { padding: 0 1rem 3rem; }
   }
-.fr-tip { left: 100px; right: 28px; font-size: .7rem; }
-    .fr-title { font-size: .82rem; }
+
+
+  /* ── MOBILE FIXES ───────────────────────────────────────── */
+  @media (max-width: 600px) {
+    /* Prevent iOS from zooming on input focus */
+    .fi, .fsel, .fta { font-size: 16px !important; }
+    /* Bigger tap targets for nav buttons */
+    .btn-sm { min-height: 40px; padding: .4rem .8rem; }
+    /* Modal takes full width on small screens */
+    .modal { margin: 0 .5rem; }
+    .modal-overlay { padding: 60px .5rem .5rem; }
+    /* Forum rows slightly smaller thumbnail on mobile */
+    .fr-img { width: 120px; }
+    .fr-tip { display: none; } /* hide tooltip on touch — no hover on mobile */
+  }
+
+
+  /* ============================================================
+     MOBILE — comprehensive responsive styles
+  ============================================================ */
+
+  /* Tablet */
+  @media (max-width: 860px) {
+    .fr-img { width: 200px; }
+    .boards-grid { grid-template-columns: 1fr; }
+    .oc-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    /* Nav */
+    .nav-links { display: none; }
+    .nav-hide-sm { display: none !important; }
+    .nav-logo { font-size: .82rem; padding: 0 .85rem; }
+
+    /* Auth bar — compact on mobile */
+    #authBar { gap: .3rem; padding: 0 .5rem; }
+    .auth-username { max-width: 90px; font-size: .62rem; }
+    #loginBtn { padding: .22rem .5rem; font-size: .6rem; }
+    #logoutBtn { font-size: .58rem; padding: .2rem .45rem; }
+    .auth-sep { display: none; }
+
+    /* Push content below both fixed bars */
+    #ticker { margin-top: 90px !important; }
+    #hero   { padding-top: 90px !important; margin-top: -90px !important; }
+
+    /* Hero */
+    .hero-logo { width: 95%; max-width: 340px; }
+    .hero-eyebrow { font-size: .6rem; letter-spacing: .2em; }
+    .hero-sub { font-size: .88rem; }
+    .hero-btns { gap: .45rem; }
+    .btn-lg { font-size: .75rem; padding: .55rem 1.25rem; }
+    .hero-scroll { display: none; }
+
+    /* Section headers */
+    .sec-head { padding: 2rem 1rem 1.25rem; }
+    .sec-title { font-size: 1.4rem; }
+
+    /* Forum rows */
+    .forum-list { padding: 0 .85rem 2.5rem; }
+    .fr { min-height: 70px; }
+    .fr-img { width: 120px; }
+    .fr-tip { display: none; }
+    .fr-title { font-size: .85rem; }
+    .fr-sub { font-size: .58rem; letter-spacing: .06em; }
+    .fr-name { padding: 0 .75rem; }
+    .fr-arr { margin: 0 .65rem; }
+
+    /* Boards */
+    #boards { padding: 0 .85rem 2rem; }
+    .boards-grid { grid-template-columns: 1fr; gap: .65rem; }
+    .bc-title { font-size: .92rem; padding-right: 6rem; }
+    .bc-desc { font-size: .8rem; }
+    .gm-notice { padding: .7rem .9rem; }
+
+    /* OC Roster */
+    #roster { padding: 0 .85rem 2rem; }
+    .roster-controls { gap: .35rem; }
+    .rf { font-size: .62rem; padding: .3rem .6rem; }
+    .oc-grid { grid-template-columns: 1fr; gap: .75rem; }
+
+    /* Modals */
+    .modal-overlay { padding: 56px .4rem .4rem; align-items: flex-start; }
+    .modal { clip-path: none; border-radius: 0; }
+    .modal-body { max-height: 80vh; padding: 1rem; }
+    .modal-title { font-size: .9rem; }
+    .fg2 { grid-template-columns: 1fr; }
+    .fg3 { grid-template-columns: 1fr; }
+
+    /* Inputs — prevent iOS zoom */
+    .fi, .fsel, .fta { font-size: 16px !important; }
+
+    /* Music player */
+    #mp > button { padding: 0 .35rem; }
+    #mpVol { width: 45px; }
+
+    /* Footer */
+    footer { padding: 1.5rem .85rem; }
+
+    /* GM panel */
+    #gm-panel { padding: 0 .85rem 2rem; }
+    .queue-item { flex-direction: column; align-items: flex-start; gap: .5rem; }
+    .qi-actions { flex-wrap: wrap; }
+  }
+
+  /* Very small phones */
+  @media (max-width: 380px) {
+    .fr-img { width: 90px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .nav-logo { font-size: .75rem; }
   }
 
 </style>
@@ -1006,7 +1126,7 @@
          oninput="mpSetVol(this.value)" title="Volume"/>
   <div id="ytContainer"><div id="ytPlayer"></div></div>
 </div>
-<button id="mpToggleBtn" onclick="mpToggle()" title="Show Player">♪</button>
+<button id="mpToggleBtn" onclick="mpToggle()" title="Show player">♪ Music</button>
 
 <!-- Nav -->
 
@@ -1023,10 +1143,10 @@
     <li><a href="tos.html">Rules</a></li>
   </ul>
   <div class="nav-right">
-    <button class="btn btn-ghost btn-sm" onclick="openModal('ocModal')">+ OC</button>
-    <button class="btn btn-ghost btn-sm" onclick="openModal('standModal')">+ Stand</button>
+    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('ocModal')">+ OC</button>
+    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('standModal')">+ Stand</button>
     <button class="btn btn-gold btn-sm" onclick="openModal('threadModal')">+ Thread</button>
-    <button class="btn btn-ghost btn-sm" id="gmToggleBtn" onclick="toggleGM()" class="btn btn-ghost btn-sm gm-only" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
+    <button class="btn btn-ghost btn-sm gm-only nav-hide-sm" id="gmToggleBtn" onclick="toggleGM()" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
   </div>
 </nav>
 
@@ -1974,9 +2094,30 @@ function toggleGM(){
   if(p.classList.toggle('visible')){btn.style.color='var(--gold-l)';p.scrollIntoView({behavior:'smooth'});showToast('GM Panel','ok');}
   else btn.style.color='';
 }
-function openModal(id){document.getElementById(id)?.classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(id){document.getElementById(id)?.classList.remove('open');document.body.style.overflow='';}
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
+function openModal(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el._justOpened=true;
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{el._justOpened=false;},350);
+}
+function closeModal(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el._justOpened=false;
+  el.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  // Delay activating close-on-tap so the opening tap doesn't immediately close
+  o.addEventListener('click', e=>{
+    if(e.target===o && !o._justOpened) closeModal(o.id);
+  });
+  o.addEventListener('touchend', e=>{
+    if(e.target===o && !o._justOpened) closeModal(o.id);
+  }, {passive:true});
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(o=>closeModal(o.id));});
 let toastTm=null;
 function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type?' '+type:'');if(toastTm)clearTimeout(toastTm);toastTm=setTimeout(()=>t.className='',3000);}
@@ -2149,21 +2290,24 @@ function mpSeek(e) {
 
 function mpInit() {
   mpLoadYT();
-  document.getElementById('mp').classList.add('visible');
-  document.getElementById('mpToggleBtn').title = 'Hide Player';
+  const bar = document.getElementById('mp');
+  const btn = document.getElementById('mpToggleBtn');
+  bar.classList.add('visible');
+  btn.classList.add('raised');
+  btn.title = 'Hide player';
 }
 
 function mpToggle() {
-  const el = document.getElementById('mp');
+  const bar = document.getElementById('mp');
   const btn = document.getElementById('mpToggleBtn');
-  const showing = el.classList.toggle('visible');
+  const showing = bar.classList.toggle('visible');
   if (showing) {
     if (!ytReady) mpInit();
-    btn.style.bottom = '38px';
-    btn.title = 'Hide Player';
+    btn.classList.add('raised');
+    btn.title = 'Hide player';
   } else {
-    btn.style.bottom = '0';
-    btn.title = 'Show Player';
+    btn.classList.remove('raised');
+    btn.title = 'Show player';
   }
 }
 
