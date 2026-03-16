@@ -1254,9 +1254,18 @@
     .fg2 { grid-template-columns: 1fr; }
   }
 
+
+  /* Prevent logged-out flash while session is being restored */
+  #authBar { opacity: 0; transition: opacity .2s ease; }
+  #authBar.auth-ready { opacity: 1; }
+  /* Default: hide elements that depend on auth state */
+  /* They'll be revealed correctly once initAuth() fires */
+  .auth-user { display: none; }
+  #logoutBtn  { display: none; }
+
 </style>
 </head>
-<body class="logged-out">
+<body>
 
 <!-- Background rotator — furthest back -->
 <div id="bgRotator" aria-hidden="true"></div>
@@ -2136,55 +2145,78 @@ let isAdmin        = false;
 
 /* ── Boot auth ───────────────────────────────────────────────────── */
 async function initAuth() {
-  if (!sb) { document.body.classList.add('logged-out'); return; }
+  if (!sb) {
+    document.body.classList.add('logged-out');
+    return;
+  }
 
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) {
+  // Show logged-in state immediately from session JWT (no DB query needed)
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session?.user) {
+    currentUser = session.user;
+    refreshAuthUI();              // ← update UI right away from JWT data
+    loadProfileAsync(session.user.id); // ← load extra data in background
+  } else {
+    refreshAuthUI();
+  }
+
+  // Keep in sync if user signs in/out in another tab
+  sb.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session?.user) {
       currentUser = session.user;
-      await loadProfile(session.user.id);
-    } else {
+      refreshAuthUI();
+      loadProfileAsync(session.user.id);
+    } else if (event === 'SIGNED_OUT') {
       currentUser = currentProfile = currentGMRole = null;
       isGM = isAdmin = false;
       refreshAuthUI();
     }
   });
-
-  const { data:{ session } } = await sb.auth.getSession();
-  if (session?.user) { currentUser = session.user; await loadProfile(session.user.id); }
-  else refreshAuthUI();
 }
 
-async function loadProfile(uid) {
-  if (!sb) return;
+async function loadProfileAsync(uid) {
+  // Loads profile and GM role in background — UI already showing logged-in
+  if (!sb || !uid) return;
   try {
-    const { data:p } = await sb.from('profiles').select('*').eq('id', uid).single();
-    currentProfile = p;
-
-    // Ban check
-    if (p?.is_banned) {
-      const exp = p.banned_until;
-      if (!exp || new Date(exp) > new Date()) {
-        await sb.auth.signOut();
-        showToast('Account suspended.','err');
-        return;
+    // Profile
+    const { data:p } = await sb
+      .from('profiles').select('*').eq('id', uid).maybeSingle();
+    if (p) {
+      currentProfile = p;
+      // Ban check
+      if (p.is_banned) {
+        const exp = p.banned_until;
+        if (!exp || new Date(exp) > new Date()) {
+          await sb.auth.signOut();
+          showToast('Your account has been suspended.','err');
+          return;
+        }
       }
     }
+  } catch(e) { /* profiles table may not exist yet — silent */ }
 
-    const { data:gm } = await sb.from('gm_roles').select('*')
-      .eq('auth_id', uid).eq('is_active', true).single();
+  try {
+    // GM role
+    const { data:gm } = await sb
+      .from('gm_roles').select('*')
+      .eq('auth_id', uid).eq('is_active', true).maybeSingle();
     currentGMRole = gm || null;
     isGM    = !!gm;
     isAdmin = gm?.role === 'admin' || gm?.role === 'owner';
-  } catch(e) { console.warn('loadProfile:', e); }
+  } catch(e) { /* gm_roles table may not exist yet — silent */ }
+
+  // Re-render with full data (GM badge, custom username etc)
   refreshAuthUI();
 }
 
 function refreshAuthUI() {
   const body = document.body;
   if (currentUser) {
-    body.classList.replace('logged-out','logged-in') || (body.classList.add('logged-in'), body.classList.remove('logged-out'));
-    const name   = currentProfile?.username || currentUser.user_metadata?.full_name || 'Player';
-    const avatar = currentProfile?.avatar_url || currentUser.user_metadata?.avatar_url || '';
+    body.classList.add('logged-in');
+    body.classList.remove('logged-out');
+    const meta   = currentUser.user_metadata || {};
+    const name   = currentProfile?.username || meta.full_name || meta.name || currentUser.email?.split('@')[0] || 'Player';
+    const avatar = currentProfile?.avatar_url || meta.avatar_url || '';
     const roleEl = document.getElementById('authRole');
     const avEl   = document.getElementById('authAvatar');
     const unEl   = document.getElementById('authUsername');
