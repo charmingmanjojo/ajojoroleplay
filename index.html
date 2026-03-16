@@ -1103,6 +1103,157 @@
     .nav-logo { font-size: .75rem; }
   }
 
+
+  /* ── OC WIZARD ──────────────────────────────────────────────── */
+
+  /* Step progress bar */
+  .oc-steps {
+    display: flex; align-items: center; gap: 0;
+    margin-top: .4rem;
+  }
+  .oc-step {
+    display: flex; align-items: center; gap: .35rem;
+    opacity: .35; transition: opacity .2s;
+  }
+  .oc-step.active, .oc-step.done { opacity: 1; }
+  .oc-step-n {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(200,150,12,.15);
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif; font-size: .6rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); transition: all .2s;
+  }
+  .oc-step.active .oc-step-n {
+    background: var(--gold); color: #07000D; border-color: var(--gold);
+  }
+  .oc-step.done .oc-step-n {
+    background: rgba(200,150,12,.2); color: var(--gold-l); border-color: var(--gold-d);
+  }
+  .oc-step-l {
+    font-family: 'Inter', sans-serif; font-size: .62rem; font-weight: 500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .oc-step.active .oc-step-l { color: var(--gold-l); }
+  .oc-step-line {
+    flex: 1; height: 1px; background: var(--border);
+    margin: 0 .5rem; min-width: 20px;
+  }
+
+  /* Section label */
+  .oc-section-label {
+    display: flex; align-items: baseline; gap: .65rem;
+    margin-bottom: 1.1rem; padding-bottom: .7rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .osl-num {
+    font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 900;
+    color: var(--gold); opacity: .35; line-height: 1;
+    flex-shrink: 0;
+  }
+  .osl-text {
+    font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700;
+    color: var(--text); line-height: 1.2;
+  }
+
+  /* Required asterisk */
+  .req { color: var(--pink-l); font-size: .7em; }
+
+  /* Ability pick grid */
+  .ab-pick {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .55rem;
+    margin-bottom: .85rem;
+  }
+
+  .ab-card {
+    border: 1px solid var(--border);
+    padding: .8rem .5rem .7rem;
+    text-align: center; cursor: pointer;
+    transition: all .18s;
+    background: rgba(0,0,0,.3);
+    position: relative; overflow: hidden;
+  }
+  .ab-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--abc, rgba(200,150,12,.3));
+    opacity: 0; transition: opacity .18s;
+  }
+  .ab-card:hover {
+    border-color: rgba(200,150,12,.35);
+    background: rgba(200,150,12,.04);
+  }
+  .ab-card.selected {
+    border-color: var(--abc, var(--gold));
+    background: rgba(200,150,12,.07);
+  }
+  .ab-card.selected::before { opacity: 1; }
+
+  .ab-card-icon { font-size: 1.5rem; margin-bottom: .3rem; }
+  .ab-card-name {
+    font-family: 'Cinzel', serif; font-size: .78rem; font-weight: 700;
+    color: var(--text); margin-bottom: .18rem;
+    transition: color .18s;
+  }
+  .ab-card.selected .ab-card-name { color: var(--abc, var(--gold-l)); }
+  .ab-card-note {
+    font-family: 'Inter', sans-serif; font-size: .58rem;
+    font-weight: 500; letter-spacing: .05em;
+    color: var(--text-xs);
+  }
+
+  /* Ability detail panel */
+  .ab-detail {
+    background: rgba(0,0,0,.2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--adc, var(--gold));
+    padding: 1rem 1.1rem;
+    margin-bottom: .5rem;
+    animation: fadeUp .22s ease;
+  }
+  .ab-detail-hd {
+    font-family: 'Cinzel', serif; font-size: .88rem; font-weight: 700;
+    color: var(--adc, var(--gold-l)); margin-bottom: .75rem;
+  }
+  .ab-notice {
+    background: rgba(94,26,122,.1);
+    border: 1px solid rgba(126,58,160,.25);
+    padding: .55rem .85rem; margin-bottom: .85rem;
+    font-size: .78rem; color: var(--text-dim); line-height: 1.55;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ab-notice strong { color: var(--purple-viv); }
+
+  /* Stat sliders */
+  .stat-grid-label {
+    display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: .4rem;
+    margin: .9rem 0 .5rem;
+    font-family: 'Inter', sans-serif; font-size: .65rem;
+    font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold-d);
+  }
+  .stat-sliders { display: flex; flex-direction: column; gap: .38rem; }
+
+  /* Step navigation */
+  .oc-step-nav {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 1.25rem;
+    padding-top: .9rem; border-top: 1px solid var(--border);
+  }
+  .oc-submit-bar {
+    display: flex; gap: .65rem; align-items: center;
+    margin-top: 1.25rem; padding-top: .9rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 500px) {
+    .ab-pick { grid-template-columns: repeat(2, 1fr); }
+    .fg2 { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body class="logged-out">
@@ -1143,7 +1294,7 @@
     <li><a href="tos.html">Rules</a></li>
   </ul>
   <div class="nav-right">
-    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('ocModal')">+ OC</button>
+    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openOCModal()">+ OC</button>
     <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('standModal')">+ Stand</button>
     <button class="btn btn-gold btn-sm" onclick="openModal('threadModal')">+ Thread</button>
     <button class="btn btn-ghost btn-sm gm-only nav-hide-sm" id="gmToggleBtn" onclick="toggleGM()" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
@@ -1186,7 +1337,7 @@
     <p class="hero-sub">A fan-made JoJo roleplay community — every stand user has a story.</p>
     <div class="hero-btns">
       <button class="btn btn-gold btn-lg" onclick="document.getElementById('hub').scrollIntoView({behavior:'smooth'})">Explore Boards</button>
-      <button class="btn btn-pink btn-lg" onclick="openModal('ocModal')">Create Your OC</button>
+      <button class="btn btn-pink btn-lg" onclick="openOCModal()">Create Your OC</button>
       <button class="btn btn-ghost btn-lg" onclick="document.getElementById('boards').scrollIntoView({behavior:'smooth'})">Join a Part</button>
     </div>
   </div>
@@ -1457,153 +1608,319 @@
      MODAL — Create OC
 ============================================================ -->
 <div class="modal-overlay" id="ocModal">
-  <div class="modal" style="max-width:720px;">
+  <div class="modal" style="max-width:680px;">
+
     <div class="modal-hd">
-      <span class="modal-title">✦ Create Your OC</span>
+      <div style="display:flex;flex-direction:column;gap:.2rem;flex:1;">
+        <span class="modal-title">Create Your Character</span>
+        <div class="oc-steps" id="ocSteps">
+          <div class="oc-step active" data-step="1">
+            <span class="oc-step-n">1</span><span class="oc-step-l">Identity</span>
+          </div>
+          <div class="oc-step-line"></div>
+          <div class="oc-step" data-step="2">
+            <span class="oc-step-n">2</span><span class="oc-step-l">Ability</span>
+          </div>
+          <div class="oc-step-line"></div>
+          <div class="oc-step" data-step="3">
+            <span class="oc-step-n">3</span><span class="oc-step-l">Story</span>
+          </div>
+        </div>
+      </div>
       <button class="modal-close" onclick="closeModal('ocModal')">✕</button>
     </div>
-    <div class="modal-body">
 
-      <!-- Basic Info -->
-            <div class="auth-wall">
-        <p>You must be registered and logged in to submit an OC.<br/>Sign in with Discord, or create an account with email.</p>
-        <button class="btn btn-gold" onclick="window.location.href='login.html'">
-          Sign In / Register →
-        </button>
-      </div>
-<p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.75rem;">Character Info</p>
-      <div class="fg2">
-        <div class="fg"><label class="fl">Character Name *</label><input class="fi" id="ocName" placeholder="Your OC's full name"/></div>
-        <div class="fg"><label class="fl">Player Username *</label><input class="fi" id="ocUser" placeholder="@yourname"/></div>
-      </div>
-      <div class="fg2">
-        <div class="fg"><label class="fl">Age</label><input class="fi" id="ocAge" placeholder="e.g. 24" type="number" min="0" max="999"/></div>
-        <div class="fg">
-          <label class="fl">Part Board *</label>
-          <select class="fsel" id="ocBoard">
-            <option value="">— Select a Board —</option>
-            <option>Phantom Brass</option>
-            <option>Crimson Veil</option>
-            <option>Steel Horizon</option>
-            <option>The Hollow City</option>
-          </select>
-        </div>
-      </div>
-      <div class="fg"><label class="fl">Appearance</label><textarea class="fta" id="ocAppearance" placeholder="Describe your character's look — height, hair, clothing, notable features…"></textarea></div>
-      <div class="fg"><label class="fl">Personality</label><textarea class="fta" id="ocPersonality" placeholder="How does your character act? Mannerisms, speech style, quirks…"></textarea></div>
-      <div class="fg"><label class="fl">Background / Backstory *</label><textarea class="fta" style="min-height:110px;" id="ocBio" placeholder="Who is your character? What brought them into this world? What do they want?"></textarea></div>
+    <div class="modal-body" id="ocModalBody">
 
-      <div style="height:1px;background:rgba(255,179,0,.15);margin:1rem 0;"></div>
-
-      <!-- Ability Selection -->
-      <p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.75rem;">Starting Ability</p>
-      <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:.75rem;line-height:1.6;">Not all characters start with supernatural abilities. Choose what fits your OC's story. Some abilities require GM approval before use in combat threads.</p>
-
-      <div class="ability-grid" id="abilityGrid">
-        <div class="ability-opt" data-ab="none" onclick="selectAbility('none')">
-          <div class="ao-icon">⚪</div>
-          <div class="ao-name">None</div>
-          <div class="ao-note">No power</div>
-        </div>
-        <div class="ability-opt" data-ab="hamon" onclick="selectAbility('hamon')">
-          <div class="ao-icon">☀️</div>
-          <div class="ao-name">Hamon</div>
-          <div class="ao-note">Starts Apprentice</div>
-        </div>
-        <div class="ability-opt" data-ab="spin" onclick="selectAbility('spin')">
-          <div class="ao-icon">🌀</div>
-          <div class="ao-name">Spin</div>
-          <div class="ao-note">GM review req.</div>
-        </div>
-        <div class="ability-opt" data-ab="stand" onclick="selectAbility('stand')">
-          <div class="ao-icon">✦</div>
-          <div class="ao-name">Stand</div>
-          <div class="ao-note">GM review req.</div>
-        </div>
-        <div class="ability-opt" data-ab="vampire" onclick="selectAbility('vampire')">
-          <div class="ao-icon">🩸</div>
-          <div class="ao-name">Vampire</div>
-          <div class="ao-note">GM approval req.</div>
-        </div>
-        <div class="ability-opt" data-ab="pillar" onclick="selectAbility('pillar')">
-          <div class="ao-icon">🏛</div>
-          <div class="ao-name">Pillar Man</div>
-          <div class="ao-note">Rare — GM only</div>
-        </div>
+      <!-- AUTH WALL -->
+      <div class="auth-wall">
+        <p>You must be registered and signed in to submit a character.</p>
+        <a href="login.html" class="btn btn-gold" style="clip-path:none;">Sign In / Register →</a>
       </div>
 
-      <!-- Hamon section -->
-      <div id="hamonSection" class="stand-section">
-        <p style="font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:.06em;color:var(--gold-l);margin-bottom:.65rem;">Hamon Details</p>
-        <div class="fg"><label class="fl">Hamon Style / Description</label><textarea class="fta" id="hamonStyle" placeholder="How does your character's Hamon manifest? Any unique techniques or fighting style?"></textarea></div>
-        <div class="fg"><label class="fl">Starting Rank</label><select class="fsel" id="hamonRank"><option>Apprentice (Default)</option><option>Practitioner (requires story justification)</option></select></div>
-      </div>
+      <!-- ══ STEP 1 — IDENTITY ══════════════════════════════════ -->
+      <div class="oc-panel" id="ocStep1">
 
-      <!-- Spin section -->
-      <div id="spinSection" class="stand-section">
-        <div class="stand-review-note">⚙️ Spin requires <strong>GM review</strong> before use in combat threads. Submit your application and a GM will contact you.</div>
-        <div class="fg"><label class="fl">Spin Background — How did your character discover the Spin?</label><textarea class="fta" id="spinBg" placeholder="Natural talent, a teacher, a near-death experience?"></textarea></div>
-        <div class="fg"><label class="fl">Proposed Starting Tier</label><select class="fsel" id="spinTier"><option>Student (imperfect rotation)</option><option>Journeyman (requires strong justification)</option></select></div>
-      </div>
+        <div class="oc-section-label">
+          <span class="osl-num">01</span>
+          <span class="osl-text">Who are they?</span>
+        </div>
 
-      <!-- Stand section -->
-      <div id="standSection" class="stand-section">
-        <div class="stand-review-note">🏹 <strong>Stands require GM approval</strong> before use in any thread. Submit your character first — the Stand review is a separate step. Your character can exist in the story while their Stand is pending review.</div>
-        <p style="font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:.06em;color:var(--gold-l);margin:.65rem 0 .5rem;">Stand Sheet</p>
         <div class="fg2">
-          <div class="fg"><label class="fl">Stand Name *</label><input class="fi" id="standName" placeholder="e.g. Midnight Rambler"/></div>
           <div class="fg">
-            <label class="fl">Stand Type</label>
-            <select class="fsel" id="standType">
-              <option>Close-Range Power Type</option>
-              <option>Long-Range / Remote Type</option>
-              <option>Automatic Type</option>
-              <option>Colony Type</option>
-              <option>Bound Stand</option>
-              <option>Humanoid Type</option>
-              <option>Other / Unique</option>
+            <label class="fl">Character Name <span class="req">*</span></label>
+            <input class="fi" id="ocName" placeholder="Full name"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Your Username <span class="req">*</span></label>
+            <input class="fi" id="ocUser" placeholder="@yourname"/>
+          </div>
+        </div>
+
+        <div class="fg2">
+          <div class="fg">
+            <label class="fl">Age</label>
+            <input class="fi" id="ocAge" type="number" min="0" max="9999" placeholder="e.g. 24"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Part Board <span class="req">*</span></label>
+            <select class="fsel" id="ocBoard">
+              <option value="">— Select a Board —</option>
+            </select>
+            <p class="fhint">Boards are created by GMs. Check announcements for open Parts.</p>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Appearance</label>
+          <textarea class="fta" id="ocAppearance" style="min-height:72px;"
+            placeholder="Height, build, hair, eyes, clothing, any standout features…"></textarea>
+        </div>
+
+        <div class="oc-step-nav">
+          <span></span>
+          <button class="btn btn-gold" onclick="ocGoStep(2)">
+            Next — Ability <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-left:.2rem;"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 2 — ABILITY ═══════════════════════════════════ -->
+      <div class="oc-panel" id="ocStep2" style="display:none;">
+
+        <div class="oc-section-label">
+          <span class="osl-num">02</span>
+          <span class="osl-text">What can they do?</span>
+        </div>
+
+        <p style="font-size:.82rem;color:var(--text-dim);line-height:1.6;margin-bottom:1rem;">
+          Not every character starts with a supernatural power. Choose what fits your story — 
+          some abilities require GM approval before use in combat.
+        </p>
+
+        <!-- Ability cards -->
+        <div class="ab-pick" id="abilityGrid">
+
+          <div class="ab-card" data-ab="none" onclick="selectAbility('none')">
+            <div class="ab-card-icon">⚪</div>
+            <div class="ab-card-name">None</div>
+            <div class="ab-card-note">Human — no power</div>
+          </div>
+
+          <div class="ab-card" data-ab="hamon" onclick="selectAbility('hamon')" style="--abc:#B08000;">
+            <div class="ab-card-icon">☀️</div>
+            <div class="ab-card-name">Hamon</div>
+            <div class="ab-card-note">Starts at Apprentice</div>
+          </div>
+
+          <div class="ab-card" data-ab="spin" onclick="selectAbility('spin')" style="--abc:#4A8C00;">
+            <div class="ab-card-icon">🌀</div>
+            <div class="ab-card-name">Spin</div>
+            <div class="ab-card-note">GM review required</div>
+          </div>
+
+          <div class="ab-card" data-ab="stand" onclick="selectAbility('stand')" style="--abc:#5C1A7A;">
+            <div class="ab-card-icon">✦</div>
+            <div class="ab-card-name">Stand</div>
+            <div class="ab-card-note">GM review required</div>
+          </div>
+
+          <div class="ab-card" data-ab="vampire" onclick="selectAbility('vampire')" style="--abc:#8B0000;">
+            <div class="ab-card-icon">🩸</div>
+            <div class="ab-card-name">Vampire</div>
+            <div class="ab-card-note">GM approval required</div>
+          </div>
+
+          <div class="ab-card" data-ab="pillar" onclick="selectAbility('pillar')" style="--abc:#7A4A00;">
+            <div class="ab-card-icon">🏛</div>
+            <div class="ab-card-name">Pillar Man</div>
+            <div class="ab-card-note">Rare — GM Council only</div>
+          </div>
+
+        </div>
+
+        <!-- Hamon sub-section -->
+        <div id="hamonSection" class="ab-detail" style="display:none;--adc:#B08000;">
+          <div class="ab-detail-hd">☀️ Hamon Details</div>
+          <div class="fg">
+            <label class="fl">How does your Hamon manifest?</label>
+            <textarea class="fta" id="hamonStyle"
+              placeholder="Unique techniques, fighting style, any specialisation…"></textarea>
+          </div>
+          <div class="fg">
+            <label class="fl">Starting Rank</label>
+            <select class="fsel" id="hamonRank">
+              <option>Apprentice (Default — all new practitioners)</option>
+              <option>Practitioner (requires strong story justification)</option>
             </select>
           </div>
         </div>
-        <div class="fg"><label class="fl">Primary Ability *</label><textarea class="fta" id="standAbility" placeholder="Describe the main power — what it does, how it activates, any limits…"></textarea></div>
-        <div class="fg"><label class="fl">Weakness / Limitation *</label><input class="fi" id="standWeakness" placeholder="What stops it? What can defeat it?"/></div>
-        <div class="fg"><label class="fl">Stand Cry</label><input class="fi" id="standCry" placeholder="e.g. ORA ORA ORA! (optional but encouraged)"/></div>
 
-        <p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.2em;color:var(--gold-d);text-transform:uppercase;margin:.85rem 0 .5rem;">Stand Stats</p>
-        <p class="fhint" style="margin-bottom:.65rem;">Max 2× A-rating. Every A needs a D or E elsewhere. S-ratings require mod approval.</p>
-        <div id="standStatSliders"></div>
+        <!-- Spin sub-section -->
+        <div id="spinSection" class="ab-detail" style="display:none;--adc:#4A8C00;">
+          <div class="ab-detail-hd">🌀 Spin Details</div>
+          <div class="ab-notice">Spin requires GM review before use in combat threads.</div>
+          <div class="fg">
+            <label class="fl">How did your character discover the Spin?</label>
+            <textarea class="fta" id="spinBg"
+              placeholder="Natural talent, a teacher, a near-death experience…"></textarea>
+          </div>
+          <div class="fg">
+            <label class="fl">Proposed Starting Tier</label>
+            <select class="fsel" id="spinTier">
+              <option>Student — imperfect rotation (default)</option>
+              <option>Journeyman — requires strong story justification</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Stand sub-section -->
+        <div id="standSection" class="ab-detail" style="display:none;--adc:#5C1A7A;">
+          <div class="ab-detail-hd">✦ Stand Sheet</div>
+          <div class="ab-notice">Stands require separate GM approval. Your character can RP while their Stand is pending review.</div>
+          <div class="fg2">
+            <div class="fg">
+              <label class="fl">Stand Name <span class="req">*</span></label>
+              <input class="fi" id="standName" placeholder="e.g. Midnight Rambler"/>
+            </div>
+            <div class="fg">
+              <label class="fl">Stand Type</label>
+              <select class="fsel" id="standType">
+                <option>Close-Range Power</option>
+                <option>Long-Range / Remote</option>
+                <option>Automatic</option>
+                <option>Colony</option>
+                <option>Bound / Object</option>
+                <option>Humanoid</option>
+                <option>Other / Unique</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Primary Ability <span class="req">*</span></label>
+            <textarea class="fta" id="standAbility"
+              placeholder="What does it do? How does it activate? What are the limits?"></textarea>
+          </div>
+          <div class="fg2">
+            <div class="fg">
+              <label class="fl">Weakness / Limitation <span class="req">*</span></label>
+              <input class="fi" id="standWeakness" placeholder="What can counter or defeat it?"/>
+            </div>
+            <div class="fg">
+              <label class="fl">Stand Cry</label>
+              <input class="fi" id="standCry" placeholder="e.g. ORA ORA ORA!"/>
+            </div>
+          </div>
+
+          <div class="stat-grid-label">
+            <span>Stand Parameters</span>
+            <span class="fhint" style="margin:0;">Max 2× A · Every A needs a D or E · S requires mod approval</span>
+          </div>
+          <div class="stat-sliders" id="standStatSliders"></div>
+        </div>
+
+        <!-- Vampire sub-section -->
+        <div id="vampireSection" class="ab-detail" style="display:none;--adc:#8B0000;">
+          <div class="ab-detail-hd">🩸 Vampire Details</div>
+          <div class="ab-notice">Vampire characters require explicit GM approval and must fit the Part's timeline.</div>
+          <div class="fg">
+            <label class="fl">Origin — how were they turned?</label>
+            <textarea class="fta" id="vampBg"
+              placeholder="Stone Mask, turned by another vampire… when and where?"></textarea>
+          </div>
+          <div class="fg2">
+            <div class="fg">
+              <label class="fl">Time as a Vampire</label>
+              <input class="fi" id="vampAge" placeholder="e.g. Turned in 1890 — 130 years old"/>
+            </div>
+            <div class="fg">
+              <label class="fl">Signature Power (if any)</label>
+              <input class="fi" id="vampAbility" placeholder="Beyond standard regeneration…"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar sub-section -->
+        <div id="pillarSection" class="ab-detail" style="display:none;--adc:#7A4A00;">
+          <div class="ab-detail-hd">🏛 Pillar Man</div>
+          <div class="ab-notice" style="background:rgba(122,74,0,.15);border-color:rgba(200,130,0,.3);">
+            Pillar Man slots are extremely rare. Submitting this opens a conversation with the GM Council — it is not a guarantee of approval.
+          </div>
+          <div class="fg">
+            <label class="fl">Name / Title</label>
+            <input class="fi" id="pillarName" placeholder="e.g. variant of Esidisi…"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Proposed Ability Concept</label>
+            <textarea class="fta" id="pillarAbility" placeholder="Describe the power concept…"></textarea>
+          </div>
+        </div>
+
+        <div class="oc-step-nav">
+          <button class="btn btn-ghost" onclick="ocGoStep(1)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-right:.2rem;"><path d="M11 6H1M5 10L1 6l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn btn-gold" onclick="ocGoStep(3)">
+            Next — Story
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-left:.2rem;"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
 
-      <!-- Vampire section -->
-      <div id="vampireSection" class="stand-section">
-        <div class="stand-review-note">🩸 Vampire characters require <strong>explicit GM approval</strong> and must fit the current Part's setting and timeline. Vampires are powerful — GMs will assess story impact carefully.</div>
-        <div class="fg"><label class="fl">How did your character become a vampire?</label><textarea class="fta" id="vampBg" placeholder="Stone Mask piercing, turned by another vampire, etc. Include when and where."></textarea></div>
-        <div class="fg"><label class="fl">Age as a Vampire</label><input class="fi" id="vampAge" placeholder="e.g. Turned in 1890, 30-year-old vampire"/></div>
-        <div class="fg"><label class="fl">Primary Ability / Signature Power</label><textarea class="fta" id="vampAbility" placeholder="Describe any unique vampiric power beyond standard regeneration…"></textarea></div>
+      <!-- ══ STEP 3 — STORY ═════════════════════════════════════ -->
+      <div class="oc-panel" id="ocStep3" style="display:none;">
+
+        <div class="oc-section-label">
+          <span class="osl-num">03</span>
+          <span class="osl-text">What's their story?</span>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Personality <span class="req">*</span></label>
+          <textarea class="fta" id="ocPersonality" style="min-height:72px;"
+            placeholder="How do they carry themselves? Speech patterns, quirks, what drives them day to day…"></textarea>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Backstory <span class="req">*</span></label>
+          <textarea class="fta" id="ocBio" style="min-height:110px;"
+            placeholder="Who are they? Where do they come from? What shaped them into the person they are now?"></textarea>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Goal / Motivation <span class="req">*</span></label>
+          <input class="fi" id="ocGoal" placeholder="What does your character want more than anything?"/>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Known Connections <span style="opacity:.5;font-weight:400;">(optional)</span></label>
+          <textarea class="fta" id="ocRelations" style="min-height:60px;"
+            placeholder="Allies, rivals, enemies, family — other OCs or groups your character is connected to…"></textarea>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Notes for GM <span style="opacity:.5;font-weight:400;">(optional)</span></label>
+          <textarea class="fta" id="ocNotes" style="min-height:55px;"
+            placeholder="Anything the GM should know when reviewing this character…"></textarea>
+        </div>
+
+        <div class="oc-submit-bar">
+          <button class="btn btn-ghost" onclick="ocGoStep(2)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-right:.2rem;"><path d="M11 6H1M5 10L1 6l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn btn-gold" style="flex:1;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);" onclick="submitOC()">
+            Submit for GM Review
+          </button>
+        </div>
+        <p class="form-msg" id="ocMsg"></p>
       </div>
 
-      <!-- Pillar Man section -->
-      <div id="pillarSection" class="stand-section">
-        <div class="stand-review-note" style="background:rgba(255,111,0,.1);border-color:rgba(255,111,0,.35);">🏛 <strong>Pillar Man characters are extremely rare</strong> and require direct GM Council approval. Only 1–2 may exist per Part at any given time. Submitting this requests a conversation with the GM team.</div>
-        <div class="fg"><label class="fl">Pillar Man Name / Title</label><input class="fi" id="pillarName" placeholder="e.g. Khnum, Esidisi variant…"/></div>
-        <div class="fg"><label class="fl">Proposed Ability</label><textarea class="fta" id="pillarAbility" placeholder="Describe the unique Pillar Man power concept…"></textarea></div>
-      </div>
-
-      <div style="height:1px;background:rgba(255,179,0,.15);margin:1rem 0;"></div>
-
-      <!-- Relationships & Goals -->
-      <p style="font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.75rem;">Goals & Connections</p>
-      <div class="fg"><label class="fl">Character Goal / Motivation</label><input class="fi" id="ocGoal" placeholder="What does your character want more than anything?"/></div>
-      <div class="fg"><label class="fl">Known Relationships (optional)</label><textarea class="fta" id="ocRelations" placeholder="Allies, rivals, enemies, family — other OCs or groups your character knows…" style="min-height:70px;"></textarea></div>
-      <div class="fg"><label class="fl">Additional Notes</label><textarea class="fta" id="ocNotes" placeholder="Anything else the GM should know when reviewing…" style="min-height:60px;"></textarea></div>
-
-      <button class="btn btn-gold" style="width:100%;margin-top:.25rem;clip-path:none;font-size:.85rem;padding:.65rem;" onclick="submitOC()">
-        Submit OC for GM Review →
-      </button>
-      <div class="fmsg" id="ocMsg"></div>
-    </div>
+    </div><!-- /modal-body -->
   </div>
 </div>
+
 
 
 <!-- ============================================================
@@ -1939,11 +2256,79 @@ let selAb='none';
 
 function selectAbility(ab){
   selAb=ab;
-  document.querySelectorAll('.ability-opt').forEach(e=>e.classList.toggle('selected',e.dataset.ab===ab));
-  ['hamonSection','spinSection','standSection','vampireSection','pillarSection'].forEach(id=>document.getElementById(id)?.classList.remove('visible'));
-  const m={hamon:'hamonSection',spin:'spinSection',stand:'standSection',vampire:'vampireSection',pillar:'pillarSection'};
-  if(m[ab])document.getElementById(m[ab])?.classList.add('visible');
+  // Support both old ability-opt and new ab-card
+  document.querySelectorAll('.ability-opt,.ab-card').forEach(e=>e.classList.toggle('selected',e.dataset.ab===ab));
+  // Hide all sub-sections
+  ['hamonSection','spinSection','standSection','vampireSection','pillarSection'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){ el.style.display='none'; el.classList.remove('visible'); }
+  });
+  // Show selected
+  const map={hamon:'hamonSection',spin:'spinSection',stand:'standSection',vampire:'vampireSection',pillar:'pillarSection'};
+  if(map[ab]){
+    const el=document.getElementById(map[ab]);
+    if(el){ el.style.display='block'; el.classList.add('visible'); }
+  }
 }
+
+
+/* ── OC Wizard ───────────────────────────────────────────────── */
+let ocCurrentStep = 1;
+
+function ocGoStep(n) {
+  // Basic validation before advancing
+  if (n > ocCurrentStep) {
+    if (ocCurrentStep === 1) {
+      const name = document.getElementById('ocName')?.value.trim();
+      const user = document.getElementById('ocUser')?.value.trim();
+      const board= document.getElementById('ocBoard')?.value;
+      if (!name) { showToast('Enter your character name.','err'); return; }
+      if (!user) { showToast('Enter your username.','err'); return; }
+    }
+    if (ocCurrentStep === 2) {
+      // Stand validation
+      if (selAb === 'stand') {
+        const sn = document.getElementById('standName')?.value.trim();
+        const sa = document.getElementById('standAbility')?.value.trim();
+        const sw = document.getElementById('standWeakness')?.value.trim();
+        if (!sn||!sa||!sw) { showToast('Fill in Stand name, ability, and weakness.','err'); return; }
+      }
+    }
+  }
+
+  ocCurrentStep = n;
+
+  // Show/hide panels
+  [1,2,3].forEach(i => {
+    const panel = document.getElementById('ocStep'+i);
+    if(panel) panel.style.display = i===n ? 'block' : 'none';
+  });
+
+  // Update step indicators
+  document.querySelectorAll('.oc-step').forEach(el => {
+    const sn = parseInt(el.dataset.step);
+    el.classList.remove('active','done');
+    if (sn === n) el.classList.add('active');
+    else if (sn < n) el.classList.add('done');
+  });
+
+  // Scroll modal body to top
+  const body = document.getElementById('ocModalBody');
+  if(body) body.scrollTop = 0;
+}
+
+function openOCModal() {
+  ocCurrentStep = 1;
+  ocGoStep(1);
+  // Reset ability selection
+  selectAbility('none');
+  // Clear form fields
+  ['ocName','ocUser','ocAge','ocAppearance','ocPersonality','ocBio','ocGoal','ocRelations','ocNotes',
+   'standName','standWeakness','standCry','hamonStyle','spinBg','vampAge','vampAbility','pillarName']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  openModal('ocModal');
+}
+
 function gradeFromVal(v){v=parseInt(v);if(v>=90)return'S';if(v>=75)return'A';if(v>=55)return'B';if(v>=35)return'C';if(v>=15)return'D';return'E';}
 function buildSliders(id){const c=document.getElementById(id);if(!c)return;c.innerHTML=STAT_KEYS.map((k,i)=>`<div class="stat-row"><span class="stat-key">${k.split(' ')[0]}</span><input type="range" id="${id}_s${i}" min="0" max="100" value="60" oninput="document.getElementById('${id}_g${i}').textContent=gradeFromVal(this.value)"/><span class="stat-grade" id="${id}_g${i}">B</span></div>`).join('');}
 
