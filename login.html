@@ -256,9 +256,9 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const sb = window.supabase
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
       auth: {
-        autoRefreshToken:    true,
-        persistSession:      true,
-        detectSessionInUrl:  true,
+        autoRefreshToken:   true,
+        persistSession:     true,
+        detectSessionInUrl: true,
       }
     })
   : null;
@@ -273,7 +273,7 @@ function showMsg(id, text, isErr) {
 function setBusy(btnId, busy, label) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
-  btn.disabled  = busy;
+  btn.disabled    = busy;
   btn.textContent = busy ? 'Please wait…' : label;
 }
 function goHome() {
@@ -289,35 +289,34 @@ function switchTab(name, btn) {
 }
 
 /* ── Discord OAuth ───────────────────────────────────────────── */
-// Redirect BACK to login.html so this page handles the token
 async function discordLogin() {
   if (!sb) { showMsg('loginMsg','Auth not available.',true); return; }
-  const redirectTo = window.location.href.split('?')[0].split('#')[0];
+  // Redirect BACK to login.html so we handle the token here
+  const here = window.location.origin + '/login.html';
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'discord',
-    options: { redirectTo, scopes: 'identify email' }
+    options: { redirectTo: here, scopes: 'identify email' }
   });
-  if (error) showMsg('loginMsg', 'Discord error: ' + error.message, true);
+  if (error) showMsg('loginMsg', error.message, true);
 }
 
 /* ── Email Sign In ───────────────────────────────────────────── */
 async function emailLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass  = document.getElementById('loginPassword').value;
-  if (!email || !pass) { showMsg('loginMsg','Enter your email and password.',true); return; }
+  if (!email || !pass) { showMsg('loginMsg','Enter email and password.',true); return; }
   if (!sb)             { showMsg('loginMsg','Auth not available.',true); return; }
 
   setBusy('loginBtn', true, 'Sign In');
+  showMsg('loginMsg', '', false);
+
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
   setBusy('loginBtn', false, 'Sign In');
 
-  if (error) {
-    showMsg('loginMsg', error.message, true);
-    return;
-  }
+  if (error) { showMsg('loginMsg', error.message, true); return; }
   if (data?.session) {
-    showMsg('loginMsg', 'Signed in! Redirecting…', false);
-    setTimeout(goHome, 600);
+    showMsg('loginMsg', 'Signed in! Taking you to the site…', false);
+    setTimeout(goHome, 800);
   }
 }
 
@@ -335,11 +334,13 @@ async function emailRegister() {
   if (!sb)              { showMsg('registerMsg','Auth not available.',true); return; }
 
   setBusy('registerBtn', true, 'Create Account');
+  showMsg('registerMsg', '', false);
+
   const { data, error } = await sb.auth.signUp({
     email, password: pass,
     options: {
       data: { full_name: username },
-      emailRedirectTo: window.location.href.split('?')[0].split('#')[0],
+      emailRedirectTo: window.location.origin + '/login.html',
     }
   });
   setBusy('registerBtn', false, 'Create Account');
@@ -347,15 +348,18 @@ async function emailRegister() {
   if (error) { showMsg('registerMsg', error.message, true); return; }
 
   if (data?.session) {
-    // Email confirmation OFF — immediately signed in
-    showMsg('registerMsg', '✓ Account created! Redirecting…', false);
-    setTimeout(goHome, 700);
+    // Email confirmation is OFF — signed in immediately
+    showMsg('registerMsg', '✓ Welcome! Taking you to the site…', false);
+    setTimeout(goHome, 800);
   } else {
-    // Email confirmation ON — needs to verify
+    // Email confirmation is ON
     showMsg('registerMsg',
-      '✓ Account created! Check your email to confirm, then sign in here.',
+      '✓ Account created! Check your email for a confirmation link, then sign in.',
       false
     );
+    // Clear the form so they don't accidentally submit again
+    document.getElementById('regPassword').value = '';
+    document.getElementById('regConfirm').value  = '';
   }
 }
 
@@ -382,39 +386,63 @@ document.addEventListener('keydown', e => {
   if (active === 'tab-register') emailRegister();
 });
 
-/* ── Session handling on page load ───────────────────────────── */
-// Supabase's detectSessionInUrl automatically exchanges the OAuth
-// code/token in the URL into a session. We just need to listen for it.
+/* ── Page load: ONLY handle OAuth callback, nothing else ────── */
+// We deliberately do NOT redirect already-logged-in users from this page.
+// index.html is where they go if they're already in — login.html is
+// only for signing in / registering. No auto-redirects on load.
 (async () => {
   if (!sb) return;
 
-  // If there's a code or token in the URL, Supabase is processing OAuth.
-  // Wait for it to complete via onAuthStateChange.
   const url = window.location.href;
-  const hasOAuth = url.includes('#access_token') || url.includes('?code=') || url.includes('&code=');
+  const isOAuthCallback = url.includes('?code=')
+    || url.includes('#access_token=')
+    || url.includes('&code=');
 
-  if (hasOAuth) {
-    // Show a loading state while OAuth completes
-    document.querySelector('.card').innerHTML =
-      '<div style="padding:2.5rem;text-align:center;font-family:Inter,sans-serif;color:#9A8AB5;font-size:.9rem;">Signing you in…</div>';
+  if (!isOAuthCallback) return; // Not an OAuth callback — show the form normally
 
-    const unsub = sb.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        unsub.data?.subscription?.unsubscribe();
-        goHome();
-      }
-      if (event === 'SIGNED_OUT') {
-        // Something went wrong — reload to show login form
-        window.location.replace('login.html');
-      }
-    });
-    return;
+  // This IS an OAuth callback from Discord
+  // Replace the card with a loading state
+  const card = document.querySelector('.card');
+  if (card) {
+    card.innerHTML = `
+      <div style="padding:3rem 2rem;text-align:center;">
+        <div style="font-family:'Cinzel',serif;font-size:1rem;color:#E8B422;margin-bottom:.75rem;">
+          A JoJo Roleplay
+        </div>
+        <p style="font-family:'Inter',sans-serif;font-size:.85rem;color:#9A8AB5;margin-bottom:1.25rem;">
+          Signing you in…
+        </p>
+        <div style="width:40px;height:2px;background:linear-gradient(90deg,#5C1A7A,#C8004A);margin:0 auto;animation:ticker 1s linear infinite;"></div>
+      </div>`;
   }
 
-  // No OAuth in URL — check if already logged in
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    goHome();
-  }
+  // Wait for Supabase to process the token (detectSessionInUrl handles this)
+  // Poll getSession instead of relying on onAuthStateChange timing
+  let attempts = 0;
+  const maxAttempts = 20; // 10 seconds max
+  const poll = setInterval(async () => {
+    attempts++;
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      clearInterval(poll);
+      goHome();
+      return;
+    }
+    if (attempts >= maxAttempts) {
+      clearInterval(poll);
+      // Timed out — show error and let them try again
+      if (card) {
+        card.innerHTML = `
+          <div style="padding:2rem;text-align:center;">
+            <p style="font-family:'Inter',sans-serif;font-size:.85rem;color:#E8226A;margin-bottom:1rem;">
+              Sign-in timed out. Please try again.
+            </p>
+            <a href="login.html" style="font-family:'Inter',sans-serif;font-size:.8rem;color:#C8960C;">
+              Back to login →
+            </a>
+          </div>`;
+      }
+    }
+  }, 500);
 })();
 </script>
