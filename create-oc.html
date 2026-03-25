@@ -1535,6 +1535,29 @@
     .stat-sliders{grid-template-columns:1fr;}
   }
 
+
+  /* ── BACK BAR / BREADCRUMB ────────────────────────────────── */
+  .back-bar {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; gap: .4rem;
+    padding: .55rem 2rem;
+    background: rgba(7,0,13,.6);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: .68rem; letter-spacing: .05em;
+    backdrop-filter: blur(10px);
+  }
+  .back-link {
+    color: var(--gold-d); text-decoration: none;
+    transition: color .15s; display: flex; align-items: center;
+  }
+  .back-link:hover { color: var(--gold-l); }
+  .back-sep { color: var(--text-xs); }
+  .back-current { color: var(--text-dim); }
+  @media (max-width: 600px) {
+    .back-bar { padding: .45rem 1rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -1561,21 +1584,21 @@
 
 <!-- Nav -->
 <nav id="nav">
-  <a href="#hero" class="nav-logo">A JoJo Roleplay</a>
+  <a href="index.html" class="nav-logo">A JoJo Roleplay</a>
   <div class="nav-sep"></div>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#hub">Boards</a></li>
-    <li><a href="#boards">Parts</a></li>
-    <li><a href="#roster">Roster</a></li>
+    <li><a href="index.html#hub">Boards</a></li>
+    <li><a href="index.html#boards">Parts</a></li>
+    <li><a href="index.html#roster">Roster</a></li>
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
     <li><a href="tos.html">Rules</a></li>
+    <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
-    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openOCModal()">+ OC</button>
-    <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('standModal')">+ Stand</button>
-    <button class="btn btn-gold btn-sm" onclick="openModal('threadModal')">+ Thread</button>
-    <button class="btn btn-ghost btn-sm gm-only nav-hide-sm" id="gmToggleBtn" onclick="toggleGM()" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
+    <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
+    <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
+    <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
   </div>
 </nav>
 
@@ -1624,6 +1647,14 @@
 <div id="ticker" style="position:relative;z-index:2;margin-top:90px;">
   <div class="ticker-track" id="tickerTrack"></div>
 
+<div class="back-bar">
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:.3rem"><path d="M11 7H3M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    A JoJo Roleplay
+  </a>
+  <span class="back-sep">›</span>
+  <span class="back-current">Create Character</span>
+</div>
 <div class="pw">
 
   <div style="padding:2rem 0 1.5rem;border-bottom:1px solid var(--border);margin-bottom:0;">
