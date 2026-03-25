@@ -1263,6 +1263,52 @@
   .auth-user { display: none; }
   #logoutBtn  { display: none; }
 
+
+  /* ── OC MODE PICKER ─────────────────────────────────────── */
+  .mode-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: .5rem;
+  }
+  .mode-card {
+    background: rgba(0,0,0,.35);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-d);
+    padding: 1.1rem 1rem;
+    cursor: pointer;
+    transition: all .18s;
+    text-align: center;
+  }
+  .mode-card:hover {
+    background: rgba(200,150,12,.06);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+  .mode-card-adv { border-top-color: var(--purple-l); }
+  .mode-card-adv:hover {
+    background: rgba(94,26,122,.1);
+    border-color: var(--purple-l);
+  }
+  .mode-card-icon { font-size: 1.5rem; margin-bottom: .4rem; }
+  .mode-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: .92rem; font-weight: 700;
+    color: var(--text); margin-bottom: .35rem;
+  }
+  .mode-card-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem; color: var(--text-dim);
+    line-height: 1.5; margin-bottom: .4rem;
+  }
+  .mode-card-steps {
+    font-family: 'Inter', sans-serif;
+    font-size: .62rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-xs);
+  }
+  @media (max-width: 500px) { .mode-cards { grid-template-columns: 1fr; } }
+
 </style>
 </head>
 <body>
@@ -1647,6 +1693,27 @@
         <a href="login.html" class="btn btn-gold" style="clip-path:none;">Sign In / Register →</a>
       </div>
 
+      <!-- ══ MODE PICKER ════════════════════════════════════════ -->
+      <div id="ocModePicker">
+        <p style="font-size:.82rem;color:var(--text-dim);line-height:1.6;margin-bottom:1.1rem;text-align:center;">
+          How much detail do you want to provide?
+        </p>
+        <div class="mode-cards">
+          <div class="mode-card" onclick="ocSelectMode('simple')">
+            <div class="mode-card-icon">⚡</div>
+            <div class="mode-card-title">Quick Submit</div>
+            <div class="mode-card-desc">Name, appearance, ability, backstory. Fast and straightforward. Recommended for first submissions.</div>
+            <div class="mode-card-steps">3 steps · ~5 min</div>
+          </div>
+          <div class="mode-card mode-card-adv" onclick="ocSelectMode('advanced')">
+            <div class="mode-card-icon">📋</div>
+            <div class="mode-card-title">Full Character Sheet</div>
+            <div class="mode-card-desc">Araki's 60-point template + JoJo D&amp;D stats. Everything from blood type to favourite colour. For players who want to go deep.</div>
+            <div class="mode-card-steps">7 steps · opens full page</div>
+          </div>
+        </div>
+      </div>
+
       <!-- ══ STEP 1 — IDENTITY ══════════════════════════════════ -->
       <div class="oc-panel" id="ocStep1">
 
@@ -1672,11 +1739,11 @@
             <input class="fi" id="ocAge" type="number" min="0" max="9999" placeholder="e.g. 24"/>
           </div>
           <div class="fg">
-            <label class="fl">Part Board <span class="req">*</span></label>
+            <label class="fl">Part Board <span style="opacity:.5;font-weight:400;">(optional)</span></label>
             <select class="fsel" id="ocBoard">
               <option value="">— Select a Board —</option>
             </select>
-            <p class="fhint">Boards are created by GMs. Check announcements for open Parts.</p>
+            <p class="fhint">Leave blank if no Part is open yet — you can be assigned later by a GM.</p>
           </div>
         </div>
 
@@ -2380,6 +2447,33 @@ const CAT={battle:'⚔ Battle',social:'☕ Social',investigation:'🔍 Investiga
 const STAT_KEYS=['Destructive Power','Speed','Range','Durability','Precision','Potential'];
 let selAb='none';
 
+function ocSelectMode(mode){
+  document.getElementById('ocModePicker').style.display='none';
+  if(mode==='advanced'){
+    // Save current user to sessionStorage for the advanced page
+    try{ sessionStorage.setItem('oc_user', currentUser?.email||''); }catch(e){}
+    window.open('create-oc.html','_self');
+    return;
+  }
+  // Simple mode — show steps
+  document.getElementById('ocSteps').style.display='flex';
+  document.getElementById('ocStep1').style.display='block';
+}
+
+// Show mode picker when OC modal opens (hide steps until mode chosen)
+const _origOpenModal = openModal;
+function openModal(id){
+  _origOpenModal(id);
+  if(id==='ocModal'){
+    const picker = document.getElementById('ocModePicker');
+    const steps  = document.getElementById('ocSteps');
+    const step1  = document.getElementById('ocStep1');
+    if(picker){ picker.style.display='block'; }
+    if(steps){  steps.style.display='none'; }
+    if(step1){  step1.style.display='none'; }
+  }
+}
+
 function selectAbility(ab){
   selAb=ab;
   // Support both old ability-opt and new ab-card
@@ -2519,13 +2613,13 @@ async function submitOC(){
   const msg=document.getElementById('ocMsg');
   const ideals=document.getElementById('ocIdeals')?.value.trim();
   const flaws=document.getElementById('ocFlaws')?.value.trim();
-  if(!n||!u||!b||!bo||!ideals||!flaws){msg.style.color='var(--pink-l)';msg.textContent='Fill all required fields.';return;}
+  if(!n||!u||!b||!ideals||!flaws){msg.style.color='var(--pink-l)';msg.textContent='Fill all required fields (name, username, ideals, flaws, backstory).';return;}
   msg.style.color='var(--text-dim)';msg.textContent='Checking…';
   if(!await checkRateLimit('submit_oc')){msg.style.color='var(--pink-l)';msg.textContent='Rate limit: max 3 OCs/day.';return;}
   msg.textContent='Submitting…';
   if(sb){
     const {error}=await sb.from('ocs').insert([{
-      name:n, player_username:u, backstory:b, board_name:bo,
+      name:n, player_username:u, backstory:b, board_name:bo||null,
       auth_id:currentUser.id, ability_type:selAb,
       race:document.getElementById('ocRace')?.value||'human',
       gender:document.getElementById('ocGender')?.value.trim()||null,
