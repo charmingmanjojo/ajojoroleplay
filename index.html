@@ -2317,6 +2317,7 @@ async function initAuth() {
     currentUser = session.user;
     refreshAuthUI();              // ← update UI right away from JWT data
     loadProfileAsync(session.user.id); // ← load extra data in background
+    populateBoardSelects();
   } else {
     refreshAuthUI();
   }
@@ -2332,6 +2333,23 @@ async function initAuth() {
       isGM = isAdmin = false;
       refreshAuthUI();
     }
+  });
+}
+
+async function populateBoardSelects(){
+  if(!sb) return;
+  const { data: boards } = await sb.from('boards').select('id,title').eq('status','planning').order('created_at');
+  if(!boards) return;
+  ['ocBoard','ocBoard2'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if(!sel) return;
+    // Clear existing options except the placeholder
+    while(sel.options.length > 1) sel.remove(1);
+    boards.forEach(b => {
+      const o = document.createElement('option');
+      o.value = b.title; o.textContent = b.title;
+      sel.appendChild(o);
+    });
   });
 }
 
@@ -2553,10 +2571,67 @@ function gradeFromVal(v){v=parseInt(v);if(v>=90)return'S';if(v>=75)return'A';if(
 function buildSliders(id){const c=document.getElementById(id);if(!c)return;c.innerHTML=STAT_KEYS.map((k,i)=>`<div class="stat-row"><span class="stat-key">${k.split(' ')[0]}</span><input type="range" id="${id}_s${i}" min="0" max="100" value="60" oninput="document.getElementById('${id}_g${i}').textContent=gradeFromVal(this.value)"/><span class="stat-grade" id="${id}_g${i}">B</span></div>`).join('');}
 
 let curBoard=null,curColor='#C8960C';
+
+/* ── Load & render Part boards from Supabase ──────────────── */
+async function loadBoards(){
+  const grid = document.getElementById('boardsGrid');
+  if(!grid) return;
+
+  if(!sb){
+    grid.innerHTML = '<div class="board-placeholder"><div style="font-size:2rem;opacity:.15;">🎩</div><p>Connect Supabase to see Part boards.</p></div>';
+    return;
+  }
+
+  const { data: boards, error } = await sb
+    .from('boards')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if(error){
+    console.warn('loadBoards error:', error);
+    return;
+  }
+
+  if(!boards || boards.length === 0){
+    grid.innerHTML = '<div class="board-placeholder" id="noBoardsMsg"><div style="font-size:2rem;opacity:.15;">🎩</div><p>No parts open yet.<br/>Game Masters create boards from the GM panel.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = boards.map(b => {
+    const col = b.color || '#C8960C';
+    const statusLabel = { planning:'Recruiting', open:'Active', closed:'Closed' }[b.status] || b.status;
+    const statusCol   = { planning:'var(--gold)', open:'#81C784', closed:'var(--text-xs)' }[b.status] || 'var(--text-xs)';
+    return `<div class="board-card" onclick="openBoardModal(this)"
+      data-id="${b.id}"
+      data-title="${b.title.replace(/"/g,'&quot;')}"
+      data-desc="${(b.description||'').replace(/"/g,'&quot;')}"
+      data-era="${(b.era||'').replace(/"/g,'&quot;')}"
+      data-gm="${(b.gm_username||'').replace(/"/g,'&quot;')}"
+      data-color="${col}"
+      style="--bc:${col};">
+      <div class="bc-header">
+        <div>
+          <div class="bc-title">${b.title}</div>
+          ${b.era ? `<div class="bc-era">${b.era}</div>` : ''}
+        </div>
+        <span class="bc-status" style="color:${statusCol};">${statusLabel}</span>
+      </div>
+      <p class="bc-desc">${b.description||''}</p>
+      <div class="bc-footer">
+        <span class="bc-gm">GM: ${b.gm_username||'TBD'}</span>
+        ${b.ability_era ? `<span class="bc-tag">${b.ability_era}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
 function openBoardModal(cardEl){
-  const t=cardEl.querySelector('.bc-title').textContent;
-  const i=BOARD_INFO[t]||{color:'#C8960C',era:'',desc:''};
-  curBoard=t;curColor=i.color;
+  const t   = cardEl.dataset.title || cardEl.querySelector('.bc-title')?.textContent || '';
+  const col = cardEl.dataset.color || '#C8960C';
+  const era = cardEl.dataset.era   || '';
+  const desc= cardEl.dataset.desc  || '';
+  const gm  = cardEl.dataset.gm    || '';
+  const i   = { color: col, era, desc };
+  curBoard=t; curColor=col;
   document.getElementById('boardModalTitle').textContent=t;
   document.getElementById('boardModalTitle').style.color=i.color;
   document.getElementById('boardModalDesc').innerHTML=`<strong style="color:${i.color};">${i.era}</strong><br>${i.desc}`;
@@ -2710,7 +2785,64 @@ async function submitThread(){
   showToast('Thread created.','ok');
   setTimeout(()=>closeModal('threadModal'),1500);
 }
-function submitGMBoard(){const n=document.getElementById('gbName')?.value.trim(),d=document.getElementById('gbDesc')?.value.trim(),g=document.getElementById('gbGM')?.value.trim(),msg=document.getElementById('gbMsg');if(!n||!d||!g){msg.style.color='var(--pink-l)';msg.textContent='Name, Description, GM username required.';return;}msg.style.color='#81C784';msg.textContent='Board created.';showToast('Part board created.','ok');setTimeout(()=>closeModal('gmBoardModal'),1500);}
+async function submitGMBoard(){
+  if(!requireGM()) return;
+  const n    = document.getElementById('gbName')?.value.trim();
+  const d    = document.getElementById('gbDesc')?.value.trim();
+  const g    = document.getElementById('gbGM')?.value.trim();
+  const era  = document.getElementById('gbEra')?.value.trim();
+  const col  = document.getElementById('gbColor')?.value || '#C8960C';
+  const stat = document.getElementById('gbStatus')?.value || 'planning';
+  const aEra = document.getElementById('gbAbilityEra')?.value || 'Stand era';
+  const maxP = parseInt(document.getElementById('gbMax')?.value) || 8;
+  const msg  = document.getElementById('gbMsg');
+
+  if(!n || !d){
+    msg.style.color='var(--pink-l)';
+    msg.textContent='Board name and description are required.';
+    return;
+  }
+  if(!sb){
+    msg.style.color='var(--pink-l)';
+    msg.textContent='Supabase not connected.';
+    return;
+  }
+
+  msg.style.color='var(--text-dim)'; msg.textContent='Creating board…';
+
+  const { data, error } = await sb.from('boards').insert([{
+    title:       n,
+    description: d,
+    gm_username: g || currentProfile?.username || 'GM',
+    era:         era || null,
+    color:       col,
+    status:      stat,
+    ability_era: aEra,
+    max_players: maxP,
+    created_by:  currentUser?.id,
+  }]).select().single();
+
+  if(error){
+    msg.style.color='var(--pink-l)';
+    msg.textContent='Error: ' + error.message;
+    return;
+  }
+
+  msg.style.color='#81C784';
+  msg.textContent='Board created!';
+  showToast('Part board "' + n + '" created.','ok');
+
+  // Clear form
+  ['gbName','gbDesc','gbEra','gbGM'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+
+  // Reload boards on the page
+  await loadBoards();
+
+  setTimeout(() => closeModal('gmBoardModal'), 1200);
+}
 function toggleGM(){
   if(!requireAuth()||!requireGM()) return;
   const p=document.getElementById('gm-panel'),btn=document.getElementById('gmToggleBtn');
@@ -2945,6 +3077,7 @@ buildTicker();
 buildSliders('standStatSliders');
 buildSliders('sStatSliders');
 initBgRotator();
+loadBoards();
 </script>
 </body>
 </html>
