@@ -1309,6 +1309,399 @@
   }
   @media (max-width: 500px) { .mode-cards { grid-template-columns: 1fr; } }
 
+
+  /* ============================================================
+     LOBBY CHAT
+  ============================================================ */
+  #chat {
+    position: relative; z-index: 2;
+    padding: 0 2rem 4rem;
+  }
+
+  .chat-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    background: rgba(8,0,14,.75);
+    border: 1px solid var(--border);
+    clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+    overflow: hidden;
+  }
+
+  /* Auth wall */
+  .chat-auth-wall {
+    padding: 2.5rem;
+    text-align: center;
+    font-family: 'DM Sans',sans-serif;
+    font-size: .88rem;
+    color: var(--text-dim);
+  }
+
+  /* Header */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem 1rem;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .chat-title {
+    font-family: 'Cinzel',serif;
+    font-size: .82rem; font-weight: 700;
+    color: var(--text); letter-spacing: .06em;
+    flex-shrink: 0;
+  }
+  .chat-status {
+    font-family: 'Inter',sans-serif;
+    font-size: .62rem; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-xs); flex-shrink: 0;
+  }
+  .chat-status.live  { color: #81C784; }
+  .chat-status.error { color: var(--pink-l); }
+  .chat-rules-note {
+    font-family: 'Inter',sans-serif;
+    font-size: .6rem; letter-spacing: .06em;
+    color: var(--text-xs); margin-left: auto;
+    opacity: .7;
+  }
+
+  /* Messages */
+  .chat-messages {
+    height: 340px;
+    overflow-y: auto;
+    padding: .75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: rgba(94,26,122,.4); border-radius: 2px; }
+
+  .chat-loading {
+    font-family: 'Inter',sans-serif;
+    font-size: .75rem; color: var(--text-xs);
+    text-align: center; padding: 1rem;
+  }
+
+  /* Message rows */
+  .chat-msg {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: .22rem .3rem;
+    border-radius: 2px;
+    transition: background .1s;
+    line-height: 1.5;
+  }
+  .chat-msg:hover { background: rgba(255,255,255,.03); }
+  .chat-msg.system {
+    justify-content: center;
+    font-family: 'Inter',sans-serif;
+    font-size: .65rem; color: var(--text-xs);
+    font-style: italic; letter-spacing: .04em;
+  }
+  .chat-msg.blocked {
+    opacity: .4; font-style: italic;
+    cursor: default; pointer-events: none;
+  }
+
+  .chat-ts {
+    font-family: 'Inter',sans-serif;
+    font-size: .62rem; color: var(--text-xs);
+    flex-shrink: 0; letter-spacing: .02em;
+    min-width: 38px;
+  }
+  .chat-user {
+    font-family: 'Cinzel',serif;
+    font-size: .78rem; font-weight: 700;
+    color: var(--gold-l); flex-shrink: 0;
+    cursor: pointer;
+  }
+  .chat-user.gm-user  { color: var(--purple-l); }
+  .chat-user.own-user { color: var(--cyan); }
+  .chat-sep {
+    font-size: .7rem; color: var(--text-xs); flex-shrink: 0;
+  }
+  .chat-text {
+    font-family: 'DM Sans',sans-serif;
+    font-size: .85rem; color: var(--text-dim);
+    word-break: break-word; flex: 1;
+  }
+  .chat-text em { color: var(--gold-l); font-style: normal; }
+
+  /* GM badge on messages */
+  .chat-gm-badge {
+    font-family: 'Inter',sans-serif;
+    font-size: .55rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--purple-l);
+    background: rgba(94,26,122,.15);
+    border: 1px solid rgba(126,58,160,.3);
+    padding: .08rem .32rem;
+    flex-shrink: 0;
+  }
+
+  /* Input row */
+  .chat-input-row {
+    display: flex;
+    gap: .5rem;
+    padding: .6rem 1rem;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,.2);
+  }
+  .chat-input {
+    flex: 1;
+    background: rgba(7,0,13,.6);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans',sans-serif;
+    font-size: .88rem;
+    padding: .45rem .75rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .chat-input:focus { border-color: var(--gold-d); }
+  .chat-input::placeholder { color: var(--text-xs); }
+  .chat-send-btn {
+    background: var(--gold);
+    border: none; cursor: pointer;
+    color: #07000D;
+    padding: .45rem .75rem;
+    transition: background .15s;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chat-send-btn:hover { background: var(--gold-l); }
+  .chat-send-btn:disabled { opacity: .4; cursor: default; }
+
+  .chat-char-count {
+    text-align: right;
+    padding: .2rem 1rem .4rem;
+    font-family: 'Inter',sans-serif;
+    font-size: .62rem; color: var(--text-xs);
+    background: rgba(0,0,0,.2);
+  }
+  .chat-char-count.near-limit { color: var(--pink-l); }
+
+  @media (max-width: 600px) {
+    #chat { padding: 0 .85rem 2.5rem; }
+    .chat-messages { height: 260px; }
+    .chat-rules-note { display: none; }
+  }
+
+
+  /* ── GM PANEL ────────────────────────────────────────────── */
+  .gm-topbar {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: .75rem 1.25rem;
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    flex-wrap: wrap; gap: .5rem;
+  }
+  .gm-counts { display: flex; gap: .5rem; }
+  .gm-count-badge {
+    font-family: 'Inter',sans-serif;
+    font-size: .68rem; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-xs);
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--border);
+    padding: .2rem .6rem;
+  }
+  .gm-count-badge strong { color: var(--gold-l); }
+
+  .gm-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,.2);
+    flex-wrap: wrap;
+  }
+  .gm-tab {
+    font-family: 'Inter',sans-serif;
+    font-size: .68rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: .6rem 1.1rem;
+    background: none; border: none;
+    color: var(--text-xs);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all .15s; margin-bottom: -1px;
+  }
+  .gm-tab:hover { color: var(--text-dim); }
+  .gm-tab.active { color: var(--gold-l); border-bottom-color: var(--gold); }
+
+  .gm-tab-panel { display: none; padding: .75rem; }
+  .gm-tab-panel.active { display: block; }
+
+  .gm-empty {
+    font-family: 'Inter',sans-serif;
+    font-size: .78rem; color: var(--text-xs);
+    text-align: center; padding: 2rem;
+    letter-spacing: .05em;
+  }
+
+  /* OC Review Card */
+  .gm-oc-card {
+    background: rgba(8,0,14,.7);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-d);
+    margin-bottom: .75rem;
+    overflow: hidden;
+  }
+  .gm-oc-card.stand-card { border-left-color: var(--purple-l); }
+
+  .gm-oc-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: .65rem 1rem;
+    background: rgba(0,0,0,.25);
+    cursor: pointer; gap: .75rem;
+    transition: background .15s;
+  }
+  .gm-oc-header:hover { background: rgba(94,26,122,.1); }
+
+  .gm-oc-name {
+    font-family: 'Cinzel',serif;
+    font-size: .95rem; font-weight: 700;
+    color: var(--text);
+  }
+  .gm-oc-meta {
+    font-family: 'Inter',sans-serif;
+    font-size: .62rem; color: var(--text-xs);
+    letter-spacing: .06em;
+  }
+  .gm-oc-type {
+    font-family: 'Inter',sans-serif;
+    font-size: .6rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: .16rem .5rem; flex-shrink: 0;
+    border: 1px solid;
+  }
+  .type-stand   { color: var(--purple-l); border-color: rgba(126,58,160,.4); background: rgba(94,26,122,.1); }
+  .type-hamon   { color: #E8B422; border-color: rgba(200,150,12,.3); background: rgba(200,150,12,.06); }
+  .type-spin    { color: #76C800; border-color: rgba(90,184,0,.3); background: rgba(90,184,0,.06); }
+  .type-vampire { color: #EF9A9A; border-color: rgba(200,0,0,.3); background: rgba(200,0,0,.06); }
+  .type-pillar  { color: #FFCC80; border-color: rgba(200,130,0,.3); background: rgba(200,130,0,.06); }
+  .type-none    { color: var(--text-xs); border-color: var(--border); }
+
+  /* Expandable body */
+  .gm-oc-body {
+    display: none;
+    padding: 1rem 1.1rem;
+    border-top: 1px solid var(--border);
+  }
+  .gm-oc-body.open { display: block; }
+
+  .gm-field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .5rem .75rem;
+    margin-bottom: .85rem;
+  }
+  .gm-field {
+    display: flex; flex-direction: column; gap: .15rem;
+  }
+  .gm-field-label {
+    font-family: 'Inter',sans-serif;
+    font-size: .58rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold-d);
+  }
+  .gm-field-val {
+    font-family: 'DM Sans',sans-serif;
+    font-size: .82rem; color: var(--text-dim);
+    line-height: 1.5; white-space: pre-wrap;
+  }
+
+  /* Stat display */
+  .gm-stats {
+    display: flex; gap: .4rem; flex-wrap: wrap;
+    margin: .5rem 0;
+  }
+  .gm-stat {
+    font-family: 'Cinzel',serif;
+    font-size: .78rem; font-weight: 700;
+    padding: .18rem .5rem;
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--border);
+  }
+  .gs-S { color: #FFD700; } .gs-A { color: var(--gold-l); }
+  .gs-B { color: #81C784; } .gs-C { color: var(--text-dim); }
+  .gs-D { color: #EF9A9A; } .gs-E { color: var(--pink-l); }
+
+  /* Action buttons */
+  .gm-actions {
+    display: flex; gap: .5rem; flex-wrap: wrap;
+    padding-top: .85rem;
+    border-top: 1px solid var(--border);
+    margin-top: .85rem;
+    align-items: center;
+  }
+  .gm-note-input {
+    flex: 1; min-width: 180px;
+    background: rgba(7,0,13,.5);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans',sans-serif;
+    font-size: .82rem;
+    padding: .38rem .65rem;
+    outline: none;
+  }
+  .gm-note-input::placeholder { color: var(--text-xs); }
+  .btn-approve {
+    background: rgba(129,199,132,.15);
+    border: 1px solid rgba(129,199,132,.4);
+    color: #81C784;
+    font-family: 'Inter',sans-serif;
+    font-size: .68rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .38rem .85rem; cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-approve:hover { background: rgba(129,199,132,.25); }
+  .btn-deny {
+    background: rgba(200,0,74,.08);
+    border: 1px solid rgba(200,0,74,.3);
+    color: var(--pink-l);
+    font-family: 'Inter',sans-serif;
+    font-size: .68rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .38rem .85rem; cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-deny:hover { background: rgba(200,0,74,.18); }
+  .btn-revision {
+    background: rgba(200,150,12,.06);
+    border: 1px solid rgba(200,150,12,.25);
+    color: var(--gold-d);
+    font-family: 'Inter',sans-serif;
+    font-size: .68rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .38rem .85rem; cursor: pointer;
+    transition: all .15s;
+  }
+
+  /* Player list */
+  .player-row {
+    display: flex; align-items: center;
+    gap: .75rem; padding: .6rem .85rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Sans',sans-serif;
+    font-size: .82rem;
+  }
+  .player-name { flex: 1; color: var(--text-dim); }
+  .player-role {
+    font-family: 'Inter',sans-serif;
+    font-size: .6rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-xs);
+  }
+
 </style>
 </head>
 <body>
@@ -1346,6 +1739,7 @@
     <li><a href="#roster">Roster</a></li>
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
+    <li><a href="#chat">Lobby</a></li>
     <li><a href="tos.html">Rules</a></li>
   </ul>
   <div class="nav-right">
@@ -1622,26 +2016,55 @@
     <h2 class="sec-title">GM Control Panel</h2>
     <div class="sec-rule"></div>
   </div>
+
   <div class="gm-panel-wrap">
-    <div class="gm-panel-header">
-      <span style="font-size:1.5rem;">🎩</span>
-      <div>
-        <div class="gm-panel-title">Pending Approvals</div>
-        <p style="font-size:.82rem;color:var(--text-dim);">OCs and Stands awaiting GM review. In production this will pull from Supabase.</p>
+
+    <!-- GM header bar -->
+    <div class="gm-topbar">
+      <div class="gm-counts">
+        <span class="gm-count-badge" id="ocPendingCount">OCs <strong>–</strong></span>
+        <span class="gm-count-badge" id="standPendingCount">Stands <strong>–</strong></span>
       </div>
-      <button class="btn btn-gold btn-sm" onclick="openModal('gmBoardModal')" style="margin-left:auto;">+ Create Part Board</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="loadGMQueue()">↻ Refresh</button>
+        <button class="btn btn-gold btn-sm" onclick="openModal('gmBoardModal')">+ Create Part</button>
+      </div>
     </div>
 
-    <!-- Pending OCs -->
-    <p style="font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin-bottom:.65rem;">Pending OC Submissions</p>
-    <div id="pendingOCs">
-      <p style="font-size:.82rem;color:var(--text-xs);font-family:'Inter',sans-serif;">No pending OC submissions.</p>
+    <!-- Tabs -->
+    <div class="gm-tabs">
+      <button class="gm-tab active" onclick="switchGMTab('ocs',this)">Pending OCs</button>
+      <button class="gm-tab" onclick="switchGMTab('stands',this)">Pending Stands</button>
+      <button class="gm-tab" onclick="switchGMTab('approved',this)">Approved OCs</button>
+      <button class="gm-tab" onclick="switchGMTab('bans',this)">Players</button>
     </div>
 
-    <!-- Pending Stands -->
-    <p style="font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:.25em;color:var(--pink);text-transform:uppercase;margin:.9rem 0 .65rem;">Pending Stand Submissions</p>
-    <div id="pendingStands">
-      <p style="font-size:.82rem;color:var(--text-xs);font-family:'Inter',sans-serif;">No pending Stand submissions.</p>
+    <!-- OC queue -->
+    <div class="gm-tab-panel active" id="gmTabOcs">
+      <div id="pendingOCs">
+        <div class="gm-empty">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Stand queue -->
+    <div class="gm-tab-panel" id="gmTabStands">
+      <div id="pendingStands">
+        <div class="gm-empty">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Approved OCs -->
+    <div class="gm-tab-panel" id="gmTabApproved">
+      <div id="approvedOCsList">
+        <div class="gm-empty">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Players / Bans -->
+    <div class="gm-tab-panel" id="gmTabBans">
+      <div id="playersList">
+        <div class="gm-empty">Loading…</div>
+      </div>
     </div>
 
   </div>
@@ -1651,6 +2074,56 @@
 
 <!-- FOOTER -->
 
+
+
+<!-- ============================================================
+     LOBBY CHAT
+============================================================ -->
+<section id="chat">
+  <div class="sec-head">
+    <p class="sec-label">Community</p>
+    <h2 class="sec-title">Lobby</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="chat-wrap">
+
+    <!-- Login wall -->
+    <div class="chat-auth-wall" id="chatAuthWall">
+      <p>Sign in to join the lobby chat.</p>
+      <a href="login.html" class="btn btn-gold" style="clip-path:none;text-decoration:none;">Sign In →</a>
+    </div>
+
+    <!-- Chat UI (shown when logged in) -->
+    <div class="chat-ui" id="chatUI" style="display:none;">
+      <div class="chat-header">
+        <span class="chat-title">🗨 Lobby</span>
+        <span class="chat-status" id="chatStatus">Connecting…</span>
+        <span class="chat-rules-note">No slurs · No OOC drama · Keep it JoJo</span>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-loading">Loading messages…</div>
+      </div>
+
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput"
+          placeholder="Say something…"
+          maxlength="400"
+          autocomplete="off"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
+        />
+        <button class="chat-send-btn" onclick="sendChatMsg()" title="Send">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14 8L2 2l2.5 6L2 14l12-6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="chat-char-count" id="chatCharCount">0 / 400</div>
+    </div>
+
+  </div>
+</section>
 
 <footer>
   <div class="foot-logo">A JoJo Roleplay</div>
@@ -2393,6 +2866,7 @@ function refreshAuthUI() {
   if (currentUser) {
     body.classList.add('logged-in');
     body.classList.remove('logged-out');
+    initChat();
     const meta   = currentUser.user_metadata || {};
     const name   = currentProfile?.username || meta.full_name || meta.name || currentUser.email?.split('@')[0] || 'Player';
     const avatar = currentProfile?.avatar_url || meta.avatar_url || '';
@@ -3078,6 +3552,502 @@ buildSliders('standStatSliders');
 buildSliders('sStatSliders');
 initBgRotator();
 loadBoards();
+
+/* ── LOBBY CHAT ────────────────────────────────────────────── */
+
+// Banned words — checked client-side AND enforced server-side via RLS function
+const BANNED_WORDS = [
+  'nigger','nigga','faggot','fag','chink','spic','kike','tranny',
+  'retard','cunt','dyke','wetback','raghead','gook','cracker',
+  // Add more as needed
+];
+
+function containsBannedWord(text) {
+  const lower = text.toLowerCase().replace(/[^a-z]/g,'');
+  return BANNED_WORDS.some(w => lower.includes(w.replace(/[^a-z]/g,'')));
+}
+
+function sanitizeChatText(text) {
+  // Strip HTML, limit length
+  return text
+    .replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/&/g,'&amp;')
+    .trim()
+    .slice(0, 400);
+}
+
+function formatChatTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false});
+}
+
+let chatChannel = null;
+let chatMuted   = false;
+
+function initChat() {
+  const wall = document.getElementById('chatAuthWall');
+  const ui   = document.getElementById('chatUI');
+  if(!wall || !ui) return;
+
+  if(!currentUser) {
+    wall.style.display = '';
+    ui.style.display   = 'none';
+    return;
+  }
+
+  wall.style.display = 'none';
+  ui.style.display   = '';
+
+  loadChatHistory();
+  subscribeChatRealtime();
+
+  // Char counter
+  document.getElementById('chatInput')?.addEventListener('input', e => {
+    const len = e.target.value.length;
+    const counter = document.getElementById('chatCharCount');
+    if(counter) {
+      counter.textContent = len + ' / 400';
+      counter.classList.toggle('near-limit', len > 360);
+    }
+  });
+}
+
+async function loadChatHistory() {
+  if(!sb) return;
+  const status = document.getElementById('chatStatus');
+  if(status) { status.textContent = 'Loading…'; status.className = 'chat-status'; }
+
+  const { data, error } = await sb
+    .from('chat_messages')
+    .select('id,content,username,is_gm,created_at,user_id')
+    .order('created_at', { ascending: false })
+    .limit(80);
+
+  if(error) {
+    console.warn('Chat load error:', error);
+    if(status) { status.textContent = 'Error loading'; status.className = 'chat-status error'; }
+    return;
+  }
+
+  const msgs = document.getElementById('chatMessages');
+  if(!msgs) return;
+
+  if(!data || data.length === 0) {
+    msgs.innerHTML = '<div class="chat-loading">No messages yet. Say hello!</div>';
+  } else {
+    msgs.innerHTML = data.reverse().map(renderChatMsg).join('');
+  }
+
+  msgs.scrollTop = msgs.scrollHeight;
+  if(status) { status.textContent = '● Live'; status.className = 'chat-status live'; }
+}
+
+function renderChatMsg(msg) {
+  if(!msg || !msg.content) return '';
+  const ts   = formatChatTime(msg.created_at);
+  const isMe = msg.user_id === currentUser?.id;
+  const isGM = msg.is_gm;
+  const userClass = isMe ? 'own-user' : (isGM ? 'gm-user' : '');
+  const text = sanitizeChatText(msg.content);
+
+  return `<div class="chat-msg" data-id="${msg.id}">
+    <span class="chat-ts">${ts}</span>
+    ${isGM ? '<span class="chat-gm-badge">GM</span>' : ''}
+    <span class="chat-user ${userClass}">${msg.username||'Player'}</span>
+    <span class="chat-sep">·</span>
+    <span class="chat-text">${text}</span>
+  </div>`;
+}
+
+function appendChatMsg(msg) {
+  const msgs = document.getElementById('chatMessages');
+  if(!msgs) return;
+
+  // Remove loading placeholder if present
+  const placeholder = msgs.querySelector('.chat-loading');
+  if(placeholder) placeholder.remove();
+
+  const div = document.createElement('div');
+  div.innerHTML = renderChatMsg(msg);
+  const el = div.firstElementChild;
+  if(el) msgs.appendChild(el);
+
+  // Auto-scroll only if user is near bottom
+  const near = msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 120;
+  if(near) msgs.scrollTop = msgs.scrollHeight;
+
+  // Trim to 120 messages in DOM
+  while(msgs.children.length > 120) msgs.removeChild(msgs.firstChild);
+}
+
+function subscribeChatRealtime() {
+  if(!sb || chatChannel) return;
+
+  chatChannel = sb.channel('lobby-chat')
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'chat_messages'
+    }, payload => {
+      if(payload.new) appendChatMsg(payload.new);
+    })
+    .subscribe(status => {
+      const el = document.getElementById('chatStatus');
+      if(!el) return;
+      if(status === 'SUBSCRIBED') {
+        el.textContent = '● Live'; el.className = 'chat-status live';
+      } else if(status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+        el.textContent = '○ Reconnecting…'; el.className = 'chat-status error';
+      }
+    });
+}
+
+async function sendChatMsg() {
+  if(!currentUser || !sb) {
+    showToast('Sign in to chat.','err'); return;
+  }
+
+  const input = document.getElementById('chatInput');
+  const raw   = input?.value?.trim();
+  if(!raw) return;
+
+  // Client-side filter
+  if(containsBannedWord(raw)) {
+    showToast('That word is not allowed here.','err');
+    input.value = '';
+    return;
+  }
+
+  if(raw.length > 400) {
+    showToast('Message too long (max 400 characters).','err');
+    return;
+  }
+
+  const btn = document.querySelector('.chat-send-btn');
+  if(btn) btn.disabled = true;
+  input.value = '';
+  document.getElementById('chatCharCount').textContent = '0 / 400';
+
+  const username = currentProfile?.username
+    || currentUser.user_metadata?.full_name
+    || currentUser.email?.split('@')[0]
+    || 'Player';
+
+  const { error } = await sb.from('chat_messages').insert([{
+    content:   raw,
+    user_id:   currentUser.id,
+    username:  username,
+    is_gm:     isGM,
+  }]);
+
+  if(btn) btn.disabled = false;
+
+  if(error) {
+    showToast('Could not send: ' + error.message, 'err');
+    input.value = raw; // Restore so they don't lose message
+  }
+}
+
+// Delete message (GM only)
+async function deleteChatMsg(msgId) {
+  if(!isGM || !sb) return;
+  await sb.from('chat_messages').delete().eq('id', msgId);
+  document.querySelector(`[data-id="${msgId}"]`)?.remove();
+  showToast('Message removed.','ok');
+}
+
+// Right-click / long-press on messages for GM delete
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('chatMessages')?.addEventListener('contextmenu', e => {
+    if(!isGM) return;
+    const msg = e.target.closest('.chat-msg');
+    if(!msg) return;
+    e.preventDefault();
+    if(confirm('Remove this message?')) deleteChatMsg(msg.dataset.id);
+  });
+});
+
+
+/* ── GM PANEL ────────────────────────────────────────────── */
+
+function switchGMTab(tab, btn) {
+  document.querySelectorAll('.gm-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.gm-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('gmTab' + tab.charAt(0).toUpperCase() + tab.slice(1))?.classList.add('active');
+  if(tab === 'ocs')      loadPendingOCs();
+  if(tab === 'stands')   loadPendingStands();
+  if(tab === 'approved') loadApprovedOCs();
+  if(tab === 'bans')     loadPlayers();
+}
+
+async function loadGMQueue() {
+  await loadPendingOCs();
+  await loadPendingStands();
+}
+
+/* ── Load Pending OCs ────────────────────────────────────── */
+async function loadPendingOCs() {
+  const el = document.getElementById('pendingOCs');
+  if(!el || !sb) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sb
+    .from('ocs')
+    .select('*')
+    .eq('status', 'pending')
+    .order('created_at', { ascending: true });
+
+  // Update count badge
+  const badge = document.getElementById('ocPendingCount');
+  if(badge) badge.innerHTML = 'OCs <strong>' + (data?.length || 0) + '</strong>';
+
+  if(error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  if(!data || data.length === 0) { el.innerHTML = '<div class="gm-empty">No pending OC submissions ✓</div>'; return; }
+
+  el.innerHTML = data.map(oc => renderOCCard(oc, false)).join('');
+}
+
+/* ── Load Pending Stands ─────────────────────────────────── */
+async function loadPendingStands() {
+  const el = document.getElementById('pendingStands');
+  if(!el || !sb) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sb
+    .from('ocs')
+    .select('*')
+    .eq('status', 'pending')
+    .not('stand_name', 'is', null)
+    .order('created_at', { ascending: true });
+
+  const badge = document.getElementById('standPendingCount');
+  if(badge) badge.innerHTML = 'Stands <strong>' + (data?.length || 0) + '</strong>';
+
+  if(error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  if(!data || data.length === 0) { el.innerHTML = '<div class="gm-empty">No pending Stand submissions ✓</div>'; return; }
+
+  el.innerHTML = data.map(oc => renderOCCard(oc, true)).join('');
+}
+
+/* ── Load Approved OCs ───────────────────────────────────── */
+async function loadApprovedOCs() {
+  const el = document.getElementById('approvedOCsList');
+  if(!el || !sb) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sb
+    .from('ocs')
+    .select('*')
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false });
+
+  if(error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  if(!data || data.length === 0) { el.innerHTML = '<div class="gm-empty">No approved characters yet.</div>'; return; }
+
+  el.innerHTML = data.map(oc => renderOCCard(oc, false)).join('');
+}
+
+/* ── Load Players ────────────────────────────────────────── */
+async function loadPlayers() {
+  const el = document.getElementById('playersList');
+  if(!el || !sb) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sb
+    .from('profiles')
+    .select('id,username,is_banned,banned_until,created_at')
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if(error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  if(!data || data.length === 0) { el.innerHTML = '<div class="gm-empty">No registered players yet.</div>'; return; }
+
+  el.innerHTML = data.map(p => `
+    <div class="player-row">
+      <span class="player-name">${p.username || '(no username)'}</span>
+      <span class="player-role">${p.is_banned ? '⛔ Banned' : 'Player'}</span>
+      ${!p.is_banned
+        ? `<button class="btn-deny" style="font-size:.6rem;padding:.2rem .55rem;" onclick="banPlayer('${p.id}','${(p.username||'').replace(/'/g,'&apos;')}')">Ban</button>`
+        : `<button class="btn-approve" style="font-size:.6rem;padding:.2rem .55rem;" onclick="unbanPlayer('${p.id}')">Unban</button>`
+      }
+    </div>`
+  ).join('');
+}
+
+/* ── Render OC Card ──────────────────────────────────────── */
+function renderOCCard(oc, standFocus) {
+  const typeClass = 'type-' + (oc.ability_type || 'none');
+  const typeLabel = (oc.ability_type || 'None').charAt(0).toUpperCase() + (oc.ability_type || 'none').slice(1);
+  const subDate = new Date(oc.created_at).toLocaleDateString();
+
+  // Build stats display if Stand
+  let statsHTML = '';
+  if(oc.stand_stats) {
+    try {
+      const stats = typeof oc.stand_stats === 'string' ? JSON.parse(oc.stand_stats) : oc.stand_stats;
+      statsHTML = '<div class="gm-stats">' + Object.entries(stats).map(([k,v]) =>
+        `<span class="gm-stat gs-${v}">${k.charAt(0).toUpperCase()}: ${v}</span>`
+      ).join('') + '</div>';
+    } catch(e) {}
+  }
+
+  // Build fields to show
+  const fields = [
+    ['Player', oc.player_username],
+    ['Race', oc.race || 'Human'],
+    ['Age', oc.age],
+    ['Part Board', oc.board_name || 'Unassigned'],
+    ['Submitted', subDate],
+    ['Submission Type', oc.submission_type || 'simple'],
+  ].filter(([,v]) => v);
+
+  const longFields = [
+    ['Appearance', oc.appearance],
+    ['Personality', oc.personality],
+    ['Ideals', oc.ideals],
+    ['Flaws', oc.flaws],
+    ['Backstory', oc.backstory],
+    ['Goal', oc.goal],
+    ['Formative Experiences', oc.formative],
+    ['Fears', oc.fears],
+    standFocus && ['Stand Name', oc.stand_name],
+    standFocus && ['Stand Type', oc.stand_type],
+    standFocus && ['Stand Ability', oc.stand_ability],
+    standFocus && ['Stand Weakness', oc.stand_weakness],
+    standFocus && ['Stand Cry', oc.stand_cry],
+    standFocus && ['Activation', oc.stand_activation],
+    standFocus && ['Combat Application', oc.stand_combat],
+    ['Notes for GM', oc.notes],
+  ].filter(f => f && f[1]);
+
+  const isApproved = oc.status === 'approved';
+
+  return `
+  <div class="gm-oc-card ${standFocus ? 'stand-card' : ''}" id="oc-card-${oc.id}">
+    <div class="gm-oc-header" onclick="toggleOCCard('${oc.id}')">
+      <div>
+        <div class="gm-oc-name">${oc.name || 'Unnamed'}</div>
+        <div class="gm-oc-meta">by @${oc.player_username || '?'} · ${subDate}</div>
+      </div>
+      <span class="gm-oc-type ${typeClass}">${typeLabel}</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="oc-chevron" id="chev-${oc.id}">
+        <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="gm-oc-body" id="ocbody-${oc.id}">
+
+      <!-- Quick fields grid -->
+      <div class="gm-field-grid">
+        ${fields.map(([l,v]) => `
+          <div class="gm-field">
+            <span class="gm-field-label">${l}</span>
+            <span class="gm-field-val">${v}</span>
+          </div>`).join('')}
+      </div>
+
+      ${statsHTML}
+
+      <!-- Long text fields -->
+      ${longFields.map(([l,v]) => `
+        <div class="gm-field" style="margin-bottom:.7rem;">
+          <span class="gm-field-label">${l}</span>
+          <span class="gm-field-val">${v}</span>
+        </div>`).join('')}
+
+      ${oc.image_url ? `
+        <div class="gm-field" style="margin-bottom:.85rem;">
+          <span class="gm-field-label">Reference Image</span>
+          <a href="${oc.image_url}" target="_blank" rel="noopener"
+            style="color:var(--gold-d);font-size:.8rem;font-family:'DM Sans',sans-serif;">
+            View image ↗
+          </a>
+        </div>` : ''}
+
+      <!-- Action bar (only for pending) -->
+      ${!isApproved ? `
+      <div class="gm-actions">
+        <input class="gm-note-input" id="note-${oc.id}"
+          placeholder="Note to player (optional — shown on deny/revision)"/>
+        <button class="btn-approve" onclick="reviewOC('${oc.id}','approved')">✓ Approve</button>
+        <button class="btn-revision" onclick="reviewOC('${oc.id}','revision')">⟳ Revision</button>
+        <button class="btn-deny"    onclick="reviewOC('${oc.id}','denied')">✕ Deny</button>
+      </div>` : `
+      <div class="gm-actions">
+        <span style="font-family:'Inter',sans-serif;font-size:.7rem;color:#81C784;letter-spacing:.08em;">✓ APPROVED</span>
+        <button class="btn-deny" onclick="reviewOC('${oc.id}','denied')" style="margin-left:auto;">Revoke Approval</button>
+      </div>`}
+
+    </div>
+  </div>`;
+}
+
+function toggleOCCard(id) {
+  const body  = document.getElementById('ocbody-' + id);
+  const chev  = document.getElementById('chev-' + id);
+  const open  = body?.classList.toggle('open');
+  if(chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+/* ── Approve / Deny / Revision ───────────────────────────── */
+async function reviewOC(id, status) {
+  if(!sb || !isGM) return;
+  const note = document.getElementById('note-' + id)?.value.trim() || null;
+
+  const { error } = await sb.from('ocs')
+    .update({ status, gm_note: note, reviewed_by: currentUser?.id, reviewed_at: new Date().toISOString() })
+    .eq('id', id);
+
+  if(error) { showToast('Error: ' + error.message, 'err'); return; }
+
+  const labels = { approved: 'Approved ✓', denied: 'Denied', revision: 'Revision requested' };
+  showToast(labels[status] || status, status === 'approved' ? 'ok' : 'err');
+
+  // Remove or update the card
+  document.getElementById('oc-card-' + id)?.remove();
+
+  // Reload roster if approved
+  if(status === 'approved') loadRoster();
+}
+
+/* ── Ban / Unban ─────────────────────────────────────────── */
+async function banPlayer(uid, username) {
+  if(!sb || !isGM) return;
+  if(!confirm('Ban ' + username + '? They will be logged out immediately.')) return;
+
+  const { error } = await sb.from('profiles')
+    .update({ is_banned: true })
+    .eq('id', uid);
+
+  if(error) { showToast('Error: ' + error.message,'err'); return; }
+  showToast(username + ' banned.','ok');
+  loadPlayers();
+}
+
+async function unbanPlayer(uid) {
+  if(!sb || !isGM) return;
+  const { error } = await sb.from('profiles')
+    .update({ is_banned: false, banned_until: null })
+    .eq('id', uid);
+
+  if(error) { showToast('Error: ' + error.message,'err'); return; }
+  showToast('Player unbanned.','ok');
+  loadPlayers();
+}
+
+/* ── Auto-load queue when GM panel opens ─────────────────── */
+const _origToggleGM = typeof toggleGM !== 'undefined' ? toggleGM : null;
+function toggleGM() {
+  const panel = document.getElementById('gm-panel');
+  if(!panel) return;
+  const wasHidden = panel.style.display === 'none' || !panel.style.display;
+  panel.style.display = wasHidden ? 'block' : 'none';
+  if(wasHidden) {
+    loadGMQueue();
+  }
+}
+
 </script>
 </body>
 </html>
