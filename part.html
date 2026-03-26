@@ -1414,70 +1414,247 @@
   }
 
 
-  .pw{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:80px 2rem 5rem;}
-  .back-bar{position:relative;z-index:2;display:flex;align-items:center;gap:.4rem;padding:.55rem 2rem;background:rgba(7,0,13,.6);border-bottom:1px solid var(--border);font-family:'Inter',sans-serif;font-size:.68rem;letter-spacing:.05em;backdrop-filter:blur(10px);}
-  .back-link{color:var(--gold-d);text-decoration:none;transition:color .15s;} .back-link:hover{color:var(--gold-l);}
-  .back-sep{color:var(--text-xs);} .back-current{color:var(--text-dim);}
-  .fg{margin-bottom:.85rem;} .fg2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-  .fl{display:block;font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.28rem;}
-  .fi{width:100%;background:rgba(7,0,13,.5);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;padding:.52rem .78rem;outline:none;transition:border-color .18s;}
-  .fi:focus{border-color:var(--gold-d);}
-  .fsel{width:100%;background:rgba(7,0,13,.5);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:.5rem .75rem;outline:none;cursor:pointer;}
-  .fta{width:100%;background:rgba(7,0,13,.5);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:.55rem .78rem;outline:none;resize:vertical;min-height:80px;line-height:1.6;transition:border-color .18s;}
-  .fta:focus,.fi:focus,.fsel:focus{border-color:var(--gold-d);}
-  .fhint{font-size:.73rem;color:var(--text-xs);font-style:italic;margin-top:.22rem;font-family:'DM Sans',sans-serif;}
+  /* ── PART PAGE ────────────────────────────────────────────── */
+
+  /* Full-bleed hero with Part colour atmosphere */
+  .part-hero {
+    position: relative; z-index: 2;
+    padding: 110px 2rem 0;
+    min-height: 320px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+  }
+  .part-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(7,0,13,.2) 0%,
+      rgba(7,0,13,.7) 60%,
+      rgba(7,0,13,1)  100%);
+    z-index: 1;
+  }
+  .part-hero-accent {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%,
+      var(--part-col, rgba(200,150,12,.15)) 0%,
+      transparent 70%);
+    pointer-events: none;
+  }
+  .part-hero-content { position: relative; z-index: 2; padding-bottom: 2rem; }
+
+  .part-eyebrow {
+    font-family: 'Inter',sans-serif; font-size: .65rem; font-weight: 600;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--part-col, var(--gold-d)); margin-bottom: .5rem;
+  }
+  .part-title {
+    font-family: 'Cinzel',serif;
+    font-size: clamp(2rem,5vw,3.2rem);
+    font-weight: 900; color: var(--text);
+    line-height: 1.05; margin-bottom: .5rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,.8);
+  }
+  .part-subtitle {
+    font-family: 'DM Sans',sans-serif; font-style: italic;
+    font-size: 1rem; color: var(--text-dim);
+    max-width: 560px; line-height: 1.6; margin-bottom: 1rem;
+  }
+  .part-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .part-tag {
+    font-family: 'Inter',sans-serif; font-size: .6rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: .2rem .65rem; border: 1px solid var(--part-col, var(--gold-d));
+    color: var(--part-col, var(--gold-l));
+    background: rgba(0,0,0,.3);
+  }
+  .part-status-live {
+    animation: pulse-status 2s ease infinite;
+  }
+  @keyframes pulse-status {
+    0%,100% { opacity: 1; } 50% { opacity: .5; }
+  }
+
+  /* ── Body layout ─────────────────────────────────────────── */
+  .part-body {
+    position: relative; z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 1.25rem;
+    max-width: 1100px; margin: 0 auto;
+    padding: 1.5rem 2rem 5rem;
+  }
+  @media(max-width:768px){ .part-body{grid-template-columns:1fr;padding:1.25rem 1rem 4rem;} }
+
+  /* ── Premise card (pinned) ───────────────────────────────── */
+  .premise-card {
+    background: rgba(8,0,14,.8);
+    border: 1px solid var(--part-col, var(--gold-d));
+    border-left: 3px solid var(--part-col, var(--gold));
+    padding: 1.1rem 1.25rem; margin-bottom: 1.25rem;
+  }
+  .premise-label {
+    font-family: 'Inter',sans-serif; font-size: .6rem; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--part-col, var(--gold-d)); margin-bottom: .45rem;
+  }
+  .premise-text {
+    font-family: 'DM Sans',sans-serif; font-size: .88rem;
+    color: var(--text-dim); line-height: 1.8;
+  }
+
+  /* ── Section header ──────────────────────────────────────── */
+  .sec-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: .75rem; flex-wrap: wrap; gap: .5rem;
+  }
+  .sec-hd-title {
+    font-family: 'Cinzel',serif; font-size: .88rem; font-weight: 700;
+    color: var(--text); letter-spacing: .06em;
+  }
+
+  /* ── Thread cards ────────────────────────────────────────── */
+  .thread-card {
+    background: rgba(8,0,14,.72);
+    border: 1px solid var(--border);
+    border-left: 2px solid transparent;
+    padding: .85rem 1rem;
+    cursor: pointer; transition: all .18s;
+    margin-bottom: .5rem;
+    display: flex; gap: .85rem; align-items: flex-start;
+  }
+  .thread-card:hover {
+    border-left-color: var(--part-col, var(--gold-d));
+    background: rgba(94,26,122,.06);
+    transform: translateX(2px);
+  }
+  .thread-card-cat {
+    font-size: 1.1rem; flex-shrink: 0;
+    width: 28px; text-align: center; margin-top: .1rem;
+  }
+  .thread-card-body { flex: 1; min-width: 0; }
+  .thread-card-title {
+    font-family: 'Cinzel',serif; font-size: .9rem; font-weight: 700;
+    color: var(--text); margin-bottom: .2rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .thread-card-meta {
+    font-family: 'Inter',sans-serif; font-size: .62rem;
+    color: var(--text-xs); letter-spacing: .04em;
+  }
+  .thread-card-tags { display: flex; gap: .25rem; margin-top: .3rem; flex-wrap: wrap; }
+  .thread-tag {
+    font-family: 'Inter',sans-serif; font-size: .58rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .08rem .35rem; border: 1px solid var(--border);
+    color: var(--text-xs);
+  }
+  .thread-tag.open   { border-color: rgba(129,199,132,.4); color: #81C784; }
+  .thread-tag.closed { border-color: var(--border); opacity: .5; }
+  .thread-tag.event  { border-color: rgba(200,150,12,.4); color: var(--gold-d); }
+  .thread-card-posts {
+    font-family: 'Cinzel',serif; font-size: .78rem; font-weight: 700;
+    color: var(--text-xs); flex-shrink: 0; text-align: right;
+    padding-top: .1rem;
+  }
+  .thread-card-posts span { display: block; font-size: .55rem; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; }
+
+  .thread-empty {
+    text-align: center; padding: 2.5rem 1rem;
+    font-family: 'DM Sans',sans-serif; font-size: .88rem;
+    color: var(--text-xs); border: 1px dashed var(--border);
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────── */
+  .sidebar-card {
+    background: rgba(8,0,14,.72);
+    border: 1px solid var(--border);
+    overflow: hidden; margin-bottom: 1rem;
+  }
+  .sidebar-hd {
+    padding: .55rem .85rem;
+    background: rgba(0,0,0,.3);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Cinzel',serif; font-size: .8rem; font-weight: 700;
+    color: var(--text); letter-spacing: .04em;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sidebar-count {
+    font-family: 'Inter',sans-serif; font-size: .62rem;
+    color: var(--text-xs); font-weight: 400;
+  }
+
+  /* Character roster in sidebar */
+  .char-row {
+    display: flex; align-items: center; gap: .65rem;
+    padding: .55rem .85rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background .15s;
+  }
+  .char-row:hover { background: rgba(94,26,122,.08); }
+  .char-row:last-child { border-bottom: none; }
+  .char-av {
+    width: 32px; height: 32px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel',serif; font-size: .88rem; font-weight: 700;
+    color: #fff;
+    clip-path: polygon(15% 0,85% 0,100% 15%,100% 85%,85% 100%,15% 100%,0 85%,0 15%);
+  }
+  .char-info { flex: 1; min-width: 0; }
+  .char-name-sm {
+    font-family: 'Cinzel',serif; font-size: .8rem; font-weight: 700;
+    color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .char-player-sm {
+    font-family: 'Inter',sans-serif; font-size: .6rem; color: var(--text-xs);
+    letter-spacing: .04em;
+  }
+  .char-ab-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* Info sidebar */
+  .info-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: .45rem .85rem; border-bottom: 1px solid var(--border);
+    font-family: 'DM Sans',sans-serif; font-size: .82rem;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--text-xs); font-family: 'Inter',sans-serif; font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
+  .info-val { color: var(--text-dim); }
+
+  .back-bar{position:relative;z-index:2;}
   .btn{font-family:'Inter',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.42rem .95rem;border:none;cursor:pointer;transition:all .18s;}
-  .btn-gold{background:var(--gold);color:#07000D;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+  .btn-gold{background:var(--gold);color:#07000D;}
   .btn-gold:hover{background:var(--gold-l);}
   .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-dim);}
   .btn-ghost:hover{border-color:var(--gold-d);color:var(--gold-l);}
-  .form-msg{font-family:'Inter',sans-serif;font-size:.75rem;letter-spacing:.04em;}
-  .callout{background:rgba(94,26,122,.1);border:1px solid rgba(126,58,160,.28);padding:.8rem 1rem;margin:.85rem 0;font-size:.83rem;color:var(--text-dim);line-height:1.65;font-family:'DM Sans',sans-serif;}
-  .callout strong{color:var(--purple-l);}
-  .callout.g{background:rgba(200,150,12,.06);border-color:rgba(200,150,12,.22);} .callout.g strong{color:var(--gold-l);}
-  .ds{background:rgba(8,0,14,.65);border:1px solid var(--border);border-left:3px solid var(--gold-d);padding:1.25rem 1.4rem;margin-bottom:1.25rem;}
-  .ds-title{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.75rem;}
-  .db{font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--text-dim);line-height:1.75;}
-  .db p{margin-bottom:.65rem;} .db p:last-child{margin-bottom:0;}
-  .dt{width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:.83rem;margin:.5rem 0 1rem;}
-  .dt th{text-align:left;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-d);padding:.4rem .65rem;border-bottom:1px solid var(--border);}
-  .dt td{padding:.45rem .65rem;border-bottom:1px solid rgba(94,26,122,.1);color:var(--text-dim);}
-  .dt tr:hover td{background:rgba(94,26,122,.05);}
-  @media(max-width:600px){.pw{padding-left:1rem;padding-right:1rem;}.fg2{grid-template-columns:1fr;}}
+  .btn-sm{padding:.28rem .65rem;font-size:.62rem;}
+  .rp-btn{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .55rem;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text-xs);cursor:pointer;transition:all .15s;}
+  .rp-btn:hover,.rp-btn.active{color:var(--gold-l);border-color:var(--gold-d);background:rgba(200,150,12,.06);}
 
-  .part-hero{border-bottom:1px solid var(--border);padding:1.5rem 0 1.5rem;margin-bottom:2rem;}
-  .part-hero-line{height:2px;margin-bottom:1.25rem;border:none;} 
-  #partHeaderLine{height:2px;border:none;margin-bottom:1.2rem;}
-  .part-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
-  .part-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:700;margin-bottom:.3rem;}
-  .part-status{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-top:.5rem;}
-  .part-meta{display:flex;gap:.75rem;flex-wrap:wrap;margin:.5rem 0 .85rem;font-family:'Inter',sans-serif;font-size:.7rem;color:var(--text-xs);letter-spacing:.04em;}
-  .part-desc{font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text-dim);line-height:1.8;max-width:680px;}
-  .part-grid{display:grid;grid-template-columns:1fr 340px;gap:1.5rem;}
-  @media(max-width:720px){.part-grid{grid-template-columns:1fr;}}
-  .part-section{background:rgba(8,0,14,.65);border:1px solid var(--border);overflow:hidden;margin-bottom:1.25rem;}
-  .part-accent{border-left:3px solid var(--gold-d);}
-  .part-section-hd{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;background:rgba(0,0,0,.25);border-bottom:1px solid var(--border);}
-  .part-section-title{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;color:var(--text);letter-spacing:.04em;}
-  .part-section-count{font-family:'Inter',sans-serif;font-size:.62rem;color:var(--text-xs);letter-spacing:.06em;}
-  .part-empty{padding:1.5rem;text-align:center;font-family:'Inter',sans-serif;font-size:.75rem;color:var(--text-xs);}
-  /* Thread rows */
-  .thread-row{display:flex;align-items:center;gap:.75rem;padding:.6rem .9rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
-  .thread-row:hover{background:rgba(94,26,122,.08);}
-  .thread-row:last-child{border-bottom:none;}
-  .tr-cat{font-size:.95rem;flex-shrink:0;width:22px;text-align:center;}
-  .tr-info{flex:1;min-width:0;}
-  .tr-title{font-family:'Cinzel',serif;font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .tr-meta{font-family:'Inter',sans-serif;font-size:.62rem;color:var(--text-xs);letter-spacing:.04em;margin-top:.08rem;}
-  /* Roster rows */
-  .part-char-row{display:flex;align-items:center;gap:.65rem;padding:.55rem .9rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
-  .part-char-row:hover{background:rgba(94,26,122,.08);}
-  .part-char-row:last-child{border-bottom:none;}
-  .pcr-avatar{width:28px;height:28px;border-radius:0;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;color:#fff;flex-shrink:0;clip-path:polygon(15% 0,85% 0,100% 15%,100% 85%,85% 100%,15% 100%,0 85%,0 15%);}
-  .pcr-info{flex:1;min-width:0;}
-  .pcr-name{font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;color:var(--text);}
-  .pcr-player{font-family:'Inter',sans-serif;font-size:.6rem;color:var(--text-xs);letter-spacing:.04em;}
-  .pcr-stand{font-family:'Inter',sans-serif;font-size:.6rem;color:var(--purple-l);flex-shrink:0;}
+
+  /* ── Light themes (applied via body class) ───────────────── */
+  body.theme-sbr-pink  { --text:#1A0020;--text-dim:#3D0050;--text-xs:#8B2BAF;--border:rgba(200,0,120,.22);--gold:#D4006A;--gold-l:#FF0088;--gold-d:#A80055;--purple:#6A0080;--purple-l:#9B00B8;--pink:#FF0066;--pink-l:#FF4499; }
+  body.theme-sbr-teal  { --text:#002020;--text-dim:#004040;--text-xs:#006868;--border:rgba(0,180,180,.22);--gold:#00AAAA;--gold-l:#00CCCC;--gold-d:#008888;--purple:#005580;--purple-l:#0077AA;--pink:#FF4477;--pink-l:#FF6699; }
+  body.theme-jojolion  { --text:#0A0A0A;--text-dim:#333;--text-xs:#666;--border:rgba(0,0,0,.15);--gold:#222;--gold-l:#000;--gold-d:#444;--purple:#1A1A1A;--purple-l:#333;--pink:#CC0000;--pink-l:#FF3333; }
+  body.theme-vento     { --text:#1A1000;--text-dim:#3D2A00;--text-xs:#7A5A00;--border:rgba(180,140,0,.22);--gold:#C8960C;--gold-l:#F0B800;--gold-d:#8A6A00;--purple:#5A3A00;--purple-l:#8A5A00;--pink:#CC4400;--pink-l:#FF6622; }
+  body[class*='theme-']:not(.theme-dark) #bg-vignette {
+    background: rgba(255,255,255,.88);
+  }
+  body.theme-jojolion #bg-vignette { background: rgba(248,248,248,.92); }
+  body[class*='theme-']:not(.theme-dark) .post,
+  body[class*='theme-']:not(.theme-dark) .reply-box,
+  body[class*='theme-']:not(.theme-dark) .premise-card,
+  body[class*='theme-']:not(.theme-dark) .sidebar-card,
+  body[class*='theme-']:not(.theme-dark) .ds,
+  body[class*='theme-']:not(.theme-dark) .cs { 
+    background: rgba(255,255,255,.88);
+  }
+  body[class*='theme-']:not(.theme-dark) .fi,
+  body[class*='theme-']:not(.theme-dark) .fta,
+  body[class*='theme-']:not(.theme-dark) .fsel {
+    background: rgba(255,255,255,.8);
+    color: var(--text);
+  }
 
 </style>
 </head>
@@ -1564,62 +1741,77 @@
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
   </div>
 </nav>
-<div id="ticker" style="position:relative;z-index:2;margin-top:90px;">
-  <div class="ticker-track" id="tickerTrack"></div>
 
-<div class="back-bar">
-  <a href="index.html" class="back-link">← A JoJo Roleplay</a>
-  <span class="back-sep">›</span>
-  <span class="back-current" id="partBreadcrumb">Part</span>
+<div class="back-bar" style="position:relative;z-index:2;display:flex;align-items:center;gap:.4rem;padding:.55rem 2rem;background:rgba(7,0,13,.8);border-bottom:1px solid var(--border);font-family:'Inter',sans-serif;font-size:.68rem;letter-spacing:.05em;">
+  <a href="index.html" style="color:var(--gold-d);text-decoration:none;">← A JoJo Roleplay</a>
+  <span style="color:var(--text-xs);">›</span>
+  <span style="color:var(--text-xs);" id="partBreadcrumb">Loading…</span>
 </div>
 
-<div class="pw">
-  <div class="part-hero">
-    <hr id="partHeaderLine" style="height:2px;border:none;margin-bottom:1.2rem;border-top:2px solid var(--gold);">
-    <div class="part-title-row">
-      <div>
-        <h1 class="part-title" id="partTitle">Loading…</h1>
-        <div class="part-meta">
-          <span id="partEra"></span>
-          <span id="partGM"></span>
-          <span id="partAbilityEra"></span>
-          <span id="partMaxPlayers"></span>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;">
-        <span class="part-status" id="partStatus"></span>
-        <button class="btn btn-gold" onclick="openThreadModal()">+ Open Thread</button>
-        <button class="btn btn-ghost gm-only-btn" style="display:none;" onclick="window.location.href='index.html#gm-panel'">🎩 GM Panel</button>
+<!-- Part Hero -->
+<div class="part-hero" id="partHero">
+  <div class="part-hero-accent" id="partHeroAccent"></div>
+  <div class="part-hero-content">
+    <p class="part-eyebrow" id="partEyebrow">Part Board</p>
+    <h1 class="part-title" id="partTitle">Loading…</h1>
+    <p class="part-subtitle" id="partSubtitle"></p>
+    <div class="part-tags" id="partTags"></div>
+    <div style="display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-gold" onclick="openNewThread()" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">+ Open a Thread</button>
+      <a href="index.html#roster" class="btn btn-ghost" style="text-decoration:none;">View Full Roster</a>
+    </div>
+  </div>
+</div>
+
+<!-- Part Body -->
+<div class="part-body">
+
+  <!-- Main column -->
+  <div>
+    <!-- Premise -->
+    <div class="premise-card" id="premiseCard">
+      <div class="premise-label">📌 Part Premise</div>
+      <div class="premise-text" id="premiseText">Loading…</div>
+    </div>
+
+    <!-- Threads -->
+    <div class="sec-hd">
+      <span class="sec-hd-title">Active Threads</span>
+      <div style="display:flex;gap:.35rem;">
+        <button class="rp-btn" onclick="setThreadFilter('all',this)" id="tf-all">All</button>
+        <button class="rp-btn" onclick="setThreadFilter('open',this)" id="tf-open">Open</button>
+        <button class="rp-btn" onclick="setThreadFilter('battle',this)" id="tf-battle">⚔ Battle</button>
+        <button class="rp-btn" onclick="setThreadFilter('social',this)" id="tf-social">☕ Social</button>
+        <button class="rp-btn" onclick="setThreadFilter('arc',this)" id="tf-arc">📖 Arc</button>
       </div>
     </div>
-    <p class="part-desc" id="partDesc"></p>
+    <div id="partThreads"><div class="thread-empty">Loading threads…</div></div>
   </div>
 
-  <div class="part-grid">
-    <!-- Threads -->
-    <div>
-      <div class="part-section part-accent">
-        <div class="part-section-hd">
-          <span class="part-section-title">Active Threads</span>
-          <span class="part-section-count" id="threadCount"></span>
-        </div>
-        <div id="partThreads"><div class="part-empty">Loading threads…</div></div>
-      </div>
+  <!-- Sidebar -->
+  <div>
+    <!-- Part Info -->
+    <div class="sidebar-card">
+      <div class="sidebar-hd">Part Info</div>
+      <div class="info-row"><span class="info-label">Status</span><span class="info-val" id="sideStatus">—</span></div>
+      <div class="info-row"><span class="info-label">Era</span><span class="info-val" id="sideEra">—</span></div>
+      <div class="info-row"><span class="info-label">Ability Era</span><span class="info-val" id="sideAbility">—</span></div>
+      <div class="info-row"><span class="info-label">GM</span><span class="info-val" id="sideGM">—</span></div>
+      <div class="info-row"><span class="info-label">Players</span><span class="info-val" id="sidePlayers">—</span></div>
     </div>
 
-    <!-- Sidebar -->
-    <div>
-      <div class="part-section part-accent">
-        <div class="part-section-hd">
-          <span class="part-section-title">Characters</span>
-          <span class="part-section-count" id="partRosterCount"></span>
-        </div>
-        <div id="partRoster"><div class="part-empty">Loading…</div></div>
-      </div>
+    <!-- Characters in this Part -->
+    <div class="sidebar-card">
+      <div class="sidebar-hd">Characters <span class="sidebar-count" id="sideRosterCount"></span></div>
+      <div id="sideRoster"><div style="padding:.85rem;font-family:Inter,sans-serif;font-size:.75rem;color:var(--text-xs);text-align:center;">Loading…</div></div>
+    </div>
 
-      <div class="callout g" style="margin-top:.75rem;">
-        <strong>Joining this Part?</strong>
-        Submit your OC from the main page and mention this Part in your notes. The GM will assign approved characters.
+    <!-- Join callout -->
+    <div id="joinCallout" style="background:rgba(200,150,12,.05);border:1px solid rgba(200,150,12,.2);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-dim);line-height:1.6;">
+      <strong style="color:var(--gold-l);">Want to join this Part?</strong><br>
+      Submit your OC from the main page and mention this Part in your GM notes. Characters are approved and assigned by the GM team.
+      <div style="margin-top:.65rem;">
+        <a href="index.html" class="btn btn-ghost btn-sm" style="text-decoration:none;">Submit OC →</a>
       </div>
     </div>
   </div>
@@ -1875,7 +2067,7 @@ function gradeFromVal(v){v=parseInt(v);if(v>=90)return'S';if(v>=75)return'A';if(
 function buildSliders(id){const c=document.getElementById(id);if(!c)return;c.innerHTML=STAT_KEYS.map((k,i)=>`<div class="stat-row"><span class="stat-key">${k.split(' ')[0]}</span><input type="range" id="${id}_s${i}" min="0" max="100" value="60" oninput="document.getElementById('${id}_g${i}').textContent=gradeFromVal(this.value)"/><span class="stat-grade" id="${id}_g${i}">B</span></div>`).join('');}
 
 let curBoard=null,curColor='#C8960C';
-function openBoardModal(cardEl){
+function openBoardModal(cardEl){if(!document.getElementById('boardModalDesc'))return;
   const t=cardEl.querySelector('.bc-title').textContent;
   const i=BOARD_INFO[t]||{color:'#C8960C',era:'',desc:''};
   curBoard=t;curColor=i.color;
@@ -1898,7 +2090,7 @@ let curThread=null;
 function openPostModal(threadId,title){
   curThread=threadId;
   document.getElementById('postModalTitle').textContent=title;
-  document.getElementById('postList').innerHTML='<div class="empty">Posts will load from Supabase when connected.</div>';
+  var _pl2=document.getElementById('postList');if(_pl2)_pl2.innerHTML='<div class="empty">Posts will load from Supabase when connected.</div>';
   openModal('postModal');
 }
 async function submitReply(){
@@ -1908,8 +2100,8 @@ async function submitReply(){
   if(!ch||!tx){showToast('Fill in character name and reply.','err');return;}
   if(!await checkRateLimit('new_post')) return;
   const now=new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('postList').insertAdjacentHTML('beforeend',`<div class="post-item"><div class="post-hd"><span class="post-author">${escH(ch)}</span><span class="post-time">${now}</span></div><div class="post-body">${escH(tx)}</div></div>`);
-  document.getElementById('postList').lastElementChild.scrollIntoView({behavior:'smooth'});
+  document.getElementById('postList')?.insertAdjacentHTML('beforeend',`<div class="post-item"><div class="post-hd"><span class="post-author">${escH(ch)}</span><span class="post-time">${now}</span></div><div class="post-body">${escH(tx)}</div></div>`);
+  document.getElementById('postList')?.lastElementChild?.scrollIntoView({behavior:'smooth'});
   document.getElementById('replyChar').value='';document.getElementById('replyText').value='';
   showToast('Reply posted.','ok');
 }
@@ -2048,7 +2240,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(o=>closeModal(o.id));});
 let toastTm=null;
 function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type?' '+type:'');if(toastTm)clearTimeout(toastTm);toastTm=setTimeout(()=>t.className='',3000);}
-function buildTicker(){const items=[...TICKERS,...TICKERS];document.getElementById('tickerTrack').innerHTML=items.map(a=>`<span class="ticker-item">${a}</span>`).join('');}
+function buildTicker(){var _tt=document.getElementById('tickerTrack');if(!_tt)return;var items=[...TICKERS,...TICKERS];_tt.innerHTML=items.map(a=>`<span class="ticker-item">${a}</span>`).join('');}
 function escH(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showOCProfile(){showToast('OC profiles coming soon.','ok');}
 
@@ -2262,124 +2454,129 @@ function toggleArt(header) {
 </script>
 <script>
 
-const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
-const sb2 = window.supabase ? window.supabase.createClient(
-  'https://azzonqzxmtoilhqsrshq.supabase.co', ANON_KEY,
-  {auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}}
-) : null;
+// ANON_KEY in shared JS
+const sb2 = (typeof sb !== 'undefined' && sb) ? sb : null;
 
-const params = new URLSearchParams(window.location.search);
-const BOARD_ID = params.get('id');
-let currentUser2 = null, isGM2 = false;
+const BOARD_ID = new URLSearchParams(window.location.search).get('id');
+const AB_COLORS = {stand:'#7E3AA0',hamon:'#B08000',spin:'#4A8C00',vampire:'#8B0000',pillar:'#7A4A00',none:'#555'};
+const AB_LABELS = {stand:'Stand User',hamon:'Hamon User',spin:'Spin User',vampire:'Vampire',pillar:'Pillar Man',none:'Human'};
+const CAT_EMOJI = {battle:'⚔',social:'☕',investigation:'🔍',arc:'📖',training:'🥊'};
 
-async function initPartAuth() {
-  if(!sb2) return;
-  const { data:{ session } } = await sb2.auth.getSession();
-  if(session?.user) {
-    currentUser2 = session.user;
-    const { data:gm } = await sb2.from('gm_roles').select('role').eq('auth_id', session.user.id).eq('is_active',true).maybeSingle();
-    isGM2 = !!gm;
-    if(isGM2) document.querySelectorAll('.gm-only-btn').forEach(el => el.style.display='');
-  }
-}
+let boardData = null;
+let allThreads = [];
+let threadFilter = 'all';
 
 async function loadPart() {
   if(!sb2 || !BOARD_ID) { document.getElementById('partTitle').textContent = 'Part not found.'; return; }
 
   const { data:board, error } = await sb2.from('boards').select('*').eq('id', BOARD_ID).single();
   if(error || !board) { document.getElementById('partTitle').textContent = 'Part not found.'; return; }
+  boardData = board;
 
   const col = board.color || '#C8960C';
-  const statusLabels = { planning:'Recruiting', open:'Active', closed:'Closed' };
-  const statusCols   = { planning:'var(--gold)', open:'#81C784', closed:'var(--text-xs)' };
+  document.documentElement.style.setProperty('--part-col', col);
 
   document.title = board.title + ' — A JoJo Roleplay';
-  document.getElementById('partTitle').textContent = board.title;
-  document.getElementById('partTitle').style.color = col;
   document.getElementById('partBreadcrumb').textContent = board.title;
-  document.getElementById('partStatus').textContent = statusLabels[board.status] || board.status;
-  document.getElementById('partStatus').style.color = statusCols[board.status] || 'var(--text-xs)';
-  document.getElementById('partEra').textContent = board.era || '';
-  document.getElementById('partGM').textContent = 'GM: ' + (board.gm_username || 'TBD');
-  document.getElementById('partAbilityEra').textContent = board.ability_era || '';
-  document.getElementById('partDesc').textContent = board.description || '';
-  document.getElementById('partMaxPlayers').textContent = 'Max ' + (board.max_players || 8) + ' players';
-  document.getElementById('partHeaderLine').style.borderColor = col;
+  document.getElementById('partEyebrow').textContent = board.era || 'Part Board';
+  document.getElementById('partTitle').textContent = board.title;
+  document.getElementById('partSubtitle').textContent = board.description?.slice(0,140) || '';
+  document.getElementById('premiseText').textContent  = board.description || '';
 
-  // Apply colour accent
-  document.querySelectorAll('.part-accent').forEach(el => el.style.borderLeftColor = col);
+  // Tags
+  const statusLabels = {planning:'Recruiting',open:'Active',closed:'Closed'};
+  const tags = [
+    { label: statusLabels[board.status]||board.status, cls: board.status === 'open' ? 'event' : '' },
+    board.ability_era && { label: board.ability_era, cls: '' },
+    board.max_players && { label: 'Max ' + board.max_players, cls: '' },
+  ].filter(Boolean);
+  var _ptag=document.getElementById('partTags');if(_ptag)_ptag.innerHTML= tags.map(t =>
+    '<span class="part-tag ' + t.cls + '">' + t.label + '</span>'
+  ).join('');
+
+  // Sidebar info
+  document.getElementById('sideStatus').textContent  = statusLabels[board.status] || board.status;
+  document.getElementById('sideEra').textContent      = board.era || '—';
+  document.getElementById('sideAbility').textContent  = board.ability_era || '—';
+  document.getElementById('sideGM').textContent       = board.gm_username || '—';
 
   await Promise.all([loadPartThreads(board), loadPartRoster(board)]);
 }
 
 async function loadPartThreads(board) {
-  const el = document.getElementById('partThreads');
-  if(!el || !sb2) return;
-
-  const { data, error } = await sb2.from('threads')
-    .select('id,title,category,character_name,created_at')
+  const { data } = await sb2.from('threads')
+    .select('id,title,category,character_name,player_username,tags,created_at')
     .eq('board_name', board.title)
-    .order('created_at', { ascending: false })
-    .limit(20);
+    .order('created_at', {ascending:false})
+    .limit(30);
+  allThreads = data || [];
+  renderThreads();
+}
 
-  if(error || !data || !data.length) {
-    el.innerHTML = '<div class="part-empty">No threads yet. Be the first to open one.</div>';
+function setThreadFilter(f, btn) {
+  threadFilter = f;
+  document.querySelectorAll('[onclick^="setThreadFilter"]').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderThreads();
+}
+
+function renderThreads() {
+  const el = document.getElementById('partThreads');
+  let list = allThreads;
+  if(threadFilter !== 'all') list = allThreads.filter(t => t.category === threadFilter);
+
+  if(!list.length) {
+    el.innerHTML = '<div class="thread-empty">' +
+      (threadFilter !== 'all' ? 'No ' + threadFilter + ' threads yet.' : 'No threads yet. Be the first to open one.') +
+      '</div>';
     return;
   }
 
-  const catEmoji = {battle:'⚔',social:'☕',investigation:'🔍',arc:'📖',training:'🥊'};
-  el.innerHTML = data.map(t => `
-    <div class="thread-row" onclick="window.location.href='thread.html?id=${t.id}'">
-      <span class="tr-cat">${catEmoji[t.category]||'📝'}</span>
-      <div class="tr-info">
-        <div class="tr-title">${t.title}</div>
-        <div class="tr-meta">by ${t.character_name||'Unknown'} · ${new Date(t.created_at).toLocaleDateString()}</div>
-      </div>
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;opacity:.4"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>`).join('');
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - new Date(ts);
+  const m = Math.floor(diff/60000), h = Math.floor(m/60), d = Math.floor(h/24);
+  if(d > 0) return d + 'd ago';
+  if(h > 0) return h + 'h ago';
+  if(m > 0) return m + 'm ago';
+  return 'Just now';
 }
 
 async function loadPartRoster(board) {
-  const el = document.getElementById('partRoster');
-  if(!el || !sb2) return;
-
-  const { data, error } = await sb2.from('ocs')
-    .select('id,name,player_username,ability_type,stand_name,race')
+  const { data } = await sb2.from('ocs')
+    .select('id,name,player_username,ability_type,stand_name')
     .eq('board_name', board.title)
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false });
+    .eq('status','approved')
+    .order('created_at',{ascending:false});
 
-  if(error || !data || !data.length) {
-    el.innerHTML = '<div class="part-empty">No approved characters in this Part yet.</div>';
-    return;
-  }
+  const el = document.getElementById('sideRoster');
+  const count = document.getElementById('sideRosterCount');
+  const players = document.getElementById('sidePlayers');
+  if(count) count.textContent = (data?.length||0) + ' chars';
+  if(players) players.textContent = (data?.length||0) + ' / ' + (board.max_players||8);
 
-  const abLabels = {stand:'Stand User',hamon:'Hamon User',spin:'Spin User',vampire:'Vampire',pillar:'Pillar Man',none:'Human'};
-  const abColors = {stand:'#7E3AA0',hamon:'#B08000',spin:'#4A8C00',vampire:'#8B0000',pillar:'#7A4A00',none:'#555'};
+  if(!data?.length) { el.innerHTML = '<div style="padding:.85rem;font-family:Inter,sans-serif;font-size:.75rem;color:var(--text-xs);text-align:center;">No characters yet.</div>'; return; }
 
-  el.innerHTML = data.map(oc => {
-    const col = abColors[oc.ability_type||'none'] || '#555';
-    return `<div class="part-char-row" onclick="window.location.href='character.html?id=${oc.id}'">
-      <div class="pcr-avatar" style="background:${col};">${(oc.name||'?').charAt(0)}</div>
-      <div class="pcr-info">
-        <div class="pcr-name">${oc.name}</div>
-        <div class="pcr-player">@${oc.player_username||'?'} · ${abLabels[oc.ability_type||'none']}</div>
-      </div>
-      ${oc.stand_name ? `<span class="pcr-stand">✦ ${oc.stand_name}</span>` : ''}
-    </div>`;
-  }).join('');
-  document.getElementById('partRosterCount').textContent = data.length + ' character' + (data.length !== 1 ? 's' : '');
 }
 
-function openThreadModal() {
-  // Pre-fill board in the thread modal and redirect to index
-  sessionStorage.setItem('preselect_board', document.getElementById('partTitle')?.textContent || '');
-  window.location.href = 'index.html#hub';
+function openNewThread() {
+  sessionStorage.setItem('preselect_board', boardData?.title || '');
+  window.location.href = 'index.html';
 }
 
-(async () => {
-  await initPartAuth();
-  await loadPart();
+// Filter button active state
+document.getElementById('tf-all')?.classList.add('active');
+
+if(BOARD_ID) loadPart();
+
+
+/* ── Theme persistence ──────────────────────────────────── */
+(function(){
+  try {
+    var t = localStorage.getItem('rp_theme');
+    if(t && t !== 'dark') document.body.classList.add('theme-' + t);
+  } catch(e){}
 })();
 
 </script>
