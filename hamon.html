@@ -1635,6 +1635,8 @@
     border-color: var(--gold);
   }
 
+
+  #notifBadge { pointer-events: none; }
 </style>
 </head>
 <body>
@@ -1670,11 +1672,14 @@
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
     <li><a href="tos.html">Rules</a></li>
-    <li><a href="about.html">About JoJo</a></li>
+    <li><a href="about.html">New to JoJo?</a></li>
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
     <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
+    <button class="btn btn-ghost btn-sm" id="notifBell" onclick="toggleNotifPanel()" title="Notifications" style="position:relative;font-size:.85rem;padding:.28rem .5rem;">
+      🔔<span id="notifBadge" style="display:none;position:absolute;top:-2px;right:-2px;background:var(--pink);color:#fff;font-family:Inter,sans-serif;font-size:.5rem;font-weight:700;min-width:14px;height:14px;line-height:14px;text-align:center;padding:0 2px;"></span>
+    </button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1715,7 +1720,7 @@
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
     <li><a href="tos.html">Rules</a></li>
-    <li><a href="about.html">About JoJo</a></li>
+    <li><a href="about.html">New to JoJo?</a></li>
   </ul>
   <div class="nav-right">
     <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openOCModal()">+ OC</button>
@@ -2503,6 +2508,120 @@ function setTheme(t) {
   var btn = document.getElementById('darkModeBtn');
   if (btn) btn.textContent = t === 'dark' ? '\uD83C\uDF19' : '\uD83C\uDFA8';
 }
+
+
+
+/* ── Notifications (bell) ─────────────────────────────────── */
+async function initNotifBell() {
+  if (!sb) return;
+  var s;
+  try { var r = await sb.auth.getSession(); s = r.data.session; } catch(e){ return; }
+  if (!s) return;
+  var res = await sb.from('notifications')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', s.user.id).eq('read', false);
+  var cnt = res.count || 0;
+  var badge = document.getElementById('notifBadge');
+  if (badge) { badge.textContent = cnt > 9 ? '9+' : (cnt || ''); badge.style.display = cnt > 0 ? '' : 'none'; }
+  var bell = document.getElementById('notifBell');
+  if (bell && cnt > 0) bell.style.color = 'var(--gold-l)';
+}
+
+function toggleNotifPanel() {
+  var panel = document.getElementById('notifPanel');
+  if (panel) {
+    panel.style.display = panel.style.display === 'none' ? '' : 'none';
+    if (panel.style.display !== 'none') populateNotifPanel();
+    return;
+  }
+  panel = document.createElement('div');
+  panel.id = 'notifPanel';
+  panel.style.position = 'fixed';
+  panel.style.top = '56px';
+  panel.style.right = '1rem';
+  panel.style.background = 'rgba(7,0,13,.97)';
+  panel.style.border = '1px solid var(--border)';
+  panel.style.width = '310px';
+  panel.style.maxHeight = '400px';
+  panel.style.overflowY = 'auto';
+  panel.style.zIndex = '9000';
+  panel.style.backdropFilter = 'blur(20px)';
+  panel.style.boxShadow = '0 8px 32px rgba(0,0,0,.5)';
+
+  var hd = document.createElement('div');
+  hd.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.6rem .85rem;border-bottom:1px solid var(--border);';
+  hd.innerHTML = '<span style="font-family:Cinzel,serif;font-size:.8rem;font-weight:700;color:var(--text);">Notifications</span>';
+  var markBtn = document.createElement('button');
+  markBtn.textContent = 'Mark all read';
+  markBtn.style.cssText = 'background:none;border:none;font-family:Inter,sans-serif;font-size:.62rem;color:var(--text-xs);cursor:pointer;letter-spacing:.05em;text-transform:uppercase;';
+  markBtn.onclick = markAllNotifsRead;
+  hd.appendChild(markBtn);
+  panel.appendChild(hd);
+
+  var inner = document.createElement('div');
+  inner.id = 'notifListInner';
+  inner.style.padding = '.4rem 0';
+  inner.textContent = 'Loading…';
+  panel.appendChild(inner);
+
+  document.body.appendChild(panel);
+  populateNotifPanel();
+  setTimeout(function() {
+    document.addEventListener('click', function fn(e) {
+      if (!panel.contains(e.target) && e.target.id !== 'notifBell') {
+        panel.style.display = 'none';
+        document.removeEventListener('click', fn);
+      }
+    });
+  }, 50);
+}
+
+async function populateNotifPanel() {
+  if (!sb) return;
+  var res = await sb.auth.getSession();
+  var s = res.data.session;
+  var el = document.getElementById('notifListInner');
+  if (!el) return;
+  if (!s) { el.innerHTML = '<div style="padding:.85rem;text-align:center;font-family:Inter,sans-serif;font-size:.75rem;color:var(--text-xs);">Sign in to see notifications.</div>'; return; }
+  var q = await sb.from('notifications').select('*').eq('user_id', s.user.id)
+    .order('created_at', { ascending: false }).limit(15);
+  if (!q.data || !q.data.length) {
+    el.innerHTML = '<div style="padding:.85rem;text-align:center;font-family:Inter,sans-serif;font-size:.75rem;color:var(--text-xs);">No notifications yet.</div>';
+    return;
+  }
+  el.innerHTML = '';
+  q.data.forEach(function(n) {
+    var row = document.createElement('div');
+    row.style.cssText = 'padding:.55rem .85rem;border-bottom:1px solid var(--border);cursor:pointer;font-family:DM Sans,sans-serif;' + (n.read ? '' : 'border-left:2px solid var(--gold-d);');
+    row.onclick = function() { openNotif(n.id, n.link || ''); };
+    var msg = document.createElement('div');
+    msg.style.cssText = 'font-size:.82rem;color:' + (n.read ? 'var(--text-dim)' : 'var(--text)') + ';';
+    msg.textContent = n.message || '';
+    var ts = document.createElement('div');
+    ts.style.cssText = 'font-family:Inter,sans-serif;font-size:.6rem;color:var(--text-xs);margin-top:.15rem;';
+    ts.textContent = new Date(n.created_at).toLocaleDateString();
+    row.appendChild(msg); row.appendChild(ts);
+    el.appendChild(row);
+  });
+}
+
+async function openNotif(id, link) {
+  if (sb) {
+    var r = await sb.auth.getSession();
+    if (r.data.session) await sb.from('notifications').update({ read: true }).eq('id', id);
+  }
+  if (link) window.location.href = link;
+  initNotifBell();
+}
+
+async function markAllNotifsRead() {
+  if (!sb) return;
+  var r = await sb.auth.getSession();
+  if (r.data.session) await sb.from('notifications').update({ read: true }).eq('user_id', r.data.session.user.id);
+  initNotifBell(); populateNotifPanel();
+}
+
+initNotifBell();
 
 </script>
 </body>
