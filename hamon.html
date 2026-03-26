@@ -653,6 +653,60 @@
   body.light-mode #mpToggle { background: rgba(245,238,255,.95); border-color: rgba(120,60,180,.3); color: var(--gold-d); }
   body.light-mode #mpPanel { background: rgba(245,238,255,.98); border-color: rgba(120,60,180,.25); }
 
+  /* Auth bar */
+  body.light-mode #authBar {
+    background: rgba(240,232,255,.94);
+    border-bottom-color: rgba(120,60,180,.15);
+  }
+  body.light-mode #authBar.gm-active {
+    background: rgba(235,222,255,.96);
+    border-bottom-color: rgba(120,60,180,.28);
+  }
+
+  /* Mobile music player bar & pill */
+  body.light-mode #mp {
+    background: rgba(245,238,255,.98);
+    border-top-color: rgba(120,60,180,.2);
+    box-shadow: 0 -4px 24px rgba(80,40,120,.12);
+  }
+  body.light-mode #mp > button { color: var(--text-xs); }
+  body.light-mode #mp > button:hover { color: var(--pink); }
+  body.light-mode #mpToggleBtn {
+    background: rgba(245,238,255,.96);
+    border-color: rgba(120,60,180,.3);
+    color: var(--text-dim);
+  }
+
+  /* Forum rows */
+  body.light-mode .fr { background: rgba(245,238,255,.88); }
+  body.light-mode .fr:hover { background: rgba(238,226,255,.98); }
+  body.light-mode .fr-img::after {
+    background: linear-gradient(90deg, transparent, rgba(240,232,255,.65));
+  }
+  body.light-mode .fr-tip {
+    background: rgba(248,242,255,.99);
+    border-color: rgba(120,60,180,.25);
+    color: var(--text-dim);
+    box-shadow: 0 4px 16px rgba(80,40,120,.12);
+  }
+
+  /* Back bar / breadcrumb */
+  body.light-mode .back-bar {
+    background: rgba(240,232,255,.88);
+    border-bottom-color: rgba(120,60,180,.15);
+  }
+
+  /* .ds info blocks (responsive overrides) */
+  body.light-mode .ds {
+    background: rgba(245,238,255,.88) !important;
+    border-color: rgba(120,60,180,.18) !important;
+  }
+
+  /* Scrollbar */
+  body.light-mode ::-webkit-scrollbar-track { background: rgba(235,222,255,.5); }
+  body.light-mode ::-webkit-scrollbar-thumb { background: rgba(120,60,180,.25); }
+  body.light-mode ::-webkit-scrollbar-thumb:hover { background: rgba(120,60,180,.4); }
+
   /* ============================================================
      KEYFRAMES
   ============================================================ */
