@@ -1862,6 +1862,15 @@
   .act-ts { font-family: 'Inter',sans-serif; font-size: .6rem; color: var(--text-xs); flex-shrink: 0; }
   @media(max-width:600px){ #activity{ padding:0 .85rem 1.5rem; } }
 
+
+  .avail-btn {
+    background: none; border: none;
+    font-size: .85rem; cursor: pointer;
+    padding: 0 .35rem; color: var(--text-xs);
+    transition: color .15s;
+  }
+  .avail-btn:hover { color: #81C784; }
+
 </style>
 </head>
 <body>
@@ -1928,6 +1937,11 @@
   </div>
 
   <div class="auth-sep"></div>
+  <button class="avail-btn" id="availBtn"
+    onclick="toggleAvailability()"
+    title="Toggle RP Availability"
+    style="display:none;"
+    >⚡</button>
   <button class="notif-bell" id="notifBell" onclick="toggleNotifPanel()" title="Notifications" style="display:none;">
     🔔<span class="notif-badge" id="notifBadge" style="display:none;">0</span>
   </button>
@@ -3087,12 +3101,15 @@ function refreshAuthUI() {
     body.classList.remove('logged-out');
     initChat();
     loadNotifications();
+    loadAvailability();
     const meta   = currentUser.user_metadata || {};
     const name   = currentProfile?.username || meta.full_name || meta.name || currentUser.email?.split('@')[0] || 'Player';
     const avatar = currentProfile?.avatar_url || meta.avatar_url || '';
     const roleEl = document.getElementById('authRole');
     const avEl   = document.getElementById('authAvatar');
     const unEl   = document.getElementById('authUsername');
+    const avBtn  = document.getElementById('availBtn');
+    if(avBtn) avBtn.style.display = '';
     if (avEl)   { avEl.src = avatar; avEl.style.display = avatar ? '' : 'none'; }
     if (unEl)   unEl.textContent = name;
     if (roleEl) {
@@ -4252,7 +4269,7 @@ async function loadRoster(filter={}) {
   if(!grid || !sb) return;
 
   let query = sb.from('ocs')
-    .select('id,name,player_username,race,ability_type,stand_name,stand_type,stand_stats,personality,image_url,board_name,created_at')
+    .select('id,name,player_username,race,ability_type,stand_name,stand_type,stand_stats,personality,image_url,board_name,created_at,available_to_rp')
     .eq('status','approved')
     .order('created_at', { ascending: false });
 
@@ -4298,7 +4315,7 @@ function renderRosterCard(oc) {
         <div class="oc-avatar">${oc.name?.charAt(0)||'?'}</div>
         <div class="oc-card-info">
           <div class="oc-card-name">${oc.name||'Unknown'}</div>
-          <div class="oc-card-player">@${oc.player_username||'?'}</div>
+          <div class="oc-card-player">@${oc.player_username||'?'} ${oc.available_to_rp ? '<span style="color:#81C784;font-size:.7rem;" title="Available to RP">⚡</span>' : ''}</div>
         </div>
         <span class="oc-ab-badge" style="background:rgba(${hexToRgb(col)},.12);border-color:${col}40;color:${col};">${abLabels[ab]}</span>
       </div>
@@ -4566,6 +4583,37 @@ async function submitThread() {
         closeModal('threadModal');
         window.location.href='thread.html?id='+thread.id;
       },800);
+    }
+  }
+}
+
+
+/* ── RP Availability toggle ─────────────────────────────── */
+let isAvailable = false;
+
+async function toggleAvailability() {
+  if(!sb || !currentUser) return;
+  isAvailable = !isAvailable;
+  const btn = document.getElementById('availBtn');
+  if(btn) {
+    btn.textContent = isAvailable ? '⚡' : '○';
+    btn.title = isAvailable ? 'Available to RP (click to toggle)' : 'Not available (click to toggle)';
+    btn.style.color = isAvailable ? '#81C784' : 'var(--text-xs)';
+  }
+  await sb.from('profiles').update({ available_to_rp: isAvailable }).eq('id', currentUser.id);
+  // Refresh roster to show updated dot
+  loadRoster(rosterFilter);
+}
+
+async function loadAvailability() {
+  if(!sb || !currentUser) return;
+  const { data } = await sb.from('profiles').select('available_to_rp').eq('id', currentUser.id).maybeSingle();
+  if(data) {
+    isAvailable = !!data.available_to_rp;
+    const btn = document.getElementById('availBtn');
+    if(btn) {
+      btn.textContent = isAvailable ? '⚡' : '○';
+      btn.style.color = isAvailable ? '#81C784' : 'var(--text-xs)';
     }
   }
 }
