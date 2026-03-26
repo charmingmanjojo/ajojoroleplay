@@ -1693,6 +1693,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1736,6 +1737,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1759,6 +1761,8 @@
     <div style="display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;">
       <button class="btn btn-gold" onclick="openNewThread()" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">+ Open a Thread</button>
       <a href="index.html#roster" class="btn btn-ghost" style="text-decoration:none;">View Full Roster</a>
+      <button class="btn btn-ghost" id="ambientBtn" onclick="toggleAmbient()" style="display:none;" title="Toggle ambient audio">🎵 Ambient</button>
+      <button class="btn btn-ghost" id="ambientBtn" onclick="toggleAmbient()" style="display:none;" title="Toggle ambient music">🎵 Ambience</button>
     </div>
   </div>
 </div>
@@ -1807,7 +1811,39 @@
     </div>
 
     <!-- Join callout -->
-    <div id="joinCallout" style="background:rgba(200,150,12,.05);border:1px solid rgba(200,150,12,.2);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-dim);line-height:1.6;">
+    <!-- World Notes (GM editable) -->
+    <div class="sidebar-card" id="worldNotesCard" style="display:none;">
+      <div class="sidebar-hd">📌 World Notes
+        <button id="editNotesBtn" class="btn btn-ghost btn-sm" onclick="toggleEditNotes()" style="display:none;font-size:.58rem;padding:.12rem .4rem;">Edit</button>
+      </div>
+      <div id="worldNotes" style="padding:.75rem .85rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-dim);line-height:1.7;white-space:pre-wrap;"></div>
+      <div id="worldNotesEdit" style="display:none;padding:.65rem .85rem;">
+        <textarea id="worldNotesInput" style="width:100%;background:rgba(7,0,13,.5);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.45rem .65rem;min-height:120px;outline:none;resize:vertical;line-height:1.6;"></textarea>
+        <div style="display:flex;gap:.4rem;margin-top:.4rem;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="cancelEditNotes()">Cancel</button>
+          <button class="btn btn-gold btn-sm" onclick="saveWorldNotes()">Save</button>
+        </div>
+      </div>
+    </div>
+
+        <!-- World Notes (GM editable) -->
+    <div class="sidebar-card" id="worldNotesCard" style="display:none;">
+      <div class="sidebar-hd">
+        📜 World Notes
+        <button class="btn btn-ghost btn-sm gm-edit-btn" id="editNotesBtn" onclick="toggleEditNotes()" style="display:none;font-size:.6rem;padding:.12rem .4rem;">Edit</button>
+      </div>
+      <div id="worldNotesContent" style="padding:.75rem .85rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-dim);line-height:1.7;white-space:pre-wrap;"></div>
+      <div id="worldNotesEdit" style="display:none;padding:.65rem .85rem;">
+        <textarea id="worldNotesTA" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem;resize:vertical;min-height:120px;outline:none;" placeholder="House rules, active NPCs, locations, plot hooks…"></textarea>
+        <div style="display:flex;gap:.4rem;margin-top:.4rem;">
+          <button class="btn btn-gold btn-sm" onclick="saveWorldNotes()">Save</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleEditNotes()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="joinCallout"
+ style="background:rgba(200,150,12,.05);border:1px solid rgba(200,150,12,.2);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-dim);line-height:1.6;">
       <strong style="color:var(--gold-l);">Want to join this Part?</strong><br>
       Submit your OC from the main page and mention this Part in your GM notes. Characters are approved and assigned by the GM team.
       <div style="margin-top:.65rem;">
@@ -2500,7 +2536,8 @@ async function loadPart() {
   document.getElementById('sideAbility').textContent  = board.ability_era || '—';
   document.getElementById('sideGM').textContent       = board.gm_username || '—';
 
-  await Promise.all([loadPartThreads(board), loadPartRoster(board)]);
+  await Promise.all([loadPartThreads(board), loadPartRoster(board), loadWorldNotes(board.id)]);
+  if(board.playlist_id) initAmbient(board.playlist_id);
 }
 
 async function loadPartThreads(board) {
@@ -2578,6 +2615,208 @@ if(BOARD_ID) loadPart();
     if(t && t !== 'dark') document.body.classList.add('theme-' + t);
   } catch(e){}
 })();
+
+
+/* ── Theme toggle (sub-page) ──────────────────────────────── */
+function toggleThemePicker() {
+  var p = document.getElementById('themePicker');
+  if(p) { p.style.display = p.style.display === 'block' ? 'none' : 'block'; return; }
+  // Build picker inline if not present
+  var div = document.createElement('div');
+  div.id = 'themePicker';
+  div.style.cssText = 'position:fixed;bottom:60px;right:1rem;background:rgba(7,0,13,.97);border:1px solid var(--border);padding:.75rem;z-index:800;width:200px;';
+  div.innerHTML = '<div style="font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-xs);margin-bottom:.55rem;">🎨 Theme</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">' +
+    ['dark:🌙 Dark:#07000D:#C8960C','sbr-pink:SBR Pink:#FF0088:#fff','sbr-teal:Ocean:#00AAAA:#002020','jojolion:Manga:#F5F5F5:#111','vento:Part 5:#F0B800:#1A1000']
+    .map(function(s){var p=s.split(':');return '<div onclick="setTheme(\''+p[0]+'\')" style="padding:.4rem;cursor:pointer;background:'+p[2]+';color:'+p[3]+';font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;text-align:center;border:2px solid transparent;">'+p[1]+'</div>';})
+    .join('') + '</div>';
+  document.body.appendChild(div);
+  document.addEventListener('click', function(e){ if(!div.contains(e.target) && e.target.id !== 'darkModeBtn') div.style.display='none'; },{once:false});
+}
+
+function setTheme(theme) {
+  var THEMES = ['dark','sbr-pink','sbr-teal','jojolion','vento'];
+  THEMES.forEach(function(t){ document.body.classList.remove('theme-'+t); });
+  if(theme !== 'dark') document.body.classList.add('theme-'+theme);
+  try { localStorage.setItem('rp_theme', theme); } catch(e){}
+  var p = document.getElementById('themePicker');
+  if(p) p.style.display = 'none';
+  var btn = document.getElementById('darkModeBtn');
+  if(btn) btn.textContent = theme === 'dark' ? '🌙' : '🎨';
+}
+
+
+
+/* ── Ambient audio per Part ──────────────────────────────── */
+let ambientPlayer = null;
+let ambientOn = false;
+
+function initAmbient(playlistId) {
+  if(!playlistId) return;
+  const btn = document.getElementById('ambientBtn');
+  if(btn) btn.style.display = '';
+
+  // Load YouTube iframe for ambient if not already loaded
+  if(!ambientPlayer && window.YT) {
+    const div = document.createElement('div');
+    div.id = 'ambientYT';
+    div.style.display = 'none';
+    document.body.appendChild(div);
+
+    ambientPlayer = new YT.Player('ambientYT', {
+      videoId: '',
+      playerVars: {
+        listType: 'playlist',
+        list: playlistId,
+        autoplay: 0,
+        loop: 1,
+        controls: 0,
+      },
+      events: {
+        onReady: (e) => {
+          e.target.setVolume(25);
+        }
+      }
+    });
+  }
+}
+
+function toggleAmbient() {
+  const btn = document.getElementById('ambientBtn');
+  ambientOn = !ambientOn;
+  if(btn) {
+    btn.textContent = ambientOn ? '🔇 Ambience' : '🎵 Ambience';
+    btn.style.color = ambientOn ? 'var(--gold-l)' : '';
+  }
+  if(ambientPlayer) {
+    ambientOn ? ambientPlayer.playVideo() : ambientPlayer.pauseVideo();
+  }
+}
+
+
+/* ── World Notes (GM editable) ──────────────────────────── */
+async function loadWorldNotes(boardId) {
+  if(!sb2) return;
+  const { data } = await sb2.from('boards').select('world_notes').eq('id', boardId).single();
+  const card = document.getElementById('worldNotesCard');
+  const el   = document.getElementById('worldNotes');
+  if(data?.world_notes) {
+    if(card) card.style.display = '';
+    if(el)   el.textContent = data.world_notes;
+  }
+  // Show edit button for GMs
+  const { data:{ session } } = await sb2.auth.getSession();
+  if(session) {
+    const { data:gm } = await sb2.from('gm_roles')
+      .select('role').eq('auth_id', session.user.id).eq('is_active',true).maybeSingle();
+    if(gm) {
+      if(card) card.style.display = '';
+      document.getElementById('editNotesBtn')?.style && (document.getElementById('editNotesBtn').style.display = '');
+    }
+  }
+}
+
+function toggleEditNotes() {
+  const notes = document.getElementById('worldNotes');
+  const edit  = document.getElementById('worldNotesEdit');
+  const input = document.getElementById('worldNotesInput');
+  if(edit.style.display === 'none') {
+    if(input) input.value = notes?.textContent || '';
+    notes.style.display = 'none';
+    edit.style.display  = '';
+  } else {
+    cancelEditNotes();
+  }
+}
+
+function cancelEditNotes() {
+  document.getElementById('worldNotes').style.display = '';
+  document.getElementById('worldNotesEdit').style.display = 'none';
+}
+
+async function saveWorldNotes() {
+  const val = document.getElementById('worldNotesInput')?.value.trim();
+  if(!sb2 || !BOARD_ID) return;
+  await sb2.from('boards').update({ world_notes: val }).eq('id', BOARD_ID);
+  document.getElementById('worldNotes').textContent = val;
+  const card = document.getElementById('worldNotesCard');
+  if(card && val) card.style.display = '';
+  cancelEditNotes();
+}
+
+/* ── Ambient Audio ───────────────────────────────────────── */
+ambientPlayer = null;
+let ambientPlaying = false;
+
+function initAmbient(playlistId) {
+  if(!playlistId) return;
+  const btn = document.getElementById('ambientBtn');
+  if(btn) btn.style.display = '';
+}
+
+function toggleAmbient() {
+  const btn = document.getElementById('ambientBtn');
+  if(!boardData?.ambient_playlist) return;
+
+  if(!ambientPlayer) {
+    // Create hidden iframe for ambient audio
+    const frame = document.createElement('iframe');
+    frame.id = 'ambientFrame';
+    frame.style.display = 'none';
+    frame.src = 'https://www.youtube.com/embed/videoseries?list=' + boardData.ambient_playlist + '&autoplay=1&loop=1&controls=0';
+    frame.allow = 'autoplay';
+    document.body.appendChild(frame);
+    ambientPlayer = frame;
+    ambientPlaying = true;
+    if(btn) { btn.textContent = '🔇 Ambient'; btn.style.color = 'var(--gold-l)'; }
+  } else {
+    ambientPlaying = !ambientPlaying;
+    if(ambientPlaying) {
+      ambientPlayer.src = ambientPlayer.src; // reload
+      if(btn) { btn.textContent = '🔇 Ambient'; btn.style.color = 'var(--gold-l)'; }
+    } else {
+      ambientPlayer.src = '';
+      if(btn) { btn.textContent = '🎵 Ambient'; btn.style.color = ''; }
+    }
+  }
+}
+
+/* ── World Notes (GM) ────────────────────────────────────── */
+function initWorldNotes(notes, isGM) {
+  const card = document.getElementById('worldNotesCard');
+  const content = document.getElementById('worldNotesContent');
+  const editBtn = document.getElementById('editNotesBtn');
+  const ta = document.getElementById('worldNotesTA');
+
+  if(notes) {
+    if(card) card.style.display = '';
+    if(content) content.textContent = notes;
+    if(ta) ta.value = notes;
+  } else if(isGM) {
+    if(card) card.style.display = '';
+    if(content) content.textContent = 'No world notes yet. Click Edit to add rules, NPCs, and locations.';
+    if(content) content.style.color = 'var(--text-xs)';
+  }
+
+  if(isGM && editBtn) editBtn.style.display = '';
+}
+
+function toggleEditNotes() {
+  const content = document.getElementById('worldNotesContent');
+  const edit    = document.getElementById('worldNotesEdit');
+  const showing = edit.style.display !== 'none';
+  content.style.display = showing ? '' : 'none';
+  edit.style.display    = showing ? 'none' : '';
+}
+
+async function saveWorldNotes() {
+  const notes = document.getElementById('worldNotesTA')?.value.trim();
+  if(!sb2 || !BOARD_ID) return;
+  const { error } = await sb2.from('boards').update({ world_notes: notes }).eq('id', BOARD_ID);
+  if(error) { alert('Error saving: ' + error.message); return; }
+  document.getElementById('worldNotesContent').textContent = notes || '(empty)';
+  toggleEditNotes();
+}
 
 </script>
 </body>
