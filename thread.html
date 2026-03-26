@@ -1647,6 +1647,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1690,6 +1691,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1734,8 +1736,24 @@
   </div>
 
   <!-- Reply Box (logged in users only) -->
+  <div class="now-writing" id="nowWriting" style="display:none;"></div>
+
+  <div class="writing-indicator" id="writingIndicator" style="display:none;font-family:Inter,sans-serif;font-size:.72rem;color:var(--text-xs);padding:.35rem .5rem;font-style:italic;">…</div>
   <div class="reply-box" id="replyBox" style="display:none;">
-    <div class="reply-box-title">Write a Reply</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;">
+      <span class="reply-box-title">Write a Reply</span>
+      <select class="rp-btn" id="postMoodSel" title="Post mood tag" style="cursor:pointer;">
+        <option value="">No mood tag</option>
+        <option value="tense">😤 Tense</option>
+        <option value="calm">😌 Calm</option>
+        <option value="dramatic">🎭 Dramatic</option>
+        <option value="action">⚔ Action</option>
+        <option value="playful">😄 Playful</option>
+        <option value="sad">💔 Sad</option>
+        <option value="smug">😏 Smug</option>
+        <option value="confused">😕 Confused</option>
+      </select>
+    </div>
 
      <div class="reply-toolbar">
       <div class="toolbar-row">
@@ -1776,7 +1794,7 @@
 
     <textarea class="fta" id="replyContent" style="min-height:160px;"
       placeholder="Write your reply… Use *action* for actions, &quot;quotes&quot; for dialogue, [[OOC]] for out-of-character notes."
-      oninput="updateCharCount()"></textarea>
+      oninput="onReplyInput()"></textarea>
     <div class="char-count-bar"><span id="replyWordCount">0 words</span> · <span id="replyCharCount">0</span> / 2000 chars · <span id="draftIndicator" style="opacity:0;transition:opacity .5s;color:var(--gold-d);">Draft saved</span></div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem;">
@@ -1793,6 +1811,223 @@
     <a href="login.html" class="btn btn-gold" style="text-decoration:none;">Sign In →</a>
   </div>
 </div>
+
+<!-- Stand Cry Overlay -->
+<div id="standCryOverlay" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(7,0,13,.92);display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;pointer-events:none;opacity:0;transition:opacity .3s;">
+  <div id="standCryText" style="
+    font-family:'Cinzel',serif;font-size:clamp(2.5rem,8vw,6rem);font-weight:900;
+    color:var(--gold-l);text-align:center;letter-spacing:.1em;
+    text-shadow:0 0 40px rgba(200,150,12,.8),0 0 80px rgba(200,150,12,.4);
+    animation:standCryPulse 0.15s ease infinite alternate;
+    line-height:1.1;"></div>
+  <div style="font-family:'Inter',sans-serif;font-size:.9rem;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--gold-d);opacity:.8;">CRITICAL HIT</div>
+  <div id="standCryNat" style="font-family:'Cinzel',serif;font-size:3rem;font-weight:900;
+    color:#FFD700;text-shadow:0 0 30px #FFD700;"></div>
+</div>
+
+<style>
+@keyframes standCryPulse {
+  from { transform: scale(1) skewX(-2deg); }
+  to   { transform: scale(1.04) skewX(2deg); }
+}
+@keyframes standCryIn {
+  0%   { opacity:0; transform:scale(.5); }
+  60%  { opacity:1; transform:scale(1.08); }
+  100% { opacity:1; transform:scale(1); }
+}
+
+  /* ── Mood atmosphere ─────────────────────────────────────── */
+  body.mood-tense    { --mood-col: rgba(200,0,30,.08); }
+  body.mood-calm     { --mood-col: rgba(0,120,180,.08); }
+  body.mood-dramatic { --mood-col: rgba(120,0,180,.1); }
+  body.mood-action   { --mood-col: rgba(200,80,0,.1); }
+  body.mood-slice    { --mood-col: rgba(0,180,80,.06); }
+  body[class*='mood-'] .t-header { background: var(--mood-col); }
+  body[class*='mood-'] .post-body { line-height: 2; }
+
+  /* Reactions */
+  .post-reactions {
+    display: flex; align-items: center; gap: .25rem;
+    padding: .35rem .9rem .45rem;
+    border-top: 1px solid rgba(94,26,122,.1);
+    background: rgba(0,0,0,.1);
+    flex-wrap: wrap;
+  }
+  .react-btn {
+    background: none; border: 1px solid transparent;
+    font-size: .88rem; cursor: pointer; padding: .1rem .35rem;
+    border-radius: 2px; transition: all .15s;
+    opacity: .6;
+  }
+  .react-btn:hover { opacity:1; border-color:var(--border); background:rgba(94,26,122,.1); }
+  .react-counts { display:flex; gap:.25rem; flex-wrap:wrap; }
+  .react-count {
+    font-family:'Inter',sans-serif; font-size:.68rem;
+    background:rgba(94,26,122,.12); border:1px solid rgba(126,58,160,.2);
+    padding:.08rem .4rem; color:var(--text-dim); letter-spacing:.02em;
+  }
+
+  /* Now writing */
+  .now-writing {
+    font-family:'Inter',sans-serif; font-size:.72rem;
+    color:var(--text-xs); letter-spacing:.05em;
+    padding:.35rem .9rem; font-style:italic;
+    min-height: 1.5rem;
+  }
+  .now-writing::after { content:'...'; animation: ellipsis 1.2s infinite; }
+  @keyframes ellipsis {
+    0%,100% { opacity:0; } 50% { opacity:1; }
+  }
+
+
+  /* ── Post Reactions ───────────────────────────────────── */
+  .post-reactions { padding: .35rem .85rem .5rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  .reaction-btns  { display:flex; gap:.2rem; }
+  .react-btn {
+    background:none; border:1px solid var(--border); color:var(--text-xs);
+    font-size:.85rem; padding:.12rem .38rem; cursor:pointer;
+    transition:all .15s; line-height:1;
+  }
+  .react-btn:hover { background:rgba(200,150,12,.08); border-color:var(--gold-d); transform:scale(1.15); }
+  .reaction-counts { display:flex; gap:.3rem; flex-wrap:wrap; }
+  .reaction-chip {
+    font-family:'Inter',sans-serif; font-size:.72rem;
+    background:rgba(0,0,0,.2); border:1px solid var(--border);
+    padding:.12rem .45rem; cursor:pointer; transition:all .15s;
+    display:inline-flex; align-items:center; gap:.2rem;
+  }
+  .reaction-chip:hover { background:rgba(200,150,12,.1); border-color:var(--gold-d); }
+  .reaction-chip.mine { background:rgba(200,150,12,.12); border-color:var(--gold-d); color:var(--gold-l); }
+
+  /* ── Typing Indicator ─────────────────────────────────── */
+  .typing-indicator {
+    display:none; align-items:center; gap:.5rem;
+    padding:.5rem 1rem; font-family:'DM Sans',sans-serif;
+    font-size:.78rem; color:var(--text-xs);
+    font-style:italic; margin-bottom:.35rem;
+  }
+  .typing-dots { display:flex; gap:.15rem; }
+  .typing-dots span {
+    animation: typingBounce .8s infinite;
+    font-size:1.1rem; line-height:1;
+  }
+  .typing-dots span:nth-child(2) { animation-delay:.15s; }
+  .typing-dots span:nth-child(3) { animation-delay:.3s; }
+  @keyframes typingBounce {
+    0%,80%,100% { transform:translateY(0); opacity:.4; }
+    40% { transform:translateY(-4px); opacity:1; }
+  }
+  .typing-text { color:var(--text-dim); }
+
+  /* ── Stand Cry Overlay ────────────────────────────────── */
+  #standCryOverlay { cursor:pointer; }
+  #standCryText {
+    animation: none;
+  }
+  @keyframes cryFlash {
+    0%,100% { text-shadow:0 0 40px var(--gold),0 0 80px rgba(200,150,12,.4); }
+    50% { text-shadow:0 0 80px var(--gold),0 0 160px rgba(200,150,12,.7),0 0 8px #fff; }
+  }
+
+  /* ── Thread mood colour shifts ────────────────────────── */
+  .tw[data-mood="action"]  { --mood-col:rgba(220,50,0,.15); }
+  .tw[data-mood="tense"]   { --mood-col:rgba(120,0,120,.15); }
+  .tw[data-mood="calm"]    { --mood-col:rgba(0,100,180,.15); }
+  .tw[data-mood="dramatic"]{ --mood-col:rgba(180,0,60,.15); }
+  .tw[data-mood="social"]  { --mood-col:rgba(0,160,80,.1); }
+  .tw::before {
+    content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(ellipse 100% 60% at 50% 0%, var(--mood-col,transparent) 0%, transparent 70%);
+  }
+  .thread-mood-badge {
+    display:inline-flex; align-items:center; gap:.35rem;
+    font-family:'Inter',sans-serif; font-size:.62rem; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase;
+    padding:.18rem .55rem; border:1px solid var(--border); color:var(--text-xs);
+  }
+
+
+  /* ── Post Reactions ──────────────────────────────────────── */
+  .post-reactions {
+    display: flex; align-items: center; gap: .25rem;
+    padding: .35rem .9rem .5rem;
+    flex-wrap: wrap;
+  }
+  .rxn-btn {
+    background: none; border: 1px solid var(--border);
+    font-size: .88rem; cursor: pointer; padding: .1rem .35rem;
+    border-radius: 0; transition: all .12s; line-height: 1.4;
+    opacity: .5;
+  }
+  .rxn-btn:hover { opacity: 1; border-color: var(--gold-d); background: rgba(200,150,12,.06); }
+  .rxn-count {
+    font-family: 'Inter',sans-serif; font-size: .68rem;
+    background: rgba(0,0,0,.25); border: 1px solid var(--border);
+    padding: .08rem .4rem; color: var(--text-dim);
+  }
+  .rxn-counts { display: flex; gap: .25rem; flex-wrap: wrap; }
+
+  /* ── Mood Chips ───────────────────────────────────────────── */
+  .post-mood-chip {
+    font-family: 'Inter',sans-serif; font-size: .6rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .1rem .4rem; border: 1px solid var(--border);
+    color: var(--text-xs); flex-shrink: 0;
+  }
+  .mood-tense    { border-color: rgba(200,0,74,.3); color: var(--pink-l); }
+  .mood-action   { border-color: rgba(200,80,0,.3); color: #FF8C00; }
+  .mood-dramatic { border-color: rgba(94,26,122,.3); color: var(--purple-l); }
+  .mood-calm     { border-color: rgba(0,153,176,.3); color: var(--cyan); }
+  .mood-sad      { border-color: rgba(80,100,180,.3); color: #8899FF; }
+  .mood-playful  { border-color: rgba(100,200,0,.3); color: #88DD00; }
+  .mood-smug     { border-color: rgba(200,150,12,.3); color: var(--gold-l); }
+  .mood-confused { border-color: rgba(180,180,0,.3); color: #DDDD00; }
+
+  /* ── Writing indicator ────────────────────────────────────── */
+  .writing-indicator {
+    font-family: 'Inter',sans-serif; font-size: .72rem;
+    color: var(--text-xs); font-style: italic;
+    padding: .35rem 0; letter-spacing: .04em;
+  }
+
+</style>
+
+
+<!-- Stand Cry Overlay (Natural 20) -->
+<div id="standCryOverlay" style="
+  display:none;
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(7,0,13,.92);
+  align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+  pointer-events:none;
+">
+  <div id="standCryText" style="
+    font-family:'Cinzel',serif;
+    font-size:clamp(2.5rem,8vw,6rem);
+    font-weight:900;
+    color:var(--gold);
+    text-align:center;
+    letter-spacing:.1em;
+    text-shadow:0 0 40px var(--gold),0 0 80px rgba(200,150,12,.4);
+    transform:scale(0);
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+  "></div>
+  <div style="
+    font-family:'Cinzel',serif;font-size:1.1rem;
+    color:var(--gold-d);letter-spacing:.4em;text-transform:uppercase;
+    opacity:0;transition:opacity .3s .2s;
+  " id="standCrySub">NATURAL 20 — CRITICAL</div>
+  <div style="
+    font-family:'Inter',sans-serif;font-size:.75rem;
+    color:var(--text-xs);letter-spacing:.15em;text-transform:uppercase;
+    opacity:0;transition:opacity .3s .4s;
+  " id="standCryDice"></div>
+</div>
+
 <footer>
   <div class="foot-logo">A JoJo Roleplay</div>
   <div style="width:32px;height:1px;background:var(--gold-d);margin:.6rem auto;opacity:.45;"></div>
@@ -2476,7 +2711,16 @@ async function loadThread() {
 
   const catLabels = {battle:'⚔ Battle',social:'☕ Social',investigation:'🔍 Investigation',arc:'📖 Story Arc',training:'🥊 Training'};
   document.title = thread.title + ' — A JoJo Roleplay';
+  // Apply mood class to body
+  if(thread.mood) {
+    ['tense','calm','dramatic','action','slice'].forEach(m => document.body.classList.remove('mood-'+m));
+    document.body.classList.add('mood-' + thread.mood);
+  }
   document.getElementById('threadCat').textContent  = catLabels[thread.category] || thread.category || 'Thread';
+  // Apply mood
+  const moodMap = {battle:'action',investigation:'tense',social:'calm',arc:'dramatic',training:'social'};
+  const mood = moodMap[thread.category] || '';
+  if(mood) document.querySelector('.tw')?.setAttribute('data-mood', mood);
   document.getElementById('threadTitle').textContent = thread.title;
   document.getElementById('threadBy').textContent    = 'by ' + (thread.character_name || 'Unknown');
   document.getElementById('threadDate').textContent  = new Date(thread.created_at).toLocaleDateString();
@@ -2496,6 +2740,7 @@ async function loadPosts() {
 
   document.getElementById('threadPostCount').textContent = (posts?.length || 0) + ' posts';
   if(posts?.length) updateThreadWordCount(posts);
+  if(posts?.length) loadAllReactions(posts);
 
   const container = document.getElementById('postsContainer');
   if(!posts || posts.length === 0) {
@@ -2511,11 +2756,20 @@ function renderPost(p) {
   const isOwn = currentUser2?.id === p.auth_id;
   const body = formatRPText(p.content || '');
 
+  const reactionHTML = `<div class="post-reactions" id="reacts-${p.id}">
+    <button class="react-btn" onclick="addReaction('${p.id}','✦')" title="Great Stand moment">✦</button>
+    <button class="react-btn" onclick="addReaction('${p.id}','🎶')" title="Musical reference">🎶</button>
+    <button class="react-btn" onclick="addReaction('${p.id}','💀')" title="Clowned">💀</button>
+    <button class="react-btn" onclick="addReaction('${p.id}','🔥')" title="Fire post">🔥</button>
+    <button class="react-btn" onclick="addReaction('${p.id}','👁')" title="Witnessed">👁</button>
+    <span class="react-counts" id="react-counts-${p.id}"></span>
+  </div>`;
   return `<div class="post" id="post-${p.id}">
     <div class="post-header">
       <div class="post-avatar">${(p.character_name||'?').charAt(0)}</div>
       <div>
         <div class="post-char">${p.character_name || 'Unknown'}</div>
+      ${p.mood ? `<span class="post-mood-chip mood-${p.mood}">${{tense:'😤 Tense',calm:'😌 Calm',dramatic:'🎭 Dramatic',action:'⚔ Action',playful:'😄 Playful',sad:'💔 Sad',smug:'😏 Smug',confused:'😕 Confused'}[p.mood]||p.mood}</span>` : ''}
         <div class="post-player">@${p.player_username || '?'}</div>
       </div>
       ${p.is_gm ? '<span class="post-gm-badge">GM</span>' : ''}
@@ -2524,6 +2778,7 @@ function renderPost(p) {
       ${isOwn || isGM2 ? `<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--text-xs);cursor:pointer;font-size:.7rem;margin-left:.25rem;" title="Delete">✕</button>` : ''}
     </div>
     <div class="post-body">${body}</div>
+    ${reactionHTML}
   </div>`;
 }
 
@@ -2608,6 +2863,46 @@ function formatRPText(raw) {
 }
 
 /* Word count */
+const REACTION_EMOJIS = ['✦','🎶','💀','🔥','👏','❓'];
+const REACTION_LABELS_MAP = {'✦':'Stand moment','🎶':'Music ref','💀':'Clowned','🔥':'Fire post','👏':'Well written','❓':'What?'};
+
+async function addReaction(postId, emoji) {
+  if(!sb2 || !currentUser2) return;
+  // Toggle — if already reacted remove, else add
+  const { data: existing } = await sb2.from('post_reactions')
+    .select('id').eq('post_id', postId).eq('user_id', currentUser2.id).eq('emoji', emoji).maybeSingle();
+  if(existing) {
+    await sb2.from('post_reactions').delete().eq('id', existing.id);
+  } else {
+    await sb2.from('post_reactions').insert([{ post_id: postId, user_id: currentUser2.id, emoji }]);
+  }
+  loadReactions(postId);
+}
+
+async function loadReactions(postId) {
+  if(!sb2) return;
+  const { data } = await sb2.from('post_reactions').select('emoji').eq('post_id', postId);
+  const counts = {};
+  (data||[]).forEach(r => { counts[r.emoji] = (counts[r.emoji]||0) + 1; });
+  const el = document.getElementById('rxn-counts-' + postId);
+  if(el) el.innerHTML = Object.entries(counts).map(([e,n]) =>
+    '<span class="rxn-count">' + e + ' ' + n + '</span>'
+  ).join('');
+}
+
+async function loadAllReactions(posts) {
+  if(!sb2 || !posts?.length) return;
+  const ids = posts.map(p => p.id);
+  const { data } = await sb2.from('post_reactions').select('post_id,emoji').in('post_id', ids);
+  if(!data) return;
+  const byPost = {};
+  data.forEach(r => { if(!byPost[r.post_id]) byPost[r.post_id] = {}; byPost[r.post_id][r.emoji] = (byPost[r.post_id][r.emoji]||0)+1; });
+  Object.entries(byPost).forEach(([postId, counts]) => {
+    const el = document.getElementById('rxn-counts-' + postId);
+    if(el) el.innerHTML = Object.entries(counts).map(([e,n]) => '<span class="rxn-count">'+e+' '+n+'</span>').join('');
+  });
+}
+
 function wordCount(text) {
   return text.trim() ? text.trim().split(/\s+/).length : 0;
 }
@@ -2622,6 +2917,11 @@ function rollDice() {
   const expr = document.getElementById('diceExpr').value.trim() || '1d20';
   const result = parseDiceExpr(expr);
   if(!result) { document.getElementById('dicePreview').textContent = 'Invalid expression'; return; }
+  // Nat 20 on d20 triggers Stand Cry
+  if(result.natural === 20 && result.sides === 20) {
+    const cry = document.getElementById('replyChar')?.value?.trim()?.toUpperCase() + '!!!' || 'KACHOW!!!';
+    setTimeout(() => triggerStandCry(cry, result.total), 300);
+  }
 
   // Insert roll result into textarea
   const ta = document.getElementById('replyContent');
@@ -2631,6 +2931,40 @@ function rollDice() {
   document.getElementById('dicePreview').textContent = `→ ${result.total} (${result.breakdown})`;
   document.getElementById('diceRow').style.display = 'none';
   updateCharCount();
+  // Stand Cry on Natural 20
+  if(result.natural === 20) {
+    const charNameEl = document.getElementById('replyChar');
+    const charName = charNameEl?.value.trim() || 'Unknown';
+    triggerStandCry(result.total, expr, charName + ' — STAND CRY!');
+  }
+}
+
+function triggerStandCry(total, expr, cry) {
+  const overlay = document.getElementById('standCryOverlay');
+  const text    = document.getElementById('standCryText');
+  const sub     = document.getElementById('standCrySub');
+  const diceEl  = document.getElementById('standCryDice');
+  if(!overlay || !text) return;
+
+  const displayCry = cry || 'ORA ORA ORA!';
+  text.textContent  = displayCry;
+  diceEl.textContent = expr + ' = ' + total;
+  overlay.style.display = 'flex';
+
+  // Animate in
+  requestAnimationFrame(() => {
+    text.style.transform = 'scale(1)';
+    sub.style.opacity    = '1';
+    diceEl.style.opacity = '1';
+  });
+
+  // Dismiss after 3.5s
+  setTimeout(() => {
+    text.style.transform = 'scale(0)';
+    sub.style.opacity    = '0';
+    diceEl.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+  }, 3500);
 }
 
 function parseDiceExpr(expr) {
@@ -2654,6 +2988,7 @@ function parseDiceExpr(expr) {
 async function submitReply() {
   if(!sb2 || !currentUser2) return;
   const content  = document.getElementById('replyContent').value.trim();
+  const mood = document.getElementById('postMoodSel')?.value || '';
   const charName = document.getElementById('replyChar').value.trim() || 'Anonymous';
   const msg = document.getElementById('replyMsg');
 
@@ -2674,6 +3009,7 @@ async function submitReply() {
     player_username: profile?.username || currentUser2.email?.split('@')[0] || 'Player',
     content,
     is_gm: isGM2,
+    mood: mood || null,
   }]);
 
   if(btn) btn.disabled = false;
@@ -2797,8 +3133,11 @@ const fta=document.querySelector('.fta');
   await initThreadAuth();
   await loadThread();
   checkWatchStatus();
+  initPresence();
+  initPresence();
   startDraftSave();
   loadDraft();
+  initPresence();
 })();
 
 
@@ -2867,6 +3206,219 @@ function updateThreadWordCount(posts) {
     if(t && t !== 'dark') document.body.classList.add('theme-' + t);
   } catch(e){}
 })();
+
+
+/* ── Theme toggle (sub-page) ──────────────────────────────── */
+function toggleThemePicker() {
+  var p = document.getElementById('themePicker');
+  if(p) { p.style.display = p.style.display === 'block' ? 'none' : 'block'; return; }
+  // Build picker inline if not present
+  var div = document.createElement('div');
+  div.id = 'themePicker';
+  div.style.cssText = 'position:fixed;bottom:60px;right:1rem;background:rgba(7,0,13,.97);border:1px solid var(--border);padding:.75rem;z-index:800;width:200px;';
+  div.innerHTML = '<div style="font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-xs);margin-bottom:.55rem;">🎨 Theme</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">' +
+    ['dark:🌙 Dark:#07000D:#C8960C','sbr-pink:SBR Pink:#FF0088:#fff','sbr-teal:Ocean:#00AAAA:#002020','jojolion:Manga:#F5F5F5:#111','vento:Part 5:#F0B800:#1A1000']
+    .map(function(s){var p=s.split(':');return '<div onclick="setTheme(\''+p[0]+'\')" style="padding:.4rem;cursor:pointer;background:'+p[2]+';color:'+p[3]+';font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;text-align:center;border:2px solid transparent;">'+p[1]+'</div>';})
+    .join('') + '</div>';
+  document.body.appendChild(div);
+  document.addEventListener('click', function(e){ if(!div.contains(e.target) && e.target.id !== 'darkModeBtn') div.style.display='none'; },{once:false});
+}
+
+function setTheme(theme) {
+  var THEMES = ['dark','sbr-pink','sbr-teal','jojolion','vento'];
+  THEMES.forEach(function(t){ document.body.classList.remove('theme-'+t); });
+  if(theme !== 'dark') document.body.classList.add('theme-'+theme);
+  try { localStorage.setItem('rp_theme', theme); } catch(e){}
+  var p = document.getElementById('themePicker');
+  if(p) p.style.display = 'none';
+  var btn = document.getElementById('darkModeBtn');
+  if(btn) btn.textContent = theme === 'dark' ? '🌙' : '🎨';
+}
+
+
+/* ── Stand Cry (Natural 20) ──────────────────────────────── */
+function triggerStandCry(cry, total) {
+  const overlay = document.getElementById('standCryOverlay');
+  const text    = document.getElementById('standCryText');
+  const nat     = document.getElementById('standCryNat');
+  if(!overlay || !text) return;
+
+  text.textContent = cry || 'KACHOW!';
+  nat.textContent  = total;
+  overlay.style.display = 'flex';
+
+  // Fade in
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+  });
+
+  // Hold then fade out
+  setTimeout(() => {
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; }, 400);
+  }, 2200);
+}
+
+
+/* ── Post Reactions ─────────────────────────────────────── */
+async function addReaction(postId, emoji) {
+  if(!sb2 || !currentUser2) { showMsg('replyMsg','Sign in to react.',true); return; }
+  await sb2.from('post_reactions').upsert([{
+    post_id: postId, user_id: currentUser2.id, emoji
+  }], { onConflict: 'post_id,user_id' });
+  loadReactions(postId);
+}
+
+async function loadReactions(postId) {
+  if(!sb2) return;
+  const { data } = await sb2.from('post_reactions')
+    .select('emoji').eq('post_id', postId);
+  const el = document.getElementById('react-counts-' + postId);
+  if(!el || !data?.length) return;
+  const counts = {};
+  data.forEach(r => counts[r.emoji] = (counts[r.emoji]||0) + 1);
+  el.innerHTML = Object.entries(counts)
+    .map(([e,n]) => `<span class="react-count">${e} ${n}</span>`).join('');
+}
+
+async function loadAllReactions(posts) {
+  if(!sb2 || !posts?.length) return;
+  posts.forEach(p => loadReactions(p.id));
+}
+
+
+/* ── Now Writing Presence ───────────────────────────────── */
+presenceChannel = null;
+typingTimer = null;
+let isTypingNow = false;
+
+function initPresence() {
+  if(!sb2 || !currentUser2 || !THREAD_ID) return;
+  const username = document.getElementById('replyChar')?.value || currentUser2.email?.split('@')[0] || 'Someone';
+
+  presenceChannel = sb2.channel('presence:thread:' + THREAD_ID)
+    .on('presence', { event: 'sync' }, () => {
+      const state = presenceChannel.presenceState();
+      renderTypingIndicator(state);
+    })
+    .subscribe(async status => {
+      if(status === 'SUBSCRIBED') {
+        await presenceChannel.track({ user_id: currentUser2.id, username, typing: false });
+      }
+    });
+}
+
+function renderTypingIndicator(state) {
+  const typers = [];
+  Object.values(state).forEach(presences => {
+    presences.forEach(p => {
+      if(p.typing && p.user_id !== currentUser2?.id) {
+        typers.push(p.username);
+      }
+    });
+  });
+
+  let el = document.getElementById('typingIndicator');
+  if(!el) {
+    el = document.createElement('div');
+    el.id = 'typingIndicator';
+    el.className = 'typing-indicator';
+    document.getElementById('postsContainer')?.after(el);
+  }
+
+  if(!typers.length) { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  const names = typers.length === 1 ? typers[0] : typers.slice(0,-1).join(', ') + ' & ' + typers[typers.length-1];
+  el.innerHTML = '<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span> <span class="typing-text">' + names + (typers.length === 1 ? ' is' : ' are') + ' writing a reply</span>';
+}
+
+async function setTyping(isTyping) {
+  if(!presenceChannel || isTyping === isTypingNow) return;
+  isTypingNow = isTyping;
+  const username = document.getElementById('replyChar')?.value || currentUser2?.email?.split('@')[0] || 'Someone';
+  await presenceChannel.track({ user_id: currentUser2?.id, username, typing: isTyping });
+}
+
+// Hook to reply textarea
+document.addEventListener('DOMContentLoaded', () => {
+  const ta = document.getElementById('replyContent');
+  if(!ta) return;
+  ta.addEventListener('input', () => {
+    setTyping(true);
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => setTyping(false), 3000);
+  });
+  ta.addEventListener('blur', () => { clearTimeout(typingTimer); setTyping(false); });
+});
+
+
+/* ── Now Writing presence ────────────────────────────────── */
+let presenceChannel = null;
+let typingTimer = null;
+
+function initPresence() {
+  if(!sb2 || !currentUser2 || !THREAD_ID) return;
+  presenceChannel = sb2.channel('presence-' + THREAD_ID);
+  presenceChannel.on('presence', { event: 'sync' }, () => {
+    const state = presenceChannel.presenceState();
+    const writers = Object.values(state)
+      .flat()
+      .filter(u => u.user_id !== currentUser2.id && u.writing)
+      .map(u => u.char_name || u.username || 'Someone');
+    const el = document.getElementById('writingIndicator');
+    if(el) {
+      if(writers.length) {
+        el.textContent = writers.join(', ') + (writers.length === 1 ? ' is' : ' are') + ' writing…';
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+  }).subscribe(async status => {
+    if(status === 'SUBSCRIBED') {
+      await presenceChannel.track({ user_id: currentUser2.id, writing: false,
+        char_name: document.getElementById('replyChar')?.value || null });
+    }
+  });
+}
+
+async function setWriting(isWriting) {
+  if(!presenceChannel) return;
+  await presenceChannel.track({ user_id: currentUser2.id, writing: isWriting,
+    char_name: document.getElementById('replyChar')?.value || null });
+}
+
+function onReplyInput() {
+  updateCharCount();
+  setWriting(true);
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => setWriting(false), 4000);
+}
+
+
+/* ── Stand Cry Animation (Natural 20!) ───────────────────── */
+function showStandCry(cry) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);pointer-events:none;';
+  overlay.innerHTML = `
+    <div style="text-align:center;animation:standCryIn .4s ease both;">
+      <div style="font-family:'Cinzel',serif;font-size:clamp(1.2rem,4vw,2rem);color:var(--gold-d);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem;opacity:.8;">Natural 20</div>
+      <div style="font-family:'Cinzel',serif;font-size:clamp(3rem,10vw,6rem);font-weight:900;color:#FFD700;letter-spacing:.1em;text-shadow:0 0 40px rgba(255,215,0,.5),0 0 80px rgba(255,215,0,.25);line-height:1;">${cry || '✦'}</div>
+      <div style="font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text-xs);letter-spacing:.18em;text-transform:uppercase;margin-top:.75rem;">CRITICAL!</div>
+    </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => {
+    overlay.style.transition = 'opacity .5s';
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 500);
+  }, 2200);
+}
+
+// Inject keyframe
+const _cryStyle = document.createElement('style');
+_cryStyle.textContent = '@keyframes standCryIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}';
+document.head.appendChild(_cryStyle);
 
 </script>
 </body>
