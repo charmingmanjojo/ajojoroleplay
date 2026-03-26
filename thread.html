@@ -1585,29 +1585,215 @@
 
   @media(max-width:600px){.tw{padding-left:1rem;padding-right:1rem;}.post-body{font-size:.85rem;}}
 
+  /* ═══════════ LIGHT THEMES ═══════════════════════════════════ */
 
-  /* ── Light themes (applied via body class) ───────────────── */
-  body.theme-sbr-pink  { --text:#1A0020;--text-dim:#3D0050;--text-xs:#8B2BAF;--border:rgba(200,0,120,.22);--gold:#D4006A;--gold-l:#FF0088;--gold-d:#A80055;--purple:#6A0080;--purple-l:#9B00B8;--pink:#FF0066;--pink-l:#FF4499; }
-  body.theme-sbr-teal  { --text:#002020;--text-dim:#004040;--text-xs:#006868;--border:rgba(0,180,180,.22);--gold:#00AAAA;--gold-l:#00CCCC;--gold-d:#008888;--purple:#005580;--purple-l:#0077AA;--pink:#FF4477;--pink-l:#FF6699; }
-  body.theme-jojolion  { --text:#0A0A0A;--text-dim:#333;--text-xs:#666;--border:rgba(0,0,0,.15);--gold:#222;--gold-l:#000;--gold-d:#444;--purple:#1A1A1A;--purple-l:#333;--pink:#CC0000;--pink-l:#FF3333; }
-  body.theme-vento     { --text:#1A1000;--text-dim:#3D2A00;--text-xs:#7A5A00;--border:rgba(180,140,0,.22);--gold:#C8960C;--gold-l:#F0B800;--gold-d:#8A6A00;--purple:#5A3A00;--purple-l:#8A5A00;--pink:#CC4400;--pink-l:#FF6622; }
-  body[class*='theme-']:not(.theme-dark) #bg-vignette {
-    background: rgba(255,255,255,.88);
+  /* SBR Pink - Part 7 */
+  body.theme-sbr-pink {
+    --text:     #18000E;
+    --text-dim: #380020;
+    --text-xs:  #6A0040;
+    --border:   rgba(170,0,80,.22);
+    --border-h: rgba(170,0,80,.45);
+    --gold:     #CC0055; --gold-l: #FF0077; --gold-d: #990040;
+    --purple:   #750048; --purple-l:#BB006A;
+    --pink:     #EE0060; --pink-l:  #FF4499;
   }
-  body.theme-jojolion #bg-vignette { background: rgba(248,248,248,.92); }
-  body[class*='theme-']:not(.theme-dark) .post,
-  body[class*='theme-']:not(.theme-dark) .reply-box,
-  body[class*='theme-']:not(.theme-dark) .premise-card,
-  body[class*='theme-']:not(.theme-dark) .sidebar-card,
-  body[class*='theme-']:not(.theme-dark) .ds,
-  body[class*='theme-']:not(.theme-dark) .cs { 
-    background: rgba(255,255,255,.88);
+  body.theme-sbr-pink #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-pink #bg-vignette {
+    background: linear-gradient(135deg, #FFD6EA 0%, #FFB3D4 50%, #FFCCE0 100%) !important;
   }
-  body[class*='theme-']:not(.theme-dark) .fi,
-  body[class*='theme-']:not(.theme-dark) .fta,
-  body[class*='theme-']:not(.theme-dark) .fsel {
-    background: rgba(255,255,255,.8);
+
+  /* Stone Ocean - Part 6 */
+  body.theme-sbr-teal {
+    --text:     #001520;
+    --text-dim: #002D3E;
+    --text-xs:  #004E60;
+    --border:   rgba(0,120,145,.22);
+    --border-h: rgba(0,120,145,.45);
+    --gold:     #006E82; --gold-l: #009AB5; --gold-d: #005060;
+    --purple:   #003850; --purple-l:#005E78;
+    --pink:     #BB2255; --pink-l:  #DD4477;
+  }
+  body.theme-sbr-teal #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-teal #bg-vignette {
+    background: linear-gradient(135deg, #C8EEF5 0%, #A8E2EE 50%, #C0ECF7 100%) !important;
+  }
+
+  /* Manga - JoJolion */
+  body.theme-jojolion {
+    --text:     #060606;
+    --text-dim: #242424;
+    --text-xs:  #545454;
+    --border:   rgba(0,0,0,.12);
+    --border-h: rgba(0,0,0,.28);
+    --gold:     #0A0A0A; --gold-l: #000; --gold-d: #303030;
+    --purple:   #141414; --purple-l:#282828;
+    --pink:     #AA0000; --pink-l:  #DD1111;
+  }
+  body.theme-jojolion #bgRotator  { opacity: 0 !important; }
+  body.theme-jojolion #bg-vignette {
+    background: #F5F5F5 !important;
+  }
+
+  /* Vento Aureo - Part 5 */
+  body.theme-vento {
+    --text:     #120A00;
+    --text-dim: #2E1C00;
+    --text-xs:  #5A3E00;
+    --border:   rgba(130,90,0,.22);
+    --border-h: rgba(130,90,0,.45);
+    --gold:     #8A6000; --gold-l: #B87E00; --gold-d: #624400;
+    --purple:   #362000; --purple-l:#604000;
+    --pink:     #9E2800; --pink-l:  #CC4400;
+  }
+  body.theme-vento #bgRotator  { opacity: 0 !important; }
+  body.theme-vento #bg-vignette {
+    background: linear-gradient(135deg, #FFF3C0 0%, #FFE880 50%, #FFF0A8 100%) !important;
+  }
+
+  /* ─── Shared light theme rules ────────────────────────────── */
+  body[class*="theme-"]:not(.theme-dark) nav {
+    background: rgba(255,255,255,.95) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a { color: var(--text-dim); }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a:hover { color: var(--gold); }
+  body[class*="theme-"]:not(.theme-dark) .nav-logo { color: var(--text); }
+  body[class*="theme-"]:not(.theme-dark) #ticker {
+    background: rgba(0,0,0,.06) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .ticker-item { color: var(--gold-d) !important; }
+  body[class*="theme-"]:not(.theme-dark) .post,
+  body[class*="theme-"]:not(.theme-dark) .ds,
+  body[class*="theme-"]:not(.theme-dark) .cs,
+  body[class*="theme-"]:not(.theme-dark) .sidebar-card,
+  body[class*="theme-"]:not(.theme-dark) .premise-card,
+  body[class*="theme-"]:not(.theme-dark) .thread-card,
+  body[class*="theme-"]:not(.theme-dark) .gm-oc-card,
+  body[class*="theme-"]:not(.theme-dark) .reply-box,
+  body[class*="theme-"]:not(.theme-dark) .forum-row,
+  body[class*="theme-"]:not(.theme-dark) .oc-card,
+  body[class*="theme-"]:not(.theme-dark) .board-card,
+  body[class*="theme-"]:not(.theme-dark) .chat-wrap {
+    background: rgba(255,255,255,.88);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .fi,
+  body[class*="theme-"]:not(.theme-dark) .fta,
+  body[class*="theme-"]:not(.theme-dark) .fsel {
+    background: rgba(255,255,255,.82);
     color: var(--text);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-bar {
+    background: rgba(255,255,255,.88) !important;
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-link { color: var(--gold-d); }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost {
+    color: var(--text-dim);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+
+  /* ── Post meta extras ─────────────────────────────────────── */
+  .post-wc {
+    font-family: 'Inter', sans-serif; font-size: .58rem;
+    color: var(--text-xs); opacity: .6; margin-left: .25rem;
+  }
+  .post-delete-btn {
+    background: none; border: none; color: var(--text-xs);
+    cursor: pointer; font-size: .65rem; padding: .1rem .3rem;
+    opacity: 0; transition: opacity .15s; margin-left: .25rem;
+  }
+  .post:hover .post-delete-btn { opacity: .6; }
+  .post-delete-btn:hover { opacity: 1 !important; color: var(--pink-l); }
+
+  /* ── Character selector ───────────────────────────────────── */
+  #charSelector select {
+    background: rgba(7,0,13,.6); border: 1px solid var(--border);
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: .78rem; padding: .35rem .6rem; cursor: pointer;
+    outline: none; transition: border-color .15s;
+  }
+  #charSelector select:focus { border-color: var(--gold-d); }
+  #charPreview {
+    font-size: .72rem; max-width: 175px;
+  }
+
+  /* ── Notifications ────────────────────────────────────────── */
+  #notifBadge {
+    pointer-events: none;
+  }
+  .notif-row {
+    padding: .6rem .9rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background .15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .notif-row:hover { background: rgba(94,26,122,.08); }
+  .notif-row.unread { border-left: 2px solid var(--gold-d); }
+  .notif-msg {
+    font-size: .82rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .notif-row.unread .notif-msg { color: var(--text); }
+  .notif-time {
+    font-family: 'Inter', sans-serif; font-size: .6rem;
+    color: var(--text-xs); margin-top: .2rem;
+  }
+
+  /* ── Reactions ────────────────────────────────────────────── */
+  .rxn-btn {
+    background: none; border: 1px solid var(--border);
+    font-size: .88rem; padding: .1rem .38rem; cursor: pointer;
+    transition: all .12s; line-height: 1.4; opacity: .55;
+    font-family: inherit;
+  }
+  .rxn-btn:hover {
+    opacity: 1; background: rgba(200,150,12,.08);
+    border-color: var(--gold-d); transform: scale(1.15);
+  }
+  .rxn-count {
+    font-family: 'Inter', sans-serif; font-size: .7rem;
+    background: rgba(0,0,0,.2); border: 1px solid var(--border);
+    padding: .1rem .4rem; color: var(--text-dim);
+    display: inline-flex; align-items: center; gap: .2rem;
+  }
+  .rxn-counts { display: flex; gap: .25rem; flex-wrap: wrap; align-items: center; }
+
+  /* ── Reading position highlight ───────────────────────────── */
+  .post {
+    transition: box-shadow .3s ease;
+  }
+
+  /* ── Dice roll display in posts ───────────────────────────── */
+  .dice-roll {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: rgba(0,0,0,.3); border: 1px solid var(--border);
+    padding: .2rem .65rem; font-family: 'Inter', sans-serif;
+    font-size: .8rem; color: var(--text-dim); margin: .15rem 0;
+  }
+  .dice-total {
+    font-family: 'Cinzel', serif; font-size: 1.1rem;
+    font-weight: 700; color: var(--gold-l);
+  }
+  .dice-breakdown { font-size: .7rem; color: var(--text-xs); }
+  .dice-crit .dice-total   { color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,.5); }
+  .dice-fumble .dice-total { color: var(--pink-l); }
+
+  /* ── Light theme fixes for thread ─────────────────────────── */
+  body[class*="theme-"]:not(.theme-dark) .post {
+    background: rgba(255,255,255,.88); border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) #charSelector select,
+  body[class*="theme-"]:not(.theme-dark) #charPreview {
+    background: rgba(255,255,255,.8); color: var(--text);
+    border-color: var(--border);
   }
 
 </style>
@@ -1648,9 +1834,11 @@
   </ul>
   <div class="nav-right">
     <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
+    <button class="btn btn-ghost btn-sm" id="notifBell" onclick="toggleNotifPanel()" title="Notifications" style="position:relative;font-size:.85rem;padding:.28rem .5rem;">
+      🔔<span id="notifBadge" style="display:none;position:absolute;top:-2px;right:-2px;background:var(--pink);color:#fff;font-family:Inter,sans-serif;font-size:.5rem;font-weight:700;min-width:14px;height:14px;line-height:14px;text-align:center;padding:0 2px;"></span>
+    </button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
-    <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
   </div>
 </nav>
 
@@ -1692,9 +1880,11 @@
   </ul>
   <div class="nav-right">
     <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
+    <button class="btn btn-ghost btn-sm" id="notifBell" onclick="toggleNotifPanel()" title="Notifications" style="position:relative;font-size:.85rem;padding:.28rem .5rem;">
+      🔔<span id="notifBadge" style="display:none;position:absolute;top:-2px;right:-2px;background:var(--pink);color:#fff;font-family:Inter,sans-serif;font-size:.5rem;font-weight:700;min-width:14px;height:14px;line-height:14px;text-align:center;padding:0 2px;"></span>
+    </button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
-    <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
   </div>
 </nav>
 <div id="ticker" style="position:relative;z-index:2;margin-top:90px;">
@@ -2664,711 +2854,503 @@ function toggleArt(header) {
 }
 </script>
 <script>
+/* ================================================================
+   THREAD PAGE — Core JS
+   Features: char switching, reading position, notifications,
+             real-time posts, reactions, draft save, now-writing
+================================================================ */
 
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
-const sb2 = window.supabase ? window.supabase.createClient(
-  'https://azzonqzxmtoilhqsrshq.supabase.co', ANON,
-  {auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}}
-) : null;
+/* Thread-page globals — currentUser/currentProfile/currentGMRole come from base_js */
+const sbT = (typeof sb !== 'undefined' && sb) ? sb : null;
 
-const params = new URLSearchParams(window.location.search);
-const THREAD_ID = params.get('id');
-let threadChannel = null;
-let currentUser2 = null;
-let isGM2 = false;
+const THREAD_ID = new URLSearchParams(window.location.search).get('id');
+const STORAGE_KEY_POS   = 'rp_read_pos_' + THREAD_ID;
+const STORAGE_KEY_DRAFT = 'rp_draft_' + THREAD_ID;
 
-/* ── Auth ────────────────────────────────────────────────── */
-async function initThreadAuth() {
-  if(!sb2) return;
-  const { data:{ session } } = await sb2.auth.getSession();
-  if(session?.user) {
-    currentUser2 = session.user;
-    // Check GM
-    const { data:gm } = await sb2.from('gm_roles').select('role').eq('auth_id', session.user.id).eq('is_active',true).maybeSingle();
-    isGM2 = !!gm;
-    document.getElementById('replyBox').style.display = 'block';
-    document.getElementById('replyAuthWall').style.display = 'none';
-    // Pre-fill character name from their most recent OC
-    const { data:oc } = await sb2.from('ocs').select('name').eq('auth_id', session.user.id).eq('status','approved').order('created_at',{ascending:false}).limit(1).maybeSingle();
-    if(oc) document.getElementById('replyChar').value = oc.name;
-  }
-}
+let threadData   = null;
+let allPosts     = [];
+let myChars      = [];   // approved OCs for this user
+let selectedChar = null; // currently selected character
+let presenceChan = null;
+let typingTimer  = null;
+let draftTimer   = null;
+let isWatching   = false;
 
-/* ── Load Thread ─────────────────────────────────────────── */
-async function loadThread() {
-  if(!sb2 || !THREAD_ID) {
+/* ── Auth ─────────────────────────────────────────────────── */
+async function initThreadPage() {
+  if (!sbT || !THREAD_ID) {
     document.getElementById('threadTitle').textContent = 'Thread not found.';
     return;
   }
 
-  const { data:thread, error } = await sb2
-    .from('threads').select('*').eq('id', THREAD_ID).single();
+  /* currentUser / currentProfile / currentGMRole are set by initAuth() in base_js
+     which runs before initThreadPage(). We just use them directly. */
+  if (currentUser) {
+    if (currentGMRole) document.body.classList.add('is-gm');
 
-  if(error || !thread) {
-    document.getElementById('threadTitle').textContent = 'Thread not found or has been removed.';
+    // Show reply box, hide auth wall
+    document.getElementById('replyBox').style.display = '';
+    document.getElementById('replyAuthWall').style.display = 'none';
+
+    await loadMyChars();
+    loadNotificationCount();
+    checkWatchStatus();
+    initPresence();
+    initDraftSave();
+  } else {
+    document.getElementById('replyBox').style.display = 'none';
+    document.getElementById('replyAuthWall').style.display = '';
+  }
+
+  await loadThread();
+  await loadPosts();
+  subscribeRealtime();
+}
+
+/* ── Feature 1: Character Switching ──────────────────────── */
+async function loadMyChars() {
+  if (!currentUser) return;
+  const { data } = await sbT.from('ocs')
+    .select('id, name, ability_type, stand_name, stand_cry, image_url')
+    .eq('auth_id', currentUser.id)
+    .eq('status', 'approved')
+    .order('created_at', { ascending: true });
+
+  myChars = data || [];
+
+  const charInput = document.getElementById('replyChar');
+  if (!charInput) return;
+
+  if (!myChars.length) {
+    charInput.placeholder = 'Character name (no approved OCs)';
     return;
   }
 
-  const catLabels = {battle:'⚔ Battle',social:'☕ Social',investigation:'🔍 Investigation',arc:'📖 Story Arc',training:'🥊 Training'};
-  document.title = thread.title + ' — A JoJo Roleplay';
-  // Apply mood class to body
-  if(thread.mood) {
-    ['tense','calm','dramatic','action','slice'].forEach(m => document.body.classList.remove('mood-'+m));
-    document.body.classList.add('mood-' + thread.mood);
-  }
-  document.getElementById('threadCat').textContent  = catLabels[thread.category] || thread.category || 'Thread';
-  // Apply mood
-  const moodMap = {battle:'action',investigation:'tense',social:'calm',arc:'dramatic',training:'social'};
-  const mood = moodMap[thread.category] || '';
-  if(mood) document.querySelector('.tw')?.setAttribute('data-mood', mood);
-  document.getElementById('threadTitle').textContent = thread.title;
-  document.getElementById('threadBy').textContent    = 'by ' + (thread.character_name || 'Unknown');
-  document.getElementById('threadDate').textContent  = new Date(thread.created_at).toLocaleDateString();
-  document.getElementById('tBreadcrumb').textContent = thread.board_name || 'Open Thread';
+  // Replace text input with a dropdown + card preview
+  const wrapper = charInput.parentElement;
+  charInput.style.display = 'none';
 
-  await loadPosts();
-  subscribeToThread();
+  const sel = document.createElement('div');
+  sel.id = 'charSelector';
+  sel.style.cssText = 'display:flex;align-items:center;gap:.65rem;flex:1;min-width:0;';
+
+  // Build select
+  const dropdown = document.createElement('select');
+  dropdown.className = 'rp-btn';
+  dropdown.style.cssText = 'cursor:pointer;flex:1;min-width:0;font-size:.78rem;padding:.35rem .6rem;';
+  dropdown.innerHTML = myChars.map(c =>
+    '<option value="' + c.id + '">' + c.name + (c.stand_name ? ' · ✦ ' + c.stand_name : '') + '</option>'
+  ).join('');
+
+  // Character preview card
+  const preview = document.createElement('div');
+  preview.id = 'charPreview';
+  preview.style.cssText = 'display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.3);border:1px solid var(--border);padding:.3rem .6rem;flex-shrink:0;max-width:180px;';
+
+  const AB_COLORS = {stand:'#7E3AA0',hamon:'#B08000',spin:'#4A8C00',vampire:'#8B0000',none:'#555'};
+
+  function updatePreview(charId) {
+    const ch = myChars.find(c => c.id === charId);
+    if (!ch) return;
+    selectedChar = ch;
+    // Also update the hidden input for compatibility
+    charInput.value = ch.name;
+    const col = AB_COLORS[ch.ability_type || 'none'] || '#555';
+    preview.innerHTML =
+      '<div style="width:24px;height:24px;flex-shrink:0;background:' + col + ';display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:.7rem;font-weight:700;color:#fff;clip-path:polygon(15% 0,85% 0,100% 15%,100% 85%,85% 100%,15% 100%,0 85%,0 15%);">' + ch.name.charAt(0) + '</div>'
+      + '<div style="min-width:0;">'
+        + '<div style="font-family:Cinzel,serif;font-size:.72rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + ch.name + '</div>'
+        + (ch.stand_name ? '<div style="font-family:Inter,sans-serif;font-size:.58rem;color:var(--text-xs);">✦ ' + ch.stand_name + '</div>' : '')
+      + '</div>';
+  }
+
+  dropdown.addEventListener('change', () => updatePreview(dropdown.value));
+  sel.appendChild(dropdown);
+  sel.appendChild(preview);
+  wrapper.insertBefore(sel, charInput);
+
+  // Set initial selection
+  updatePreview(myChars[0].id);
+
+  // Restore saved char selection
+  try {
+    const saved = localStorage.getItem('rp_last_char');
+    if (saved && myChars.find(c => c.id === saved)) {
+      dropdown.value = saved;
+      updatePreview(saved);
+    }
+  } catch(e) {}
+
+  // Save selection on change
+  dropdown.addEventListener('change', () => {
+    try { localStorage.setItem('rp_last_char', dropdown.value); } catch(e) {}
+  });
 }
 
-/* ── Load Posts ──────────────────────────────────────────── */
+function getSelectedChar() {
+  if (selectedChar) return selectedChar;
+  // Fallback to text input
+  const val = document.getElementById('replyChar')?.value.trim();
+  return val ? { name: val, id: null } : null;
+}
+
+/* ── Thread Loading ───────────────────────────────────────── */
+async function loadThread() {
+  const { data: thread, error } = await sbT
+    .from('threads')
+    .select('*')
+    .eq('id', THREAD_ID)
+    .single();
+
+  if (error || !thread) {
+    document.getElementById('threadTitle').textContent = 'Thread not found.';
+    return;
+  }
+  threadData = thread;
+
+  document.title = thread.title + ' — A JoJo Roleplay';
+  document.getElementById('threadTitle').textContent = thread.title;
+  document.getElementById('threadCat').textContent   = thread.category || 'Thread';
+  document.getElementById('threadBy').textContent    = 'by ' + (thread.character_name || 'Unknown');
+  document.getElementById('threadDate').textContent  = ' · ' + new Date(thread.created_at).toLocaleDateString();
+
+  // Set back link
+  const breadPart = document.getElementById('partBreadcrumb');
+  if (breadPart && thread.board_name) {
+    breadPart.textContent = thread.board_name;
+  }
+
+  // Thread status selector (owner / GM only)
+  const statusSel = document.getElementById('threadStatusSel');
+  if (statusSel && (currentGMRole || thread.auth_id === currentUser?.id)) {
+    statusSel.style.display = '';
+    const tags = thread.tags || '';
+    statusSel.value = tags.includes('CLOSED') ? 'closed'
+      : tags.includes('INVITE') ? 'invite'
+      : tags.includes('EVENT') ? 'event'
+      : 'open';
+  }
+}
+
+/* ── Post Loading & Rendering ─────────────────────────────── */
 async function loadPosts() {
-  const { data: posts, error } = await sb2
-    .from('posts').select('*').eq('thread_id', THREAD_ID)
-    .order('created_at', {ascending: true});
+  if (!sbT) return;
+  const { data, error } = await sbT
+    .from('posts')
+    .select('*')
+    .eq('thread_id', THREAD_ID)
+    .order('created_at', { ascending: true });
 
-  if(error) { console.warn('posts error:', error); return; }
-
-  document.getElementById('threadPostCount').textContent = (posts?.length || 0) + ' posts';
-  if(posts?.length) updateThreadWordCount(posts);
-  if(posts?.length) loadAllReactions(posts);
+  if (error) { console.warn('loadPosts error:', error.message); return; }
+  allPosts = data || [];
 
   const container = document.getElementById('postsContainer');
-  if(!posts || posts.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:2rem;font-family:Inter,sans-serif;font-size:.8rem;color:var(--text-xs);">No posts yet.</div>';
-    return;
-  }
-  container.innerHTML = posts.map(renderPost).join('');
+  container.innerHTML = '';
+
+  allPosts.forEach(p => container.appendChild(buildPostEl(p)));
+
+  // Update counters
+  const wc = allPosts.reduce((s, p) => s + wordCount(p.content || ''), 0);
+  const pc = document.getElementById('threadPostCount');
+  if (pc) pc.textContent = allPosts.length + ' posts';
+  const twc = document.getElementById('threadWordCount');
+  if (twc) twc.textContent = wc.toLocaleString() + ' words';
+
+  // Load all reactions
+  loadAllReactions();
+
+  // Feature 2: Restore reading position
+  restoreReadingPosition();
 }
 
-/* ── Render Post ─────────────────────────────────────────── */
-function renderPost(p) {
-  const ts = new Date(p.created_at).toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  const isOwn = currentUser2?.id === p.auth_id;
-  const body = formatRPText(p.content || '');
+function buildPostEl(p) {
+  const AB_COLORS = {stand:'#7E3AA0',hamon:'#B08000',spin:'#4A8C00',vampire:'#8B0000',none:'#555'};
+  const MOOD_MAP  = {tense:'😤 Tense',calm:'😌 Calm',dramatic:'🎭 Dramatic',action:'⚔ Action',
+                     playful:'😄 Playful',sad:'💔 Sad',smug:'😏 Smug',confused:'😕 Confused'};
 
-  const reactionHTML = `<div class="post-reactions" id="reacts-${p.id}">
-    <button class="react-btn" onclick="addReaction('${p.id}','✦')" title="Great Stand moment">✦</button>
-    <button class="react-btn" onclick="addReaction('${p.id}','🎶')" title="Musical reference">🎶</button>
-    <button class="react-btn" onclick="addReaction('${p.id}','💀')" title="Clowned">💀</button>
-    <button class="react-btn" onclick="addReaction('${p.id}','🔥')" title="Fire post">🔥</button>
-    <button class="react-btn" onclick="addReaction('${p.id}','👁')" title="Witnessed">👁</button>
-    <span class="react-counts" id="react-counts-${p.id}"></span>
-  </div>`;
-  return `<div class="post" id="post-${p.id}">
-    <div class="post-header">
-      <div class="post-avatar">${(p.character_name||'?').charAt(0)}</div>
-      <div>
-        <div class="post-char">${p.character_name || 'Unknown'}</div>
-      ${p.mood ? `<span class="post-mood-chip mood-${p.mood}">${{tense:'😤 Tense',calm:'😌 Calm',dramatic:'🎭 Dramatic',action:'⚔ Action',playful:'😄 Playful',sad:'💔 Sad',smug:'😏 Smug',confused:'😕 Confused'}[p.mood]||p.mood}</span>` : ''}
-        <div class="post-player">@${p.player_username || '?'}</div>
-      </div>
-      ${p.is_gm ? '<span class="post-gm-badge">GM</span>' : ''}
-      <span class="post-ts">${ts}</span>
-      ${p.content ? '<span class="post-word-count">' + wordCount(p.content) + 'w</span>' : ''}
-      ${isOwn || isGM2 ? `<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--text-xs);cursor:pointer;font-size:.7rem;margin-left:.25rem;" title="Delete">✕</button>` : ''}
-    </div>
-    <div class="post-body">${body}</div>
-    ${reactionHTML}
-  </div>`;
+  const div = document.createElement('div');
+  div.className = 'post';
+  div.id = 'post-' + p.id;
+  div.dataset.postId = p.id;
+
+  // Look up OC data from myChars for character card
+  // (we'll show what we have; full OC data would require a join)
+  const ts = new Date(p.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const wc_val = wordCount(p.content || '');
+  const isOwn = p.auth_id === currentUser?.id;
+  const isGM  = !!currentGMRole;
+
+  div.innerHTML =
+    '<div class="post-hd">'
+      + '<div class="post-hd-left">'
+        + '<div class="post-char">' + escH(p.character_name || 'Unknown') + '</div>'
+        + '<div class="post-player">@' + escH(p.player_username || '?') + '</div>'
+      + '</div>'
+      + '<div class="post-hd-right">'
+        + (p.mood ? '<span class="post-mood-chip mood-' + p.mood + '">' + (MOOD_MAP[p.mood] || p.mood) + '</span>' : '')
+        + '<span class="post-ts">' + ts + '</span>'
+        + '<span class="post-wc">' + wc_val + 'w</span>'
+        + ((isOwn || isGM) ? '<button class="post-delete-btn" onclick="deletePost(\'' + p.id + '\')">✕</button>' : '')
+      + '</div>'
+    + '</div>'
+    + '<div class="post-body">' + formatRPText(p.content || '') + '</div>'
+    + '<div class="post-reactions" id="rxn-' + p.id + '">'
+      + '<div class="reaction-btns">'
+        + ['✦','🎶','💀','🔥','👏','❓'].map(e =>
+            '<button class="rxn-btn" onclick="toggleReaction(\'' + p.id + '\',\'' + e + '\')" title="React">' + e + '</button>'
+          ).join('')
+      + '</div>'
+      + '<div class="rxn-counts" id="rxn-counts-' + p.id + '"></div>'
+    + '</div>';
+
+  return div;
 }
 
-/* ── Format RP Text ──────────────────────────────────────── */
-function formatRPText(raw) {
-  if(!raw) return '';
-
-  // Escape HTML first
-  let t = raw
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-
-  // ── Scene dividers ────────────────────────────────────────
-  // ✦ ── ✦  /  --- / ═══ / *** / — ✦ — etc.
-  t = t.replace(/^[ \t]*([-─═✦★•◆◇♦♠♣♥~*]{3,})[ \t]*$/gm,
-    '<div class="rp-divider"><span class="rp-divider-line"></span><span class="rp-divider-icon">✦</span><span class="rp-divider-line"></span></div>');
-
-  // ── Post header block: >>[Location | Mood | Tag]
-  t = t.replace(/^&gt;&gt;\[([^\]]+)\]/gm, (_, inner) => {
-    const parts = inner.split('|').map(p => p.trim());
-    return '<div class="rp-header">' + parts.map((p,i) => {
-      const icons = ['📍','💭','🏷'];
-      return '<span class="rp-header-item">' + (icons[i]||'') + ' ' + p + '</span>';
-    }).join('<span class="rp-header-sep">·</span>') + '</div>';
+/* ── Feature 2: Reading Position Memory ───────────────────── */
+function saveReadingPosition() {
+  // Find last post visible in viewport
+  const posts = document.querySelectorAll('.post');
+  let lastVisible = null;
+  posts.forEach(p => {
+    const rect = p.getBoundingClientRect();
+    if (rect.top < window.innerHeight) lastVisible = p.id;
   });
-
-  // ── Bold: **text**
-  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-  // ── Italic action: *text* (single asterisk)
-  t = t.replace(/\*([^*\n]+)\*/g, '<em class="rp-action">$1</em>');
-
-  // ── Underline: __text__
-  t = t.replace(/__([^_]+)__/g, '<span class="rp-underline">$1</span>');
-
-  // ── Strikethrough: ~~text~~
-  t = t.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-
-  // ── Spoiler: ||text||
-  t = t.replace(/\|\|([^|]+)\|\|/g,
-    '<span class="rp-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
-
-  // ── Dialogue: "text" — smart quotes, highlighted
-  t = t.replace(/"([^"\n]{1,400})"/g, '<q class="rp-dialogue">$1</q>');
-
-  // ── OOC: [[text]]
-  t = t.replace(/\[\[([^\]]+)\]\]/g,
-    '<span class="rp-ooc"><span class="rp-ooc-tag">OOC</span> $1</span>');
-
-  // ── Inner thoughts: {{text}}
-  t = t.replace(/\{\{([^}]+)\}\}/g,
-    '<em class="rp-thought">$1</em>');
-
-  // ── Whisper / aside: ((text))
-  t = t.replace(/\(\(([^)]+)\)\)/g,
-    '<span class="rp-whisper">$1</span>');
-
-  // ── Colour text: [color:gold]text[/color]
-  const SAFE_COLORS = {gold:'#C8960C',purple:'#9B59B6',red:'#E74C3C',
-    blue:'#3498DB',green:'#2ECC71',pink:'#E91E8C',cyan:'#00BCD4',white:'#F5F5F5'};
-  t = t.replace(/\[color:(\w+)\]([^\[]+)\[\/color\]/g, (m, col, text) => {
-    const hex = SAFE_COLORS[col.toLowerCase()];
-    return hex ? '<span style="color:' + hex + ';">' + text + '</span>' : text;
-  });
-
-  // ── Dice rolls
-  t = t.replace(/(__DICE__\[([^\]]+)\])/g, (m, _, data) => {
-    try {
-      const d = JSON.parse(atob(data));
-      const cls = d.natural === 20 ? 'dice-crit' : d.natural === 1 ? 'dice-fumble' : '';
-      return '<span class="dice-roll ' + cls + '">🎲 <strong>' + d.expr + '</strong> → <span class="dice-total">' + d.total + '</span> <span class="dice-breakdown">(' + d.breakdown + ')</span></span>';
-    } catch(e) { return m; }
-  });
-
-  // ── Newlines
-  t = t.replace(/\n\n/g, '</p><p class="rp-para">');
-  t = t.replace(/\n/g, '<br>');
-  t = '<p class="rp-para">' + t + '</p>';
-
-  return t;
-}
-
-/* Word count */
-const REACTION_EMOJIS = ['✦','🎶','💀','🔥','👏','❓'];
-const REACTION_LABELS_MAP = {'✦':'Stand moment','🎶':'Music ref','💀':'Clowned','🔥':'Fire post','👏':'Well written','❓':'What?'};
-
-async function addReaction(postId, emoji) {
-  if(!sb2 || !currentUser2) return;
-  // Toggle — if already reacted remove, else add
-  const { data: existing } = await sb2.from('post_reactions')
-    .select('id').eq('post_id', postId).eq('user_id', currentUser2.id).eq('emoji', emoji).maybeSingle();
-  if(existing) {
-    await sb2.from('post_reactions').delete().eq('id', existing.id);
-  } else {
-    await sb2.from('post_reactions').insert([{ post_id: postId, user_id: currentUser2.id, emoji }]);
-  }
-  loadReactions(postId);
-}
-
-async function loadReactions(postId) {
-  if(!sb2) return;
-  const { data } = await sb2.from('post_reactions').select('emoji').eq('post_id', postId);
-  const counts = {};
-  (data||[]).forEach(r => { counts[r.emoji] = (counts[r.emoji]||0) + 1; });
-  const el = document.getElementById('rxn-counts-' + postId);
-  if(el) el.innerHTML = Object.entries(counts).map(([e,n]) =>
-    '<span class="rxn-count">' + e + ' ' + n + '</span>'
-  ).join('');
-}
-
-async function loadAllReactions(posts) {
-  if(!sb2 || !posts?.length) return;
-  const ids = posts.map(p => p.id);
-  const { data } = await sb2.from('post_reactions').select('post_id,emoji').in('post_id', ids);
-  if(!data) return;
-  const byPost = {};
-  data.forEach(r => { if(!byPost[r.post_id]) byPost[r.post_id] = {}; byPost[r.post_id][r.emoji] = (byPost[r.post_id][r.emoji]||0)+1; });
-  Object.entries(byPost).forEach(([postId, counts]) => {
-    const el = document.getElementById('rxn-counts-' + postId);
-    if(el) el.innerHTML = Object.entries(counts).map(([e,n]) => '<span class="rxn-count">'+e+' '+n+'</span>').join('');
-  });
-}
-
-function wordCount(text) {
-  return text.trim() ? text.trim().split(/\s+/).length : 0;
-}
-/* ── Dice Roller ─────────────────────────────────────────── */
-function toggleDiceRow() {
-  const row = document.getElementById('diceRow');
-  row.style.display = row.style.display === 'none' ? 'flex' : 'none';
-  if(row.style.display !== 'none') document.getElementById('diceExpr').focus();
-}
-
-function rollDice() {
-  const expr = document.getElementById('diceExpr').value.trim() || '1d20';
-  const result = parseDiceExpr(expr);
-  if(!result) { document.getElementById('dicePreview').textContent = 'Invalid expression'; return; }
-  // Nat 20 on d20 triggers Stand Cry
-  if(result.natural === 20 && result.sides === 20) {
-    const cry = document.getElementById('replyChar')?.value?.trim()?.toUpperCase() + '!!!' || 'KACHOW!!!';
-    setTimeout(() => triggerStandCry(cry, result.total), 300);
-  }
-
-  // Insert roll result into textarea
-  const ta = document.getElementById('replyContent');
-  const roll = `__DICE__[${btoa(JSON.stringify(result))}]`;
-  const pos = ta.selectionStart;
-  ta.value = ta.value.slice(0,pos) + '\n' + roll + '\n' + ta.value.slice(pos);
-  document.getElementById('dicePreview').textContent = `→ ${result.total} (${result.breakdown})`;
-  document.getElementById('diceRow').style.display = 'none';
-  updateCharCount();
-  // Stand Cry on Natural 20
-  if(result.natural === 20) {
-    const charNameEl = document.getElementById('replyChar');
-    const charName = charNameEl?.value.trim() || 'Unknown';
-    triggerStandCry(result.total, expr, charName + ' — STAND CRY!');
+  if (lastVisible) {
+    try { localStorage.setItem(STORAGE_KEY_POS, lastVisible); } catch(e) {}
   }
 }
 
-function triggerStandCry(total, expr, cry) {
-  const overlay = document.getElementById('standCryOverlay');
-  const text    = document.getElementById('standCryText');
-  const sub     = document.getElementById('standCrySub');
-  const diceEl  = document.getElementById('standCryDice');
-  if(!overlay || !text) return;
+function restoreReadingPosition() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_POS);
+    if (!saved) return;
+    const el = document.getElementById(saved);
+    if (!el) return;
 
-  const displayCry = cry || 'ORA ORA ORA!';
-  text.textContent  = displayCry;
-  diceEl.textContent = expr + ' = ' + total;
-  overlay.style.display = 'flex';
-
-  // Animate in
-  requestAnimationFrame(() => {
-    text.style.transform = 'scale(1)';
-    sub.style.opacity    = '1';
-    diceEl.style.opacity = '1';
-  });
-
-  // Dismiss after 3.5s
-  setTimeout(() => {
-    text.style.transform = 'scale(0)';
-    sub.style.opacity    = '0';
-    diceEl.style.opacity = '0';
-    setTimeout(() => { overlay.style.display = 'none'; }, 300);
-  }, 3500);
+    // Scroll to the post after a brief delay so layout is complete
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Highlight briefly to show where we resumed
+      el.style.transition = 'box-shadow .3s';
+      el.style.boxShadow = '0 0 0 2px var(--gold-d)';
+      setTimeout(() => { el.style.boxShadow = ''; }, 1800);
+    }, 300);
+  } catch(e) {}
 }
 
-function parseDiceExpr(expr) {
-  // Supports: 1d20, 2d6+3, 1d20-1, d20
-  const m = expr.match(/^(\d*)d(\d+)([+-]\d+)?$/i);
-  if(!m) return null;
-  const count   = parseInt(m[1]||'1');
-  const sides   = parseInt(m[2]);
-  const mod     = parseInt(m[3]||'0');
-  if(count < 1 || count > 20 || sides < 2) return null;
+// Save position when scrolling (debounced)
+let scrollSaveTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollSaveTimer);
+  scrollSaveTimer = setTimeout(saveReadingPosition, 500);
+}, { passive: true });
 
-  const rolls = Array.from({length:count}, () => Math.floor(Math.random()*sides)+1);
-  const natural = count === 1 ? rolls[0] : null;
-  const total = rolls.reduce((s,r)=>s+r,0) + mod;
-  const breakdown = (count===1 ? rolls[0] : rolls.join('+')) + (mod !== 0 ? (mod>0?'+':'')+mod : '') + '=' + total;
-
-  return {expr, rolls, natural, total, mod, breakdown};
-}
-
-/* ── Submit Reply ────────────────────────────────────────── */
+/* ── Submit Reply ─────────────────────────────────────────── */
 async function submitReply() {
-  if(!sb2 || !currentUser2) return;
-  const content  = document.getElementById('replyContent').value.trim();
-  const mood = document.getElementById('postMoodSel')?.value || '';
-  const charName = document.getElementById('replyChar').value.trim() || 'Anonymous';
-  const msg = document.getElementById('replyMsg');
+  if (!currentUser) { showMsgT('replyMsg', 'Sign in to post.', true); return; }
 
-  if(!content) { msg.textContent='Write something first.'; msg.style.color='var(--pink-l)'; return; }
-  if(content.length > 2000) { msg.textContent='Too long (max 2000 chars).'; msg.style.color='var(--pink-l)'; return; }
+  const char    = getSelectedChar();
+  const content = document.getElementById('replyContent')?.value.trim();
+  const mood    = document.getElementById('postMoodSel')?.value || null;
 
-  msg.textContent='Posting…'; msg.style.color='var(--text-dim)';
-  const btn = document.querySelector('[onclick="submitReply()"]');
-  if(btn) btn.disabled = true;
+  if (!char)    { showMsgT('replyMsg', 'Select a character first.', true); return; }
+  if (!content) { showMsgT('replyMsg', 'Write something first.', true); return; }
+  if (content.length > 8000) { showMsgT('replyMsg', 'Too long (max 8000 chars).', true); return; }
 
-  const { data: session2 } = await sb2.auth.getSession();
-  const { data: profile } = await sb2.from('profiles').select('username').eq('id', currentUser2.id).maybeSingle();
-
-  const { error } = await sb2.from('posts').insert([{
+  const { error } = await sbT.from('posts').insert([{
     thread_id:       THREAD_ID,
-    auth_id:         currentUser2.id,
-    character_name:  charName,
-    player_username: profile?.username || currentUser2.email?.split('@')[0] || 'Player',
+    auth_id:         currentUser.id,
+    character_name:  char.name,
+    player_username: currentProfile?.username || currentUser.email?.split('@')[0] || 'Player',
     content,
-    is_gm: isGM2,
     mood: mood || null,
+    is_gm: !!currentGMRole,
   }]);
 
-  if(btn) btn.disabled = false;
+  if (error) { showMsgT('replyMsg', 'Error: ' + error.message, true); return; }
 
-  if(error) { msg.textContent='Error: '+error.message; msg.style.color='var(--pink-l)'; return; }
+  // Clear
   document.getElementById('replyContent').value = '';
+  updateCharCount();
   clearDraft();
-  document.getElementById('dicePreview').textContent = '';
-  document.getElementById('replyCharCount').textContent = '0';
-  msg.textContent=''; 
+  setWriting(false);
+  showMsgT('replyMsg', 'Posted!', false);
+
+  // Save char selection
+  const dropdown = document.getElementById('charSelector')?.querySelector('select');
+  if (dropdown) {
+    try { localStorage.setItem('rp_last_char', dropdown.value); } catch(e) {}
+  }
 }
 
-async function deletePost(postId) {
-  if(!confirm('Delete this post?')) return;
-  await sb2.from('posts').delete().eq('id', postId);
-  document.getElementById('post-'+postId)?.remove();
+/* ── Delete Post ──────────────────────────────────────────── */
+async function deletePost(id) {
+  if (!confirm('Delete this post?')) return;
+  await sbT.from('posts').delete().eq('id', id);
+  document.getElementById('post-' + id)?.remove();
 }
 
-/* ── Realtime subscription ───────────────────────────────── */
-function subscribeToThread() {
-  if(!sb2 || threadChannel) return;
-  threadChannel = sb2.channel('thread-'+THREAD_ID)
-    .on('postgres_changes', {event:'INSERT',schema:'public',table:'posts',filter:'thread_id=eq.'+THREAD_ID},
-      payload => { if(payload.new) appendPost(payload.new); }
-    ).subscribe();
+/* ── Thread Status ────────────────────────────────────────── */
+async function setThreadStatus(status) {
+  const tagMap = { open:'[OPEN]', closed:'[CLOSED]', invite:'[INVITE ONLY]', event:'[SITE-EVENT]' };
+  const tag = tagMap[status] || '';
+  const { data: th } = await sbT.from('threads').select('tags').eq('id', THREAD_ID).single();
+  const existing = (th?.tags || '').split(' ')
+    .filter(t => !t.includes('OPEN') && !t.includes('CLOSED') && !t.includes('INVITE') && !t.includes('EVENT'));
+  await sbT.from('threads').update({ tags: [tag, ...existing].join(' ').trim() }).eq('id', THREAD_ID);
 }
 
-function appendPost(p) {
-  const container = document.getElementById('postsContainer');
-  const empty = container.querySelector('[style*="padding:2rem"]');
-  if(empty) empty.remove();
-  const div = document.createElement('div');
-  div.innerHTML = renderPost(p);
-  container.appendChild(div.firstElementChild);
-  document.getElementById('threadPostCount').textContent = container.querySelectorAll('.post').length + ' posts';
-  // scroll to new post
-  container.lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function updateCharCount() {
-  const val = document.getElementById('replyContent').value;
-  const len  = val.length;
-  const words = wordCount(val);
-  const charEl = document.getElementById('replyCharCount');
-  const wordEl = document.getElementById('replyWordCount');
-  if(charEl) { charEl.textContent = len; charEl.style.color = len > 1800 ? 'var(--pink-l)' : 'var(--text-xs)'; }
-  if(wordEl)  wordEl.textContent = words + ' word' + (words !== 1 ? 's' : '');
-}
-
-function insertFormat(before, after) {
-  const ta = document.getElementById('replyContent');
-  const start = ta.selectionStart, end = ta.selectionEnd;
-  const selected = ta.value.slice(start,end) || 'text';
-  ta.value = ta.value.slice(0,start) + before + selected + after + ta.value.slice(end);
-  ta.focus(); ta.setSelectionRange(start+before.length, start+before.length+selected.length);
-  updateCharCount();
-}
-
-function insertDivider() {
-  const ta = document.getElementById('replyContent');
-  const pos = ta.selectionStart;
-  const divider = '\n\n--- \u2726 ---\n\n';
-  ta.value = ta.value.slice(0,pos) + divider + ta.value.slice(pos);
-  ta.focus(); ta.setSelectionRange(pos+divider.length, pos+divider.length);
-  updateCharCount();
-}
-
-function insertHeader() {
-  const ta = document.getElementById('replyContent');
-  const pos = ta.selectionStart;
-  const header = '>>[Location | Mood | Tag]\n';
-  ta.value = ta.value.slice(0,pos) + header + ta.value.slice(pos);
-  ta.focus(); ta.setSelectionRange(pos+3, pos+11);
-  updateCharCount();
-}
-
-function insertColor(col) {
-  insertFormat('[color:'+col+']', '[/color]');
-}
-
-/* Auto-draft save every 30s */
-let draftTimer = null;
-function startDraftSave() {
-  if(draftTimer) clearInterval(draftTimer);
-  draftTimer = setInterval(() => {
-    const val = document.getElementById('replyContent')?.value;
-    if(val && val.length > 10) {
-      try {
-        localStorage.setItem('rp_draft_' + THREAD_ID, val);
-        const ind = document.getElementById('draftIndicator');
-        if(ind) { ind.textContent = 'Draft saved'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 2000); }
-      } catch(e){}
-    }
-  }, 30000);
-}
-
-function loadDraft() {
-  try {
-    const saved = localStorage.getItem('rp_draft_' + THREAD_ID);
-    const ta = document.getElementById('replyContent');
-    if(saved && ta && !ta.value) {
-      ta.value = saved;
-      updateCharCount();
-      const ind = document.getElementById('draftIndicator');
-      if(ind) { ind.textContent = 'Draft restored'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 3000); }
-    }
-  } catch(e){}
-}
-
-function clearDraft() {
-  try { localStorage.removeItem('rp_draft_' + THREAD_ID); } catch(e){}
-}
-
-/* Form helpers */
-function showMsg(id,text,isErr){const el=document.getElementById(id);if(el){el.textContent=text;el.style.color=isErr?'var(--pink-l)':'#81C784';}}
-const fi=document.querySelector('.fi');
-const fta=document.querySelector('.fta');
-
-/* ── Init ────────────────────────────────────────────────── */
-(async()=>{
-  await initThreadAuth();
-  await loadThread();
-  checkWatchStatus();
-  initPresence();
-  initPresence();
-  startDraftSave();
-  loadDraft();
-  initPresence();
-})();
-
-
-/* ── Thread watching ────────────────────────────────────── */
-let isWatching = false;
-let threadOwnerId = null;
-
+/* ── Thread Watch ─────────────────────────────────────────── */
 async function checkWatchStatus() {
-  if(!sb2 || !currentUser2 || !THREAD_ID) return;
-  const { data } = await sb2.from('thread_watches')
-    .select('id').eq('thread_id', THREAD_ID).eq('user_id', currentUser2.id).maybeSingle();
+  if (!currentUser) return;
+  const { data } = await sbT.from('thread_watches')
+    .select('id').eq('thread_id', THREAD_ID).eq('user_id', currentUser.id).maybeSingle();
   isWatching = !!data;
   const btn = document.getElementById('watchBtn');
-  if(btn) {
+  if (btn) {
     btn.style.display = '';
-    btn.textContent = isWatching ? '★ Watching' : '☆ Watch';
-    btn.style.color = isWatching ? 'var(--gold-l)' : '';
+    btn.textContent   = isWatching ? '★ Watching' : '☆ Watch';
+    btn.style.color   = isWatching ? 'var(--gold-l)' : '';
   }
 }
 
 async function toggleWatch() {
-  if(!sb2 || !currentUser2) return;
-  if(isWatching) {
-    await sb2.from('thread_watches').delete()
-      .eq('thread_id', THREAD_ID).eq('user_id', currentUser2.id);
-    isWatching = false;
+  if (!currentUser) return;
+  if (isWatching) {
+    await sbT.from('thread_watches').delete()
+      .eq('thread_id', THREAD_ID).eq('user_id', currentUser.id);
   } else {
-    await sb2.from('thread_watches').insert([{
-      thread_id: THREAD_ID, user_id: currentUser2.id
-    }]);
-    isWatching = true;
+    await sbT.from('thread_watches').insert([{ thread_id: THREAD_ID, user_id: currentUser.id }]);
   }
+  isWatching = !isWatching;
   const btn = document.getElementById('watchBtn');
-  if(btn) {
+  if (btn) {
     btn.textContent = isWatching ? '★ Watching' : '☆ Watch';
     btn.style.color = isWatching ? 'var(--gold-l)' : '';
   }
 }
 
-/* ── Thread status (owner only) ─────────────────────────── */
-async function setThreadStatus(status) {
-  if(!sb2 || !currentUser2) return;
-  const tagMap = { open:'[OPEN]', closed:'[CLOSED]', invite:'[INVITE ONLY]', event:'[SITE-EVENT]' };
-  const tag = tagMap[status] || '';
-  // Get current tags without old status tags
-  const { data:th } = await sb2.from('threads').select('tags').eq('id',THREAD_ID).single();
-  const existingTags = (th?.tags||'').split(' ')
-    .filter(t => !t.includes('OPEN') && !t.includes('CLOSED') && !t.includes('INVITE') && !t.includes('EVENT'));
-  const newTags = [tag, ...existingTags].join(' ').trim();
-  await sb2.from('threads').update({ tags: newTags }).eq('id', THREAD_ID);
-  showMsg('replyMsg', 'Status updated.', false);
-}
-
-/* ── Total word count for thread ────────────────────────── */
-function updateThreadWordCount(posts) {
-  const total = posts.reduce((sum, p) => sum + (p.content ? p.content.trim().split(/\s+/).length : 0), 0);
-  const el = document.getElementById('threadWordCount');
-  if(el) el.textContent = total.toLocaleString() + ' words total';
-}
-
-
-/* ── Theme persistence ──────────────────────────────────── */
-(function(){
-  try {
-    var t = localStorage.getItem('rp_theme');
-    if(t && t !== 'dark') document.body.classList.add('theme-' + t);
-  } catch(e){}
-})();
-
-
-/* ── Theme toggle (sub-page) ──────────────────────────────── */
-function toggleThemePicker() {
-  var p = document.getElementById('themePicker');
-  if(p) { p.style.display = p.style.display === 'block' ? 'none' : 'block'; return; }
-  // Build picker inline if not present
-  var div = document.createElement('div');
-  div.id = 'themePicker';
-  div.style.cssText = 'position:fixed;bottom:60px;right:1rem;background:rgba(7,0,13,.97);border:1px solid var(--border);padding:.75rem;z-index:800;width:200px;';
-  div.innerHTML = '<div style="font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-xs);margin-bottom:.55rem;">🎨 Theme</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">' +
-    ['dark:🌙 Dark:#07000D:#C8960C','sbr-pink:SBR Pink:#FF0088:#fff','sbr-teal:Ocean:#00AAAA:#002020','jojolion:Manga:#F5F5F5:#111','vento:Part 5:#F0B800:#1A1000']
-    .map(function(s){var p=s.split(':');return '<div onclick="setTheme(\''+p[0]+'\')" style="padding:.4rem;cursor:pointer;background:'+p[2]+';color:'+p[3]+';font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;text-align:center;border:2px solid transparent;">'+p[1]+'</div>';})
-    .join('') + '</div>';
-  document.body.appendChild(div);
-  document.addEventListener('click', function(e){ if(!div.contains(e.target) && e.target.id !== 'darkModeBtn') div.style.display='none'; },{once:false});
-}
-
-function setTheme(theme) {
-  var THEMES = ['dark','sbr-pink','sbr-teal','jojolion','vento'];
-  THEMES.forEach(function(t){ document.body.classList.remove('theme-'+t); });
-  if(theme !== 'dark') document.body.classList.add('theme-'+theme);
-  try { localStorage.setItem('rp_theme', theme); } catch(e){}
-  var p = document.getElementById('themePicker');
-  if(p) p.style.display = 'none';
-  var btn = document.getElementById('darkModeBtn');
-  if(btn) btn.textContent = theme === 'dark' ? '🌙' : '🎨';
-}
-
-
-/* ── Stand Cry (Natural 20) ──────────────────────────────── */
-function triggerStandCry(cry, total) {
-  const overlay = document.getElementById('standCryOverlay');
-  const text    = document.getElementById('standCryText');
-  const nat     = document.getElementById('standCryNat');
-  if(!overlay || !text) return;
-
-  text.textContent = cry || 'KACHOW!';
-  nat.textContent  = total;
-  overlay.style.display = 'flex';
-
-  // Fade in
-  requestAnimationFrame(() => {
-    overlay.style.opacity = '1';
-  });
-
-  // Hold then fade out
-  setTimeout(() => {
-    overlay.style.opacity = '0';
-    setTimeout(() => { overlay.style.display = 'none'; }, 400);
-  }, 2200);
-}
-
-
-/* ── Post Reactions ─────────────────────────────────────── */
-async function addReaction(postId, emoji) {
-  if(!sb2 || !currentUser2) { showMsg('replyMsg','Sign in to react.',true); return; }
-  await sb2.from('post_reactions').upsert([{
-    post_id: postId, user_id: currentUser2.id, emoji
-  }], { onConflict: 'post_id,user_id' });
-  loadReactions(postId);
-}
-
-async function loadReactions(postId) {
-  if(!sb2) return;
-  const { data } = await sb2.from('post_reactions')
-    .select('emoji').eq('post_id', postId);
-  const el = document.getElementById('react-counts-' + postId);
-  if(!el || !data?.length) return;
-  const counts = {};
-  data.forEach(r => counts[r.emoji] = (counts[r.emoji]||0) + 1);
-  el.innerHTML = Object.entries(counts)
-    .map(([e,n]) => `<span class="react-count">${e} ${n}</span>`).join('');
-}
-
-async function loadAllReactions(posts) {
-  if(!sb2 || !posts?.length) return;
-  posts.forEach(p => loadReactions(p.id));
-}
-
-
-/* ── Now Writing Presence ───────────────────────────────── */
-presenceChannel = null;
-typingTimer = null;
-let isTypingNow = false;
-
-function initPresence() {
-  if(!sb2 || !currentUser2 || !THREAD_ID) return;
-  const username = document.getElementById('replyChar')?.value || currentUser2.email?.split('@')[0] || 'Someone';
-
-  presenceChannel = sb2.channel('presence:thread:' + THREAD_ID)
-    .on('presence', { event: 'sync' }, () => {
-      const state = presenceChannel.presenceState();
-      renderTypingIndicator(state);
+/* ── Realtime ─────────────────────────────────────────────── */
+function subscribeRealtime() {
+  if (!sbT) return;
+  sbT.channel('thread-' + THREAD_ID)
+    .on('postgres_changes', {
+      event: 'INSERT', schema: 'public', table: 'posts',
+      filter: 'thread_id=eq.' + THREAD_ID,
+    }, payload => {
+      const p = payload.new;
+      if (p.auth_id !== currentUser?.id) {
+        const container = document.getElementById('postsContainer');
+        container.appendChild(buildPostEl(p));
+        allPosts.push(p);
+        const pc = document.getElementById('threadPostCount');
+        if (pc) pc.textContent = allPosts.length + ' posts';
+      }
     })
-    .subscribe(async status => {
-      if(status === 'SUBSCRIBED') {
-        await presenceChannel.track({ user_id: currentUser2.id, username, typing: false });
-      }
-    });
+    .subscribe();
 }
 
-function renderTypingIndicator(state) {
-  const typers = [];
-  Object.values(state).forEach(presences => {
-    presences.forEach(p => {
-      if(p.typing && p.user_id !== currentUser2?.id) {
-        typers.push(p.username);
-      }
-    });
-  });
+/* ── Feature 3: Notifications ─────────────────────────────── */
+async function loadNotificationCount() {
+  if (!currentUser || !sbT) return;
+  const { count } = await sbT.from('notifications')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', currentUser.id)
+    .eq('read', false);
 
-  let el = document.getElementById('typingIndicator');
-  if(!el) {
-    el = document.createElement('div');
-    el.id = 'typingIndicator';
-    el.className = 'typing-indicator';
-    document.getElementById('postsContainer')?.after(el);
+  const badge = document.getElementById('notifBadge');
+  if (badge) {
+    badge.textContent = count > 0 ? (count > 9 ? '9+' : count) : '';
+    badge.style.display = count > 0 ? '' : 'none';
+  }
+  const bell = document.getElementById('notifBell');
+  if (bell) bell.style.color = count > 0 ? 'var(--gold-l)' : '';
+}
+
+async function loadNotifications() {
+  if (!currentUser || !sbT) return;
+  const { data } = await sbT.from('notifications')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false })
+    .limit(15);
+
+  const panel = document.getElementById('notifPanel');
+  if (!panel) return;
+
+  if (!data?.length) {
+    panel.innerHTML = '<div style="padding:1rem;font-family:Inter,sans-serif;font-size:.75rem;color:var(--text-xs);text-align:center;">No notifications yet.</div>';
+    return;
   }
 
-  if(!typers.length) { el.style.display = 'none'; return; }
-  el.style.display = 'flex';
-  const names = typers.length === 1 ? typers[0] : typers.slice(0,-1).join(', ') + ' & ' + typers[typers.length-1];
-  el.innerHTML = '<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span> <span class="typing-text">' + names + (typers.length === 1 ? ' is' : ' are') + ' writing a reply</span>';
+  panel.innerHTML = data.map(n =>
+    '<div class="notif-row' + (n.read ? '' : ' unread') + '" onclick="markRead(\'' + n.id + '\',this,' + JSON.stringify(n.link) + ')">'
+      + '<div class="notif-msg">' + escH(n.message || '') + '</div>'
+      + '<div class="notif-time">' + new Date(n.created_at).toLocaleDateString() + '</div>'
+    + '</div>'
+  ).join('');
 }
 
-async function setTyping(isTyping) {
-  if(!presenceChannel || isTyping === isTypingNow) return;
-  isTypingNow = isTyping;
-  const username = document.getElementById('replyChar')?.value || currentUser2?.email?.split('@')[0] || 'Someone';
-  await presenceChannel.track({ user_id: currentUser2?.id, username, typing: isTyping });
+async function markRead(id, el, link) {
+  await sbT.from('notifications').update({ read: true }).eq('id', id);
+  el?.classList.remove('unread');
+  loadNotificationCount();
+  if (link) window.location.href = link;
 }
 
-// Hook to reply textarea
-document.addEventListener('DOMContentLoaded', () => {
-  const ta = document.getElementById('replyContent');
-  if(!ta) return;
-  ta.addEventListener('input', () => {
-    setTyping(true);
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(() => setTyping(false), 3000);
-  });
-  ta.addEventListener('blur', () => { clearTimeout(typingTimer); setTyping(false); });
-});
+async function markAllRead() {
+  if (!currentUser) return;
+  await sbT.from('notifications').update({ read: true }).eq('user_id', currentUser.id);
+  loadNotificationCount();
+  loadNotifications();
+}
 
+function toggleNotifPanel() {
+  let panel = document.getElementById('notifPanel');
+  if (!panel) {
+    // Build it
+    panel = document.createElement('div');
+    panel.id = 'notifPanel';
+    panel.style.cssText = 'position:fixed;top:56px;right:1rem;background:rgba(7,0,13,.97);border:1px solid var(--border);width:320px;max-height:420px;overflow-y:auto;z-index:800;backdrop-filter:blur(20px);';
+    panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;padding:.65rem .9rem;border-bottom:1px solid var(--border);">'
+      + '<span style="font-family:Cinzel,serif;font-size:.8rem;font-weight:700;color:var(--text);">Notifications</span>'
+      + '<button onclick="markAllRead()" style="background:none;border:none;font-family:Inter,sans-serif;font-size:.65rem;color:var(--text-xs);cursor:pointer;letter-spacing:.06em;">Mark all read</button>'
+      + '</div>'
+      + '<div id="notifList" style="padding:.5rem 0;">Loading…</div>';
+    document.body.appendChild(panel);
 
-/* ── Now Writing presence ────────────────────────────────── */
-let presenceChannel = null;
-let typingTimer = null;
+    // Inner list div
+    const listDiv = panel.querySelector('#notifList');
+    listDiv.id = 'notifPanel'; // reuse id for loadNotifications target
 
+    setTimeout(() => {
+      document.addEventListener('click', function h(e) {
+        if (!panel.contains(e.target) && e.target.id !== 'notifBell') {
+          panel.style.display = 'none';
+          document.removeEventListener('click', h);
+        }
+      });
+    }, 50);
+
+    loadNotifications();
+    return;
+  }
+  panel.style.display = panel.style.display === 'none' ? '' : 'none';
+  if (panel.style.display !== 'none') loadNotifications();
+}
+
+/* ── Now Writing Presence ─────────────────────────────────── */
 function initPresence() {
-  if(!sb2 || !currentUser2 || !THREAD_ID) return;
-  presenceChannel = sb2.channel('presence-' + THREAD_ID);
-  presenceChannel.on('presence', { event: 'sync' }, () => {
-    const state = presenceChannel.presenceState();
-    const writers = Object.values(state)
-      .flat()
-      .filter(u => u.user_id !== currentUser2.id && u.writing)
+  if (!sbT || !currentUser) return;
+  presenceChan = sbT.channel('presence-thread-' + THREAD_ID);
+  presenceChan.on('presence', { event: 'sync' }, () => {
+    const state = presenceChan.presenceState();
+    const writers = Object.values(state).flat()
+      .filter(u => u.user_id !== currentUser.id && u.writing)
       .map(u => u.char_name || u.username || 'Someone');
     const el = document.getElementById('writingIndicator');
-    if(el) {
-      if(writers.length) {
+    if (el) {
+      if (writers.length) {
         el.textContent = writers.join(', ') + (writers.length === 1 ? ' is' : ' are') + ' writing…';
         el.style.display = '';
       } else {
@@ -3376,19 +3358,99 @@ function initPresence() {
       }
     }
   }).subscribe(async status => {
-    if(status === 'SUBSCRIBED') {
-      await presenceChannel.track({ user_id: currentUser2.id, writing: false,
-        char_name: document.getElementById('replyChar')?.value || null });
+    if (status === 'SUBSCRIBED') {
+      await presenceChan.track({
+        user_id: currentUser.id,
+        writing: false,
+        char_name: selectedChar?.name || currentProfile?.username || null,
+      });
     }
   });
 }
 
-async function setWriting(isWriting) {
-  if(!presenceChannel) return;
-  await presenceChannel.track({ user_id: currentUser2.id, writing: isWriting,
-    char_name: document.getElementById('replyChar')?.value || null });
+async function setWriting(val) {
+  if (!presenceChan || !currentUser) return;
+  await presenceChan.track({
+    user_id: currentUser.id,
+    writing: val,
+    char_name: selectedChar?.name || currentProfile?.username || null,
+  });
 }
 
+/* ── Reactions ────────────────────────────────────────────── */
+async function toggleReaction(postId, emoji) {
+  if (!currentUser || !sbT) return;
+  const { data } = await sbT.from('post_reactions')
+    .select('id').eq('post_id', postId).eq('user_id', currentUser.id).eq('emoji', emoji).maybeSingle();
+  if (data) {
+    await sbT.from('post_reactions').delete().eq('id', data.id);
+  } else {
+    await sbT.from('post_reactions').insert([{ post_id: postId, user_id: currentUser.id, emoji }]);
+  }
+  loadReactionsForPost(postId);
+}
+
+async function loadReactionsForPost(postId) {
+  const { data } = await sbT.from('post_reactions').select('emoji, user_id').eq('post_id', postId);
+  const el = document.getElementById('rxn-counts-' + postId);
+  if (!el) return;
+  const counts = {};
+  (data || []).forEach(r => { counts[r.emoji] = (counts[r.emoji] || 0) + 1; });
+  el.innerHTML = Object.entries(counts).map(([e, n]) =>
+    '<span class="rxn-count">' + e + ' ' + n + '</span>'
+  ).join('');
+}
+
+async function loadAllReactions() {
+  if (!sbT || !allPosts.length) return;
+  const ids = allPosts.map(p => p.id);
+  const { data } = await sbT.from('post_reactions').select('post_id, emoji').in('post_id', ids);
+  if (!data) return;
+  const byPost = {};
+  data.forEach(r => {
+    if (!byPost[r.post_id]) byPost[r.post_id] = {};
+    byPost[r.post_id][r.emoji] = (byPost[r.post_id][r.emoji] || 0) + 1;
+  });
+  Object.entries(byPost).forEach(([pid, counts]) => {
+    const el = document.getElementById('rxn-counts-' + pid);
+    if (el) el.innerHTML = Object.entries(counts).map(([e,n]) =>
+      '<span class="rxn-count">' + e + ' ' + n + '</span>'
+    ).join('');
+  });
+}
+
+/* ── Draft Save ───────────────────────────────────────────── */
+function initDraftSave() {
+  // Restore
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_DRAFT);
+    const ta = document.getElementById('replyContent');
+    if (saved && ta && !ta.value) {
+      ta.value = saved;
+      updateCharCount();
+      const ind = document.getElementById('draftIndicator');
+      if (ind) { ind.textContent = 'Draft restored'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 2500); }
+    }
+  } catch(e) {}
+
+  // Auto-save every 30s
+  draftTimer = setInterval(() => {
+    const val = document.getElementById('replyContent')?.value;
+    if (val && val.length > 10) {
+      try {
+        localStorage.setItem(STORAGE_KEY_DRAFT, val);
+        const ind = document.getElementById('draftIndicator');
+        if (ind) { ind.textContent = 'Draft saved'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 1800); }
+      } catch(e) {}
+    }
+  }, 30000);
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(STORAGE_KEY_DRAFT); } catch(e) {}
+}
+
+/* ── Typing handler ───────────────────────────────────────── */
 function onReplyInput() {
   updateCharCount();
   setWriting(true);
@@ -3396,29 +3458,161 @@ function onReplyInput() {
   typingTimer = setTimeout(() => setWriting(false), 4000);
 }
 
+/* ── Char count ───────────────────────────────────────────── */
+function updateCharCount() {
+  const val = document.getElementById('replyContent')?.value || '';
+  const wc_el = document.getElementById('replyWordCount');
+  const cc_el = document.getElementById('replyCharCount');
+  if (wc_el) wc_el.textContent = wordCount(val) + ' words';
+  if (cc_el) { cc_el.textContent = val.length; cc_el.style.color = val.length > 1800 ? 'var(--pink-l)' : ''; }
+}
 
-/* ── Stand Cry Animation (Natural 20!) ───────────────────── */
-function showStandCry(cry) {
-  const overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);pointer-events:none;';
-  overlay.innerHTML = `
-    <div style="text-align:center;animation:standCryIn .4s ease both;">
-      <div style="font-family:'Cinzel',serif;font-size:clamp(1.2rem,4vw,2rem);color:var(--gold-d);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem;opacity:.8;">Natural 20</div>
-      <div style="font-family:'Cinzel',serif;font-size:clamp(3rem,10vw,6rem);font-weight:900;color:#FFD700;letter-spacing:.1em;text-shadow:0 0 40px rgba(255,215,0,.5),0 0 80px rgba(255,215,0,.25);line-height:1;">${cry || '✦'}</div>
-      <div style="font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text-xs);letter-spacing:.18em;text-transform:uppercase;margin-top:.75rem;">CRITICAL!</div>
-    </div>`;
-  document.body.appendChild(overlay);
+function wordCount(text) {
+  return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
+
+/* ── Formatting tools ─────────────────────────────────────── */
+function insertFormat(before, after) {
+  const ta = document.getElementById('replyContent');
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.slice(s, e) || 'text';
+  ta.value = ta.value.slice(0, s) + before + sel + after + ta.value.slice(e);
+  ta.focus(); ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+  updateCharCount();
+}
+
+function insertDivider() {
+  const ta = document.getElementById('replyContent');
+  const pos = ta.selectionStart;
+  const d = '\n\n--- \u2726 ---\n\n';
+  ta.value = ta.value.slice(0, pos) + d + ta.value.slice(pos);
+  ta.focus(); ta.setSelectionRange(pos + d.length, pos + d.length);
+  updateCharCount();
+}
+
+function insertHeader() {
+  const ta = document.getElementById('replyContent');
+  const pos = ta.selectionStart;
+  const h = '>>[Location | Mood | Tag]\n';
+  ta.value = ta.value.slice(0, pos) + h + ta.value.slice(pos);
+  ta.focus(); ta.setSelectionRange(pos + 3, pos + 11);
+  updateCharCount();
+}
+
+function insertColor(col) { insertFormat('[color:' + col + ']', '[/color]'); }
+
+function toggleDiceRow() {
+  const row = document.getElementById('diceRow');
+  if (row) row.style.display = row.style.display === 'none' ? '' : 'none';
+}
+
+/* ── Dice ─────────────────────────────────────────────────── */
+function rollDice() {
+  const expr = document.getElementById('diceExpr')?.value.trim() || '1d20';
+  const m = expr.match(/^(\d*)d(\d+)([+-]\d+)?$/i);
+  if (!m) { document.getElementById('dicePreview').textContent = 'Bad expression'; return; }
+  const count = parseInt(m[1] || '1'), sides = parseInt(m[2]), mod = parseInt(m[3] || '0');
+  if (count < 1 || count > 20 || sides < 2) return;
+  const rolls = Array.from({ length: count }, () => Math.floor(Math.random() * sides) + 1);
+  const total = rolls.reduce((s, r) => s + r, 0) + mod;
+  const nat   = count === 1 ? rolls[0] : null;
+  const breakdown = (count === 1 ? rolls[0] : '[' + rolls.join('+') + ']') + (mod !== 0 ? (mod > 0 ? '+' : '') + mod : '');
+  const isCrit   = nat === 20 && sides === 20;
+  const isFumble = nat === 1  && sides === 20;
+
+  // Encode result and insert into post content
+  const encoded = btoa(JSON.stringify({ expr, total, breakdown, natural: nat, rolls }));
+  const marker = '__DICE__[' + encoded + ']';
+  insertFormat(marker, '');
+
+  document.getElementById('dicePreview').textContent =
+    breakdown + ' = ' + total + (isCrit ? ' 🌟 CRIT!' : isFumble ? ' 💀 FUMBLE' : '');
+
+  if (isCrit) triggerStandCry(selectedChar?.stand_cry || selectedChar?.name || '✦');
+}
+
+/* ── Stand Cry ────────────────────────────────────────────── */
+function triggerStandCry(text) {
+  const overlay = document.getElementById('standCryOverlay');
+  if (!overlay) return;
+  // Try both versions of the overlay structure
+  const textEl = document.getElementById('standCryText');
+  if (textEl) textEl.textContent = text || '✦';
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1';
+  overlay.style.pointerEvents = 'none';
   setTimeout(() => {
     overlay.style.transition = 'opacity .5s';
     overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 500);
-  }, 2200);
+    setTimeout(() => { overlay.style.display = 'none'; overlay.style.transition = ''; }, 500);
+  }, 2400);
 }
 
-// Inject keyframe
-const _cryStyle = document.createElement('style');
-_cryStyle.textContent = '@keyframes standCryIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}';
-document.head.appendChild(_cryStyle);
+/* ── RP Text Formatter ────────────────────────────────────── */
+function formatRPText(raw) {
+  if (!raw) return '';
+  let t = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Scene dividers
+  t = t.replace(/^[ \t]*([-\u2500\u2550\u2726\u2605\u2022\u25C6\u25C7\u2666\u2660\u2663\u2665~*]{3,})[ \t]*$/gm,
+    '<div class="rp-divider"><span class="rp-divider-line"></span><span class="rp-divider-icon">\u2726</span><span class="rp-divider-line"></span></div>');
+  // Post header >>[ ]
+  t = t.replace(/^&gt;&gt;\[([^\]]+)\]/gm, (_, inner) => {
+    const parts = inner.split('|').map(p => p.trim());
+    return '<div class="rp-header">' + parts.map((p,i) => {
+      const icons = ['\uD83D\uDCCD','\uD83D\uDCAD','\uD83C\uDFF7'];
+      return '<span class="rp-header-item">' + (icons[i]||'') + ' ' + p + '</span>';
+    }).join('<span class="rp-header-sep">\u00B7</span>') + '</div>';
+  });
+  // Bold, italic, underline, strike, spoiler
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/\*([^*\n]+)\*/g, '<em class="rp-action">$1</em>');
+  t = t.replace(/__([^_]+)__/g, '<span class="rp-underline">$1</span>');
+  t = t.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  t = t.replace(/\|\|([^|]+)\|\|/g, '<span class="rp-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+  // RP formatting
+  t = t.replace(/"([^"\n]{1,400})"/g, '<q class="rp-dialogue">$1</q>');
+  t = t.replace(/\{\{([^}]+)\}\}/g, '<em class="rp-thought">$1</em>');
+  t = t.replace(/\(\(([^)]+)\)\)/g, '<span class="rp-whisper">$1</span>');
+  t = t.replace(/\[\[([^\]]+)\]\]/g, '<span class="rp-ooc"><span class="rp-ooc-tag">OOC</span> $1</span>');
+  // Color
+  const SAFE = {gold:'#C8960C',purple:'#9B59B6',red:'#E74C3C',blue:'#3498DB',green:'#2ECC71',pink:'#E91E8C',cyan:'#00BCD4',white:'#F5F5F5'};
+  t = t.replace(/\[color:(\w+)\]([^\[]+)\[\/color\]/g, (_, col, txt) => {
+    const hex = SAFE[col.toLowerCase()]; return hex ? '<span style="color:' + hex + ';">' + txt + '</span>' : txt;
+  });
+  // Dice rolls
+  t = t.replace(/__DICE__\[([^\]]+)\]/g, (m, data) => {
+    try {
+      const d = JSON.parse(atob(data));
+      const cls = d.natural === 20 ? 'dice-crit' : d.natural === 1 ? 'dice-fumble' : '';
+      return '<span class="dice-roll ' + cls + '">\uD83C\uDFB2 <strong>' + d.expr + '</strong> \u2192 <span class="dice-total">' + d.total + '</span> <span class="dice-breakdown">(' + d.breakdown + ')</span></span>';
+    } catch(e) { return m; }
+  });
+  // Newlines
+  t = t.replace(/\n\n/g, '</p><p class="rp-para">');
+  t = t.replace(/\n/g, '<br>');
+  return '<p class="rp-para">' + t + '</p>';
+}
+
+/* ── Helpers ──────────────────────────────────────────────── */
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showMsgT(id, msg, isErr) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = isErr ? 'var(--pink-l)' : '#81C784';
+  setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 3000);
+}
+
+/* ── Boot ─────────────────────────────────────────────────── */
+/* Wait for base_js initAuth to complete before loading thread */
+document.addEventListener("DOMContentLoaded", function() {
+  // initAuth runs in base_js boot; give it a tick to complete
+  setTimeout(initThreadPage, 0);
+});
+
 
 </script>
 </body>
