@@ -1585,6 +1585,31 @@
 
   @media(max-width:600px){.tw{padding-left:1rem;padding-right:1rem;}.post-body{font-size:.85rem;}}
 
+
+  /* ── Light themes (applied via body class) ───────────────── */
+  body.theme-sbr-pink  { --text:#1A0020;--text-dim:#3D0050;--text-xs:#8B2BAF;--border:rgba(200,0,120,.22);--gold:#D4006A;--gold-l:#FF0088;--gold-d:#A80055;--purple:#6A0080;--purple-l:#9B00B8;--pink:#FF0066;--pink-l:#FF4499; }
+  body.theme-sbr-teal  { --text:#002020;--text-dim:#004040;--text-xs:#006868;--border:rgba(0,180,180,.22);--gold:#00AAAA;--gold-l:#00CCCC;--gold-d:#008888;--purple:#005580;--purple-l:#0077AA;--pink:#FF4477;--pink-l:#FF6699; }
+  body.theme-jojolion  { --text:#0A0A0A;--text-dim:#333;--text-xs:#666;--border:rgba(0,0,0,.15);--gold:#222;--gold-l:#000;--gold-d:#444;--purple:#1A1A1A;--purple-l:#333;--pink:#CC0000;--pink-l:#FF3333; }
+  body.theme-vento     { --text:#1A1000;--text-dim:#3D2A00;--text-xs:#7A5A00;--border:rgba(180,140,0,.22);--gold:#C8960C;--gold-l:#F0B800;--gold-d:#8A6A00;--purple:#5A3A00;--purple-l:#8A5A00;--pink:#CC4400;--pink-l:#FF6622; }
+  body[class*='theme-']:not(.theme-dark) #bg-vignette {
+    background: rgba(255,255,255,.88);
+  }
+  body.theme-jojolion #bg-vignette { background: rgba(248,248,248,.92); }
+  body[class*='theme-']:not(.theme-dark) .post,
+  body[class*='theme-']:not(.theme-dark) .reply-box,
+  body[class*='theme-']:not(.theme-dark) .premise-card,
+  body[class*='theme-']:not(.theme-dark) .sidebar-card,
+  body[class*='theme-']:not(.theme-dark) .ds,
+  body[class*='theme-']:not(.theme-dark) .cs { 
+    background: rgba(255,255,255,.88);
+  }
+  body[class*='theme-']:not(.theme-dark) .fi,
+  body[class*='theme-']:not(.theme-dark) .fta,
+  body[class*='theme-']:not(.theme-dark) .fsel {
+    background: rgba(255,255,255,.8);
+    color: var(--text);
+  }
+
 </style>
 </head>
 <body>
@@ -2833,6 +2858,15 @@ function updateThreadWordCount(posts) {
   const el = document.getElementById('threadWordCount');
   if(el) el.textContent = total.toLocaleString() + ' words total';
 }
+
+
+/* ── Theme persistence ──────────────────────────────────── */
+(function(){
+  try {
+    var t = localStorage.getItem('rp_theme');
+    if(t && t !== 'dark') document.body.classList.add('theme-' + t);
+  } catch(e){}
+})();
 
 </script>
 </body>
