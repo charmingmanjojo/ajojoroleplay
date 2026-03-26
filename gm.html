@@ -2098,7 +2098,7 @@ let curThread=null;
 function openPostModal(threadId,title){
   curThread=threadId;
   document.getElementById('postModalTitle').textContent=title;
-  document.getElementById('postList').innerHTML='<div class="empty">Posts will load from Supabase when connected.</div>';
+  const _pl=document.getElementById('postList');if(_pl)_pl.innerHTML='<div class="empty">Posts will load from Supabase when connected.</div>';
   openModal('postModal');
 }
 async function submitReply(){
@@ -2211,7 +2211,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(o=>closeModal(o.id));});
 let toastTm=null;
 function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type?' '+type:'');if(toastTm)clearTimeout(toastTm);toastTm=setTimeout(()=>t.className='',3000);}
-function buildTicker(){const items=[...TICKERS,...TICKERS];document.getElementById('tickerTrack').innerHTML=items.map(a=>`<span class="ticker-item">${a}</span>`).join('');}
+function buildTicker(){const el=document.getElementById('tickerTrack');if(!el)return;const items=[...TICKERS,...TICKERS];el.innerHTML=items.map(a=>`<span class="ticker-item">${a}</span>`).join('');}
 function escH(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showOCProfile(){showToast('OC profiles coming soon.','ok');}
 
@@ -2428,40 +2428,58 @@ function toggleArt(header) {
    GM PANEL — gm.html
 ================================================================ */
 // Supabase already initialised by shared script — alias here
-const sb2 = typeof sb !== 'undefined' ? sb : null;
+let sb2 = null; // initialized in initGMAuth
 
 let currentUser2 = null, currentProfile2 = null, isGM2 = false;
 
 /* ── Auth ─────────────────────────────────────────────────── */
 async function initGMAuth() {
-  if(!window.supabase) { showAccessDenied('Supabase not loaded.'); return; }
-  sb2 = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-    auth:{ autoRefreshToken:true, persistSession:true, detectSessionInUrl:true }
-  });
+  try {
+    // Reuse the existing sb client from shared JS — don't create a second GoTrueClient
+    sb2 = (typeof sb !== 'undefined' && sb) ? sb : null;
+    if(!sb2) { showAccessDenied('Supabase not connected.'); return; }
 
-  const { data:{ session } } = await sb2.auth.getSession();
-  if(!session) { window.location.href = 'login.html'; return; }
+    const { data:sessionData, error:sessErr } = await sb2.auth.getSession();
+    if(sessErr) { showAccessDenied('Session error: ' + sessErr.message); return; }
+    if(!sessionData?.session) {
+      window.location.href = 'login.html';
+      return;
+    }
 
-  currentUser2 = session.user;
+    currentUser2 = sessionData.session.user;
 
-  // Verify GM status
-  const { data:gm } = await sb2.from('gm_roles')
-    .select('role,is_active').eq('auth_id', session.user.id).maybeSingle();
+    // Verify GM status
+    const { data:gm, error:gmErr } = await sb2.from('gm_roles')
+      .select('role,is_active')
+      .eq('auth_id', currentUser2.id)
+      .maybeSingle();
 
-  if(!gm || !gm.is_active) { showAccessDenied('You do not have GM access.'); return; }
-  isGM2 = true;
+    if(gmErr) { showAccessDenied('Error checking GM status: ' + gmErr.message); return; }
+    if(!gm)   { showAccessDenied('No GM record found. Ask the server owner to add you as a GM.'); return; }
+    if(!gm.is_active) { showAccessDenied('Your GM account is inactive. Contact the server owner.'); return; }
 
-  const { data:prof } = await sb2.from('profiles')
-    .select('username').eq('id', session.user.id).maybeSingle();
-  currentProfile2 = prof;
+    isGM2 = true;
 
-  document.getElementById('gmWelcome').textContent = 'Welcome, ' + (prof?.username || 'GM');
-  document.getElementById('gmRole').textContent = gm.role?.toUpperCase() || 'GM';
-  document.getElementById('gmAccessDenied').style.display = 'none';
-  document.getElementById('gmContent').style.display = 'block';
+    const { data:prof } = await sb2.from('profiles')
+      .select('username').eq('id', currentUser2.id).maybeSingle();
+    currentProfile2 = prof;
 
-  loadGMQueue();
-  loadPartsGM();
+    const welcome = document.getElementById('gmWelcome');
+    const roleEl  = document.getElementById('gmRole');
+    const denied  = document.getElementById('gmAccessDenied');
+    const content = document.getElementById('gmContent');
+
+    if(welcome) welcome.textContent = 'Welcome, ' + (prof?.username || 'GM');
+    if(roleEl)  roleEl.textContent  = (gm.role || 'GM').toUpperCase();
+    if(denied)  denied.style.display  = 'none';
+    if(content) content.style.display = 'block';
+
+    refreshAll();
+
+  } catch(err) {
+    showAccessDenied('Unexpected error: ' + (err.message || err));
+    console.error('initGMAuth error:', err);
+  }
 }
 
 function showAccessDenied(msg) {
@@ -2912,6 +2930,12 @@ function filterOCs() {
                  card.querySelector('.gm-oc-meta')?.textContent.toLowerCase();
     card.style.display = text.includes(q) ? '' : 'none';
   });
+}
+
+/* ── Refresh all panels ────────────────────────────────── */
+function refreshAll() {
+  loadGMQueue();
+  loadPartsGM();
 }
 
 /* ── Init ─────────────────────────────────────────────────── */
