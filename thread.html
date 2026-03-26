@@ -1444,16 +1444,133 @@
   .post-ts{font-family:'Inter',sans-serif;font-size:.6rem;color:var(--text-xs);margin-left:auto;}
   .post-gm-badge{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple-l);background:rgba(94,26,122,.15);border:1px solid rgba(126,58,160,.3);padding:.06rem .3rem;}
   .post-body{padding:.9rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text-dim);line-height:1.8;}
-  /* RP formatting */
-  .post-body em{color:var(--text-dim);font-style:italic;}
-  .post-body .rp-action{color:var(--text-dim);font-style:italic;}
-  .post-body .rp-dialogue{color:var(--text);}
-  .post-body .rp-ooc{color:var(--text-xs);font-size:.82rem;background:rgba(0,0,0,.25);border-left:2px solid var(--border);padding:.15rem .5rem;display:block;margin:.35rem 0;}
-  /* Dice roll */
-  .post-body .dice-roll{display:inline-flex;align-items:center;gap:.4rem;background:rgba(200,150,12,.08);border:1px solid rgba(200,150,12,.25);padding:.2rem .6rem;font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold-l);margin:.25rem 0;}
-  .post-body .dice-roll .dice-total{font-size:1.05rem;font-weight:700;}
-  .post-body .dice-roll .dice-crit{color:#FFD700;}
-  .post-body .dice-roll .dice-fumble{color:var(--pink-l);}
+  /* ─── RP Rich Formatting ──────────────────────────────── */
+  .post-body { line-height: 1.9; }
+  .rp-para { margin: 0 0 .65rem 0; }
+  .rp-para:last-child { margin-bottom: 0; }
+
+  /* Actions */
+  em.rp-action { color: var(--text-dim); font-style: italic; }
+
+  /* Dialogue */
+  q.rp-dialogue {
+    color: var(--text);
+    font-style: normal;
+    quotes: none;
+  }
+  q.rp-dialogue::before { content: '\201C'; }
+  q.rp-dialogue::after  { content: '\201D'; }
+
+  /* Thoughts */
+  em.rp-thought {
+    color: var(--purple-l);
+    font-style: italic;
+    opacity: .85;
+  }
+
+  /* Whisper */
+  .rp-whisper {
+    color: var(--text-xs);
+    font-size: .88em;
+    letter-spacing: .02em;
+  }
+
+  /* OOC */
+  .rp-ooc {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: rgba(0,0,0,.3); border-left: 2px solid rgba(94,26,122,.4);
+    padding: .2rem .6rem; font-size: .82rem; color: var(--text-xs);
+    border-radius: 0; margin: .25rem 0;
+  }
+  .rp-ooc-tag {
+    font-family: 'Inter',sans-serif; font-size: .6rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--purple-l); background: rgba(94,26,122,.15);
+    padding: .05rem .35rem;
+  }
+
+  /* Spoiler */
+  .rp-spoiler {
+    background: var(--text-xs); color: var(--text-xs);
+    border-radius: 2px; cursor: pointer; padding: 0 .2rem;
+    transition: all .2s; user-select: none;
+  }
+  .rp-spoiler.revealed { background: rgba(94,26,122,.15); color: var(--text); }
+
+  /* Underline */
+  .rp-underline { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Scene divider */
+  .rp-divider {
+    display: flex; align-items: center; gap: .75rem;
+    margin: 1.1rem 0; opacity: .5;
+  }
+  .rp-divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-d), transparent);
+  }
+  .rp-divider-icon {
+    color: var(--gold-d); font-size: .7rem; flex-shrink: 0;
+  }
+
+  /* Post header block */
+  .rp-header {
+    display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    background: rgba(0,0,0,.3); border-left: 2px solid var(--gold-d);
+    padding: .4rem .75rem; margin-bottom: .75rem;
+    font-family: 'Inter',sans-serif; font-size: .72rem; letter-spacing: .05em;
+    color: var(--text-dim);
+  }
+  .rp-header-item { display: flex; align-items: center; gap: .3rem; }
+  .rp-header-sep  { color: var(--border); }
+
+  /* Dice */
+  .dice-roll {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: rgba(200,150,12,.08); border: 1px solid rgba(200,150,12,.25);
+    padding: .2rem .65rem; color: var(--gold-l);
+    font-family: 'Cinzel',serif; font-size: .85rem; margin: .2rem 0;
+  }
+  .dice-total { font-size: 1.05rem; font-weight: 700; }
+  .dice-breakdown { font-size: .75rem; opacity: .7; }
+  .dice-crit { color: #FFD700; border-color: rgba(255,215,0,.4); }
+  .dice-fumble { color: var(--pink-l); border-color: rgba(200,0,74,.3); }
+
+  /* ─── Toolbar ────────────────────────────────────────────── */
+  .reply-toolbar {
+    display: flex; flex-direction: column; gap: .3rem;
+    margin-bottom: .55rem;
+    padding: .5rem .65rem;
+    background: rgba(0,0,0,.25);
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+  .toolbar-row { display: flex; align-items: center; gap: .25rem; flex-wrap: wrap; }
+  .toolbar-label {
+    font-family: 'Inter',sans-serif; font-size: .58rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--text-xs);
+    width: 40px; flex-shrink: 0;
+  }
+  .rp-btn {
+    font-family: 'Inter',sans-serif; font-size: .68rem; font-weight: 600;
+    letter-spacing: .04em; padding: .18rem .5rem;
+    background: rgba(0,0,0,.3); border: 1px solid var(--border);
+    color: var(--text-xs); cursor: pointer; transition: all .15s;
+    line-height: 1.4;
+  }
+  .rp-btn:hover { color: var(--gold-l); border-color: var(--gold-d); background: rgba(200,150,12,.06); }
+  .rp-dialogue-btn { color: var(--text-dim) !important; }
+  .rp-thought-btn  { color: var(--purple-l) !important; }
+  .rp-whisper-btn  { opacity: .6; }
+  .rp-ooc-btn      { color: var(--text-xs) !important; }
+
+  /* Post word count badge */
+  .post-word-count {
+    font-family: 'Inter',sans-serif; font-size: .58rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-xs); margin-left: auto;
+    opacity: .6;
+  }
 
   /* Reply box */
   .reply-box{background:rgba(8,0,14,.72);border:1px solid var(--border);padding:1rem 1.1rem;margin-top:1.25rem;}
@@ -1563,12 +1680,26 @@
   </div>
 
   <div class="t-header" id="threadHeader">
-    <p class="t-cat" id="threadCat">Loading…</p>
-    <h1 class="t-title" id="threadTitle">Loading thread…</h1>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+      <div>
+        <p class="t-cat" id="threadCat">Loading…</p>
+        <h1 class="t-title" id="threadTitle">Loading thread…</h1>
+      </div>
+      <div style="display:flex;gap:.4rem;flex-shrink:0;margin-top:.5rem;">
+        <button class="rp-btn" id="watchBtn" onclick="toggleWatch()" title="Watch thread" style="display:none;">☆ Watch</button>
+        <select class="rp-btn" id="threadStatusSel" onchange="setThreadStatus(this.value)" style="display:none;cursor:pointer;">
+          <option value="open">[OPEN]</option>
+          <option value="closed">[CLOSED]</option>
+          <option value="invite">[INVITE ONLY]</option>
+          <option value="event">[SITE-EVENT]</option>
+        </select>
+      </div>
+    </div>
     <div class="t-meta">
       <span id="threadBy"></span>
       <span id="threadDate"></span>
       <span id="threadPostCount"></span>
+      <span id="threadWordCount" style="opacity:.6;"></span>
     </div>
   </div>
 
@@ -1581,11 +1712,34 @@
   <div class="reply-box" id="replyBox" style="display:none;">
     <div class="reply-box-title">Write a Reply</div>
 
-    <div class="reply-toolbar">
-      <button class="rp-btn" onclick="insertFormat('*','*')" title="Italic action">*action*</button>
-      <button class="rp-btn" onclick="insertFormat('"','"')" title="Dialogue">"dialogue"</button>
-      <button class="rp-btn" onclick="insertFormat('[[',']]')" title="OOC comment">[[OOC]]</button>
-      <button class="rp-btn" onclick="toggleDiceRow()" title="Roll dice">🎲 Roll</button>
+     <div class="reply-toolbar">
+      <div class="toolbar-row">
+        <span class="toolbar-label">Format</span>
+        <button class="rp-btn" onclick="insertFormat('**','**')" title="Bold">B</button>
+        <button class="rp-btn rp-italic" onclick="insertFormat('*','*')" title="Italic / Action"><em>i</em></button>
+        <button class="rp-btn rp-underline-btn" onclick="insertFormat('__','__')" title="Underline"><u>U</u></button>
+        <button class="rp-btn" onclick="insertFormat('~~','~~')" title="Strikethrough"><s>S</s></button>
+        <button class="rp-btn" onclick="insertFormat('||','||')" title="Spoiler">||·||</button>
+      </div>
+      <div class="toolbar-row">
+        <span class="toolbar-label">RP</span>
+        <button class="rp-btn rp-dialogue-btn" onclick="insertFormat('&quot;','&quot;')" title="Dialogue">"speech"</button>
+        <button class="rp-btn rp-thought-btn" onclick="insertFormat('{{','}}')">{{thought}}</button>
+        <button class="rp-btn rp-whisper-btn" onclick="insertFormat('((','))')">((whisper))</button>
+        <button class="rp-btn rp-ooc-btn" onclick="insertFormat('[[',']]')">[[OOC]]</button>
+        <button class="rp-btn" onclick="insertDivider()" title="Scene break">— ✦ —</button>
+        <button class="rp-btn" onclick="insertHeader()" title="Post header">&gt;&gt;[header]</button>
+      </div>
+      <div class="toolbar-row">
+        <span class="toolbar-label">Color</span>
+        <button class="rp-btn" onclick="insertColor('gold')" style="color:#C8960C;">●</button>
+        <button class="rp-btn" onclick="insertColor('purple')" style="color:#9B59B6;">●</button>
+        <button class="rp-btn" onclick="insertColor('red')" style="color:#E74C3C;">●</button>
+        <button class="rp-btn" onclick="insertColor('blue')" style="color:#3498DB;">●</button>
+        <button class="rp-btn" onclick="insertColor('pink')" style="color:#E91E8C;">●</button>
+        <button class="rp-btn" onclick="insertColor('cyan')" style="color:#00BCD4;">●</button>
+        <button class="rp-btn" onclick="toggleDiceRow()" title="Roll dice" style="margin-left:.5rem;">🎲</button>
+      </div>
     </div>
 
     <div class="dice-input-row" id="diceRow" style="display:none;">
@@ -1598,7 +1752,7 @@
     <textarea class="fta" id="replyContent" style="min-height:160px;"
       placeholder="Write your reply… Use *action* for actions, &quot;quotes&quot; for dialogue, [[OOC]] for out-of-character notes."
       oninput="updateCharCount()"></textarea>
-    <div class="char-count-bar"><span id="replyCharCount">0</span> / 2000</div>
+    <div class="char-count-bar"><span id="replyWordCount">0 words</span> · <span id="replyCharCount">0</span> / 2000 chars · <span id="draftIndicator" style="opacity:0;transition:opacity .5s;color:var(--gold-d);">Draft saved</span></div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem;">
       <input class="fi" id="replyChar" placeholder="Your character name" style="max-width:220px;"/>
@@ -2316,6 +2470,7 @@ async function loadPosts() {
   if(error) { console.warn('posts error:', error); return; }
 
   document.getElementById('threadPostCount').textContent = (posts?.length || 0) + ' posts';
+  if(posts?.length) updateThreadWordCount(posts);
 
   const container = document.getElementById('postsContainer');
   if(!posts || posts.length === 0) {
@@ -2340,6 +2495,7 @@ function renderPost(p) {
       </div>
       ${p.is_gm ? '<span class="post-gm-badge">GM</span>' : ''}
       <span class="post-ts">${ts}</span>
+      ${p.content ? '<span class="post-word-count">' + wordCount(p.content) + 'w</span>' : ''}
       ${isOwn || isGM2 ? `<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--text-xs);cursor:pointer;font-size:.7rem;margin-left:.25rem;" title="Delete">✕</button>` : ''}
     </div>
     <div class="post-body">${body}</div>
@@ -2347,22 +2503,89 @@ function renderPost(p) {
 }
 
 /* ── Format RP Text ──────────────────────────────────────── */
-function formatRPText(text) {
-  return text
-    .replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*([^*]+)\*/g, '<span class="rp-action">*$1*</span>')
-    .replace(/"([^"]+)"/g, '<span class="rp-dialogue">&ldquo;$1&rdquo;</span>')
-    .replace(/\[\[([^\]]+)\]\]/g, '<span class="rp-ooc">OOC: $1</span>')
-    .replace(/(__DICE__\[([^\]]+)\])/g, (m, _, data) => {
-      try {
-        const d = JSON.parse(atob(data));
-        const critClass = d.natural === 20 ? ' dice-crit' : d.natural === 1 ? ' dice-fumble' : '';
-        return `<span class="dice-roll${critClass}">🎲 ${d.expr} → <span class="dice-total">${d.total}</span> ${d.breakdown}</span>`;
-      } catch(e) { return m; }
-    })
-    .replace(/\n/g,'<br>');
+function formatRPText(raw) {
+  if(!raw) return '';
+
+  // Escape HTML first
+  let t = raw
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+
+  // ── Scene dividers ────────────────────────────────────────
+  // ✦ ── ✦  /  --- / ═══ / *** / — ✦ — etc.
+  t = t.replace(/^[ \t]*([-─═✦★•◆◇♦♠♣♥~*]{3,})[ \t]*$/gm,
+    '<div class="rp-divider"><span class="rp-divider-line"></span><span class="rp-divider-icon">✦</span><span class="rp-divider-line"></span></div>');
+
+  // ── Post header block: >>[Location | Mood | Tag]
+  t = t.replace(/^&gt;&gt;\[([^\]]+)\]/gm, (_, inner) => {
+    const parts = inner.split('|').map(p => p.trim());
+    return '<div class="rp-header">' + parts.map((p,i) => {
+      const icons = ['📍','💭','🏷'];
+      return '<span class="rp-header-item">' + (icons[i]||'') + ' ' + p + '</span>';
+    }).join('<span class="rp-header-sep">·</span>') + '</div>';
+  });
+
+  // ── Bold: **text**
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // ── Italic action: *text* (single asterisk)
+  t = t.replace(/\*([^*\n]+)\*/g, '<em class="rp-action">$1</em>');
+
+  // ── Underline: __text__
+  t = t.replace(/__([^_]+)__/g, '<span class="rp-underline">$1</span>');
+
+  // ── Strikethrough: ~~text~~
+  t = t.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+  // ── Spoiler: ||text||
+  t = t.replace(/\|\|([^|]+)\|\|/g,
+    '<span class="rp-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+
+  // ── Dialogue: "text" — smart quotes, highlighted
+  t = t.replace(/"([^"\n]{1,400})"/g, '<q class="rp-dialogue">$1</q>');
+
+  // ── OOC: [[text]]
+  t = t.replace(/\[\[([^\]]+)\]\]/g,
+    '<span class="rp-ooc"><span class="rp-ooc-tag">OOC</span> $1</span>');
+
+  // ── Inner thoughts: {{text}}
+  t = t.replace(/\{\{([^}]+)\}\}/g,
+    '<em class="rp-thought">$1</em>');
+
+  // ── Whisper / aside: ((text))
+  t = t.replace(/\(\(([^)]+)\)\)/g,
+    '<span class="rp-whisper">$1</span>');
+
+  // ── Colour text: [color:gold]text[/color]
+  const SAFE_COLORS = {gold:'#C8960C',purple:'#9B59B6',red:'#E74C3C',
+    blue:'#3498DB',green:'#2ECC71',pink:'#E91E8C',cyan:'#00BCD4',white:'#F5F5F5'};
+  t = t.replace(/\[color:(\w+)\]([^\[]+)\[\/color\]/g, (m, col, text) => {
+    const hex = SAFE_COLORS[col.toLowerCase()];
+    return hex ? '<span style="color:' + hex + ';">' + text + '</span>' : text;
+  });
+
+  // ── Dice rolls
+  t = t.replace(/(__DICE__\[([^\]]+)\])/g, (m, _, data) => {
+    try {
+      const d = JSON.parse(atob(data));
+      const cls = d.natural === 20 ? 'dice-crit' : d.natural === 1 ? 'dice-fumble' : '';
+      return '<span class="dice-roll ' + cls + '">🎲 <strong>' + d.expr + '</strong> → <span class="dice-total">' + d.total + '</span> <span class="dice-breakdown">(' + d.breakdown + ')</span></span>';
+    } catch(e) { return m; }
+  });
+
+  // ── Newlines
+  t = t.replace(/\n\n/g, '</p><p class="rp-para">');
+  t = t.replace(/\n/g, '<br>');
+  t = '<p class="rp-para">' + t + '</p>';
+
+  return t;
 }
 
+/* Word count */
+function wordCount(text) {
+  return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
 /* ── Dice Roller ─────────────────────────────────────────── */
 function toggleDiceRow() {
   const row = document.getElementById('diceRow');
@@ -2432,6 +2655,7 @@ async function submitReply() {
 
   if(error) { msg.textContent='Error: '+error.message; msg.style.color='var(--pink-l)'; return; }
   document.getElementById('replyContent').value = '';
+  clearDraft();
   document.getElementById('dicePreview').textContent = '';
   document.getElementById('replyCharCount').textContent = '0';
   msg.textContent=''; 
@@ -2465,9 +2689,13 @@ function appendPost(p) {
 }
 
 function updateCharCount() {
-  const len = document.getElementById('replyContent').value.length;
-  const el = document.getElementById('replyCharCount');
-  if(el) { el.textContent = len; el.style.color = len > 1800 ? 'var(--pink-l)' : 'var(--text-xs)'; }
+  const val = document.getElementById('replyContent').value;
+  const len  = val.length;
+  const words = wordCount(val);
+  const charEl = document.getElementById('replyCharCount');
+  const wordEl = document.getElementById('replyWordCount');
+  if(charEl) { charEl.textContent = len; charEl.style.color = len > 1800 ? 'var(--pink-l)' : 'var(--text-xs)'; }
+  if(wordEl)  wordEl.textContent = words + ' word' + (words !== 1 ? 's' : '');
 }
 
 function insertFormat(before, after) {
@@ -2479,6 +2707,61 @@ function insertFormat(before, after) {
   updateCharCount();
 }
 
+function insertDivider() {
+  const ta = document.getElementById('replyContent');
+  const pos = ta.selectionStart;
+  const divider = '\n\n--- \u2726 ---\n\n';
+  ta.value = ta.value.slice(0,pos) + divider + ta.value.slice(pos);
+  ta.focus(); ta.setSelectionRange(pos+divider.length, pos+divider.length);
+  updateCharCount();
+}
+
+function insertHeader() {
+  const ta = document.getElementById('replyContent');
+  const pos = ta.selectionStart;
+  const header = '>>[Location | Mood | Tag]\n';
+  ta.value = ta.value.slice(0,pos) + header + ta.value.slice(pos);
+  ta.focus(); ta.setSelectionRange(pos+3, pos+11);
+  updateCharCount();
+}
+
+function insertColor(col) {
+  insertFormat('[color:'+col+']', '[/color]');
+}
+
+/* Auto-draft save every 30s */
+let draftTimer = null;
+function startDraftSave() {
+  if(draftTimer) clearInterval(draftTimer);
+  draftTimer = setInterval(() => {
+    const val = document.getElementById('replyContent')?.value;
+    if(val && val.length > 10) {
+      try {
+        localStorage.setItem('rp_draft_' + THREAD_ID, val);
+        const ind = document.getElementById('draftIndicator');
+        if(ind) { ind.textContent = 'Draft saved'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 2000); }
+      } catch(e){}
+    }
+  }, 30000);
+}
+
+function loadDraft() {
+  try {
+    const saved = localStorage.getItem('rp_draft_' + THREAD_ID);
+    const ta = document.getElementById('replyContent');
+    if(saved && ta && !ta.value) {
+      ta.value = saved;
+      updateCharCount();
+      const ind = document.getElementById('draftIndicator');
+      if(ind) { ind.textContent = 'Draft restored'; ind.style.opacity = '1'; setTimeout(() => ind.style.opacity = '0', 3000); }
+    }
+  } catch(e){}
+}
+
+function clearDraft() {
+  try { localStorage.removeItem('rp_draft_' + THREAD_ID); } catch(e){}
+}
+
 /* Form helpers */
 function showMsg(id,text,isErr){const el=document.getElementById(id);if(el){el.textContent=text;el.style.color=isErr?'var(--pink-l)':'#81C784';}}
 const fi=document.querySelector('.fi');
@@ -2488,7 +2771,68 @@ const fta=document.querySelector('.fta');
 (async()=>{
   await initThreadAuth();
   await loadThread();
+  checkWatchStatus();
+  startDraftSave();
+  loadDraft();
 })();
+
+
+/* ── Thread watching ────────────────────────────────────── */
+let isWatching = false;
+let threadOwnerId = null;
+
+async function checkWatchStatus() {
+  if(!sb2 || !currentUser2 || !THREAD_ID) return;
+  const { data } = await sb2.from('thread_watches')
+    .select('id').eq('thread_id', THREAD_ID).eq('user_id', currentUser2.id).maybeSingle();
+  isWatching = !!data;
+  const btn = document.getElementById('watchBtn');
+  if(btn) {
+    btn.style.display = '';
+    btn.textContent = isWatching ? '★ Watching' : '☆ Watch';
+    btn.style.color = isWatching ? 'var(--gold-l)' : '';
+  }
+}
+
+async function toggleWatch() {
+  if(!sb2 || !currentUser2) return;
+  if(isWatching) {
+    await sb2.from('thread_watches').delete()
+      .eq('thread_id', THREAD_ID).eq('user_id', currentUser2.id);
+    isWatching = false;
+  } else {
+    await sb2.from('thread_watches').insert([{
+      thread_id: THREAD_ID, user_id: currentUser2.id
+    }]);
+    isWatching = true;
+  }
+  const btn = document.getElementById('watchBtn');
+  if(btn) {
+    btn.textContent = isWatching ? '★ Watching' : '☆ Watch';
+    btn.style.color = isWatching ? 'var(--gold-l)' : '';
+  }
+}
+
+/* ── Thread status (owner only) ─────────────────────────── */
+async function setThreadStatus(status) {
+  if(!sb2 || !currentUser2) return;
+  const tagMap = { open:'[OPEN]', closed:'[CLOSED]', invite:'[INVITE ONLY]', event:'[SITE-EVENT]' };
+  const tag = tagMap[status] || '';
+  // Get current tags without old status tags
+  const { data:th } = await sb2.from('threads').select('tags').eq('id',THREAD_ID).single();
+  const existingTags = (th?.tags||'').split(' ')
+    .filter(t => !t.includes('OPEN') && !t.includes('CLOSED') && !t.includes('INVITE') && !t.includes('EVENT'));
+  const newTags = [tag, ...existingTags].join(' ').trim();
+  await sb2.from('threads').update({ tags: newTags }).eq('id', THREAD_ID);
+  showMsg('replyMsg', 'Status updated.', false);
+}
+
+/* ── Total word count for thread ────────────────────────── */
+function updateThreadWordCount(posts) {
+  const total = posts.reduce((sum, p) => sum + (p.content ? p.content.trim().split(/\s+/).length : 0), 0);
+  const el = document.getElementById('threadWordCount');
+  if(el) el.textContent = total.toLocaleString() + ' words total';
+}
 
 </script>
 </body>
