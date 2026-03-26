@@ -608,105 +608,6 @@
   .shimmer{ background:linear-gradient(90deg,rgba(94,26,122,.07) 25%,rgba(200,150,12,.04) 50%,rgba(94,26,122,.07) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
   .empty{ grid-column:1/-1; text-align:center; padding:3rem 2rem; color:var(--text-xs); font-family:'Inter',sans-serif; letter-spacing:.07em; }
 
-  /* ── LIGHT MODE ──────────────────────────────────────────── */
-  body.light-mode {
-    --text:      #1A0828;
-    --text-dim:  #4A2070;
-    --text-xs:   #8060A8;
-    --border:    rgba(120,60,180,.18);
-    --border-h:  rgba(120,60,180,.38);
-    --surface:   rgba(245,238,255,.92);
-    --surface-l: rgba(238,228,255,.96);
-    --gold:      #9A6E00;
-    --gold-l:    #B88400;
-    --gold-d:    #7A5200;
-  }
-  body.light-mode #bgRotator { filter: brightness(1.6) saturate(.5); }
-  body.light-mode #bg-vignette {
-    background:
-      radial-gradient(ellipse 140% 100% at 50% 0%, rgba(240,228,255,.72) 0%, rgba(245,238,255,.94) 70%),
-      linear-gradient(180deg, rgba(245,238,255,.80) 0%, rgba(240,232,255,.75) 40%, rgba(245,238,255,.92) 100%);
-  }
-  body.light-mode #nav { background: rgba(245,238,255,.94); border-bottom-color: rgba(120,60,180,.2); }
-  body.light-mode .nav-logo { color: var(--gold-d); }
-  body.light-mode .nav-links a { color: var(--text-dim); }
-  body.light-mode .nav-links a:hover, body.light-mode .nav-links a.active { color: var(--text); border-bottom-color: var(--pink); }
-  body.light-mode #ticker { background: rgba(238,228,252,.95); border-bottom-color: rgba(120,60,180,.18); }
-  body.light-mode .ticker-item { color: var(--text-xs); }
-  body.light-mode #breadcrumb { background: rgba(240,232,255,.9); border-bottom-color: rgba(120,60,180,.14); }
-  body.light-mode .oc-card,
-  body.light-mode .ds,
-  body.light-mode .board-card,
-  body.light-mode .queue-item { background: rgba(245,238,255,.92); border-color: rgba(120,60,180,.18); }
-  body.light-mode .board-card:hover { background: rgba(238,228,255,.98); }
-  body.light-mode .modal { background: rgba(248,242,255,.99); }
-  body.light-mode .modal-hd { background: rgba(235,222,255,.8); }
-  body.light-mode .modal-overlay { background: rgba(30,10,50,.55); }
-  body.light-mode .fi, body.light-mode .fsel, body.light-mode .fta {
-    background: rgba(255,252,255,.85); border-color: rgba(120,60,180,.22); color: var(--text);
-  }
-  body.light-mode footer { background: rgba(238,228,252,.97); border-top-color: rgba(120,60,180,.18); }
-  body.light-mode #toast { background: rgba(245,238,255,.99); border-color: rgba(120,60,180,.3); color: var(--text); }
-  body.light-mode .sp { background: rgba(120,60,180,.07); }
-  body.light-mode .oc-bt span { background: rgba(120,60,180,.07); color: var(--gold-d); }
-  body.light-mode .stand-notice { background: rgba(94,26,122,.06); border-color: rgba(126,58,160,.2); }
-  body.light-mode #mpToggle { background: rgba(245,238,255,.95); border-color: rgba(120,60,180,.3); color: var(--gold-d); }
-  body.light-mode #mpPanel { background: rgba(245,238,255,.98); border-color: rgba(120,60,180,.25); }
-
-  /* Auth bar */
-  body.light-mode #authBar {
-    background: rgba(240,232,255,.94);
-    border-bottom-color: rgba(120,60,180,.15);
-  }
-  body.light-mode #authBar.gm-active {
-    background: rgba(235,222,255,.96);
-    border-bottom-color: rgba(120,60,180,.28);
-  }
-
-  /* Mobile music player bar & pill */
-  body.light-mode #mp {
-    background: rgba(245,238,255,.98);
-    border-top-color: rgba(120,60,180,.2);
-    box-shadow: 0 -4px 24px rgba(80,40,120,.12);
-  }
-  body.light-mode #mp > button { color: var(--text-xs); }
-  body.light-mode #mp > button:hover { color: var(--pink); }
-  body.light-mode #mpToggleBtn {
-    background: rgba(245,238,255,.96);
-    border-color: rgba(120,60,180,.3);
-    color: var(--text-dim);
-  }
-
-  /* Forum rows */
-  body.light-mode .fr { background: rgba(245,238,255,.88); }
-  body.light-mode .fr:hover { background: rgba(238,226,255,.98); }
-  body.light-mode .fr-img::after {
-    background: linear-gradient(90deg, transparent, rgba(240,232,255,.65));
-  }
-  body.light-mode .fr-tip {
-    background: rgba(248,242,255,.99);
-    border-color: rgba(120,60,180,.25);
-    color: var(--text-dim);
-    box-shadow: 0 4px 16px rgba(80,40,120,.12);
-  }
-
-  /* Back bar / breadcrumb */
-  body.light-mode .back-bar {
-    background: rgba(240,232,255,.88);
-    border-bottom-color: rgba(120,60,180,.15);
-  }
-
-  /* .ds info blocks (responsive overrides) */
-  body.light-mode .ds {
-    background: rgba(245,238,255,.88) !important;
-    border-color: rgba(120,60,180,.18) !important;
-  }
-
-  /* Scrollbar */
-  body.light-mode ::-webkit-scrollbar-track { background: rgba(235,222,255,.5); }
-  body.light-mode ::-webkit-scrollbar-thumb { background: rgba(120,60,180,.25); }
-  body.light-mode ::-webkit-scrollbar-thumb:hover { background: rgba(120,60,180,.4); }
-
   /* ============================================================
      KEYFRAMES
   ============================================================ */
@@ -1618,6 +1519,122 @@
     .back-bar { padding: .45rem 1rem; }
   }
 
+  /* ═══════════ LIGHT THEMES ═══════════════════════════════════ */
+
+  /* SBR Pink - Part 7 */
+  body.theme-sbr-pink {
+    --text:     #18000E;
+    --text-dim: #380020;
+    --text-xs:  #6A0040;
+    --border:   rgba(170,0,80,.22);
+    --border-h: rgba(170,0,80,.45);
+    --gold:     #CC0055; --gold-l: #FF0077; --gold-d: #990040;
+    --purple:   #750048; --purple-l:#BB006A;
+    --pink:     #EE0060; --pink-l:  #FF4499;
+  }
+  body.theme-sbr-pink #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-pink #bg-vignette {
+    background: linear-gradient(135deg, #FFD6EA 0%, #FFB3D4 50%, #FFCCE0 100%) !important;
+  }
+
+  /* Stone Ocean - Part 6 */
+  body.theme-sbr-teal {
+    --text:     #001520;
+    --text-dim: #002D3E;
+    --text-xs:  #004E60;
+    --border:   rgba(0,120,145,.22);
+    --border-h: rgba(0,120,145,.45);
+    --gold:     #006E82; --gold-l: #009AB5; --gold-d: #005060;
+    --purple:   #003850; --purple-l:#005E78;
+    --pink:     #BB2255; --pink-l:  #DD4477;
+  }
+  body.theme-sbr-teal #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-teal #bg-vignette {
+    background: linear-gradient(135deg, #C8EEF5 0%, #A8E2EE 50%, #C0ECF7 100%) !important;
+  }
+
+  /* Manga - JoJolion */
+  body.theme-jojolion {
+    --text:     #060606;
+    --text-dim: #242424;
+    --text-xs:  #545454;
+    --border:   rgba(0,0,0,.12);
+    --border-h: rgba(0,0,0,.28);
+    --gold:     #0A0A0A; --gold-l: #000; --gold-d: #303030;
+    --purple:   #141414; --purple-l:#282828;
+    --pink:     #AA0000; --pink-l:  #DD1111;
+  }
+  body.theme-jojolion #bgRotator  { opacity: 0 !important; }
+  body.theme-jojolion #bg-vignette {
+    background: #F5F5F5 !important;
+  }
+
+  /* Vento Aureo - Part 5 */
+  body.theme-vento {
+    --text:     #120A00;
+    --text-dim: #2E1C00;
+    --text-xs:  #5A3E00;
+    --border:   rgba(130,90,0,.22);
+    --border-h: rgba(130,90,0,.45);
+    --gold:     #8A6000; --gold-l: #B87E00; --gold-d: #624400;
+    --purple:   #362000; --purple-l:#604000;
+    --pink:     #9E2800; --pink-l:  #CC4400;
+  }
+  body.theme-vento #bgRotator  { opacity: 0 !important; }
+  body.theme-vento #bg-vignette {
+    background: linear-gradient(135deg, #FFF3C0 0%, #FFE880 50%, #FFF0A8 100%) !important;
+  }
+
+  /* ─── Shared light theme rules ────────────────────────────── */
+  body[class*="theme-"]:not(.theme-dark) nav {
+    background: rgba(255,255,255,.95) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a { color: var(--text-dim); }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a:hover { color: var(--gold); }
+  body[class*="theme-"]:not(.theme-dark) .nav-logo { color: var(--text); }
+  body[class*="theme-"]:not(.theme-dark) #ticker {
+    background: rgba(0,0,0,.06) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .ticker-item { color: var(--gold-d) !important; }
+  body[class*="theme-"]:not(.theme-dark) .post,
+  body[class*="theme-"]:not(.theme-dark) .ds,
+  body[class*="theme-"]:not(.theme-dark) .cs,
+  body[class*="theme-"]:not(.theme-dark) .sidebar-card,
+  body[class*="theme-"]:not(.theme-dark) .premise-card,
+  body[class*="theme-"]:not(.theme-dark) .thread-card,
+  body[class*="theme-"]:not(.theme-dark) .gm-oc-card,
+  body[class*="theme-"]:not(.theme-dark) .reply-box,
+  body[class*="theme-"]:not(.theme-dark) .forum-row,
+  body[class*="theme-"]:not(.theme-dark) .oc-card,
+  body[class*="theme-"]:not(.theme-dark) .board-card,
+  body[class*="theme-"]:not(.theme-dark) .chat-wrap {
+    background: rgba(255,255,255,.88);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .fi,
+  body[class*="theme-"]:not(.theme-dark) .fta,
+  body[class*="theme-"]:not(.theme-dark) .fsel {
+    background: rgba(255,255,255,.82);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-bar {
+    background: rgba(255,255,255,.88) !important;
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-link { color: var(--gold-d); }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost {
+    color: var(--text-dim);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
 </style>
 </head>
 <body>
@@ -1653,9 +1670,11 @@
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
     <li><a href="tos.html">Rules</a></li>
+    <li><a href="about.html">About JoJo</a></li>
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1696,6 +1715,7 @@
     <li><a href="stand-overview.html">Stands</a></li>
     <li><a href="announcements.html">News</a></li>
     <li><a href="tos.html">Rules</a></li>
+    <li><a href="about.html">About JoJo</a></li>
   </ul>
   <div class="nav-right">
     <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openOCModal()">+ OC</button>
@@ -2432,6 +2452,58 @@ function toggleArt(header) {
   document.querySelectorAll('.art-arrow').forEach(function(a){ a.classList.remove('open'); });
   if (!isOpen) { body.classList.add('open'); arrow.classList.add('open'); }
 }
+
+/* ── Theme ───────────────────────────────────────────────── */
+(function(){
+  try {
+    var t = localStorage.getItem('rp_theme');
+    if (t && t !== 'dark') document.body.classList.add('theme-' + t);
+  } catch(e){}
+})();
+
+function toggleThemePicker() {
+  var p = document.getElementById('themePicker');
+  if (p) { p.style.display = p.style.display === 'block' ? 'none' : 'block'; return; }
+  var swatches = [
+    ['dark',      '\uD83C\uDF19 Dark',       '#07000D', '#C8960C'],
+    ['sbr-pink',  'SBR Pink',      'linear-gradient(135deg,#FF007A,#990044)', '#fff'],
+    ['sbr-teal',  'Stone Ocean',   'linear-gradient(135deg,#009BB0,#005E70)', '#fff'],
+    ['jojolion',  'Manga',         '#F2F2F2',  '#111'],
+    ['vento',     'Vento Aureo',   'linear-gradient(135deg,#C28A00,#6E4E00)', '#fff']
+  ];
+  var d = document.createElement('div');
+  d.id = 'themePicker';
+  d.style.cssText = 'position:fixed;bottom:64px;right:1rem;background:rgba(7,0,13,.97);border:1px solid rgba(200,150,12,.3);padding:.9rem;z-index:9999;width:215px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.6);';
+  var html = '<div style="font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:#C8960C;margin-bottom:.65rem;">\uD83C\uDFA8 Choose Theme</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">';
+  swatches.forEach(function(s) {
+    html += '<div onclick="setTheme(\'' + s[0] + '\')" style="padding:.5rem .4rem;cursor:pointer;background:' + s[2] + ';color:' + s[3] + ';font-family:Inter,sans-serif;font-size:.63rem;font-weight:600;text-align:center;letter-spacing:.04em;">' + s[1] + '</div>';
+  });
+  html += '</div>';
+  d.innerHTML = html;
+  document.body.appendChild(d);
+  setTimeout(function() {
+    document.addEventListener('click', function fn(e) {
+      if (!d.contains(e.target) && e.target.id !== 'darkModeBtn') {
+        d.style.display = 'none';
+        document.removeEventListener('click', fn);
+      }
+    });
+  }, 60);
+}
+
+function setTheme(t) {
+  ['dark','sbr-pink','sbr-teal','jojolion','vento'].forEach(function(n) {
+    document.body.classList.remove('theme-' + n);
+  });
+  if (t !== 'dark') document.body.classList.add('theme-' + t);
+  try { localStorage.setItem('rp_theme', t); } catch(e) {}
+  var p = document.getElementById('themePicker');
+  if (p) p.style.display = 'none';
+  var btn = document.getElementById('darkModeBtn');
+  if (btn) btn.textContent = t === 'dark' ? '\uD83C\uDF19' : '\uD83C\uDFA8';
+}
+
 </script>
 </body>
 </html>
