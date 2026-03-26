@@ -1601,6 +1601,122 @@
     .gm-stats-row{display:grid;grid-template-columns:1fr 1fr;}
   }
 
+  /* ═══════════ LIGHT THEMES ═══════════════════════════════════ */
+
+  /* SBR Pink - Part 7 */
+  body.theme-sbr-pink {
+    --text:     #18000E;
+    --text-dim: #380020;
+    --text-xs:  #6A0040;
+    --border:   rgba(170,0,80,.22);
+    --border-h: rgba(170,0,80,.45);
+    --gold:     #CC0055; --gold-l: #FF0077; --gold-d: #990040;
+    --purple:   #750048; --purple-l:#BB006A;
+    --pink:     #EE0060; --pink-l:  #FF4499;
+  }
+  body.theme-sbr-pink #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-pink #bg-vignette {
+    background: linear-gradient(135deg, #FFD6EA 0%, #FFB3D4 50%, #FFCCE0 100%) !important;
+  }
+
+  /* Stone Ocean - Part 6 */
+  body.theme-sbr-teal {
+    --text:     #001520;
+    --text-dim: #002D3E;
+    --text-xs:  #004E60;
+    --border:   rgba(0,120,145,.22);
+    --border-h: rgba(0,120,145,.45);
+    --gold:     #006E82; --gold-l: #009AB5; --gold-d: #005060;
+    --purple:   #003850; --purple-l:#005E78;
+    --pink:     #BB2255; --pink-l:  #DD4477;
+  }
+  body.theme-sbr-teal #bgRotator  { opacity: 0 !important; }
+  body.theme-sbr-teal #bg-vignette {
+    background: linear-gradient(135deg, #C8EEF5 0%, #A8E2EE 50%, #C0ECF7 100%) !important;
+  }
+
+  /* Manga - JoJolion */
+  body.theme-jojolion {
+    --text:     #060606;
+    --text-dim: #242424;
+    --text-xs:  #545454;
+    --border:   rgba(0,0,0,.12);
+    --border-h: rgba(0,0,0,.28);
+    --gold:     #0A0A0A; --gold-l: #000; --gold-d: #303030;
+    --purple:   #141414; --purple-l:#282828;
+    --pink:     #AA0000; --pink-l:  #DD1111;
+  }
+  body.theme-jojolion #bgRotator  { opacity: 0 !important; }
+  body.theme-jojolion #bg-vignette {
+    background: #F5F5F5 !important;
+  }
+
+  /* Vento Aureo - Part 5 */
+  body.theme-vento {
+    --text:     #120A00;
+    --text-dim: #2E1C00;
+    --text-xs:  #5A3E00;
+    --border:   rgba(130,90,0,.22);
+    --border-h: rgba(130,90,0,.45);
+    --gold:     #8A6000; --gold-l: #B87E00; --gold-d: #624400;
+    --purple:   #362000; --purple-l:#604000;
+    --pink:     #9E2800; --pink-l:  #CC4400;
+  }
+  body.theme-vento #bgRotator  { opacity: 0 !important; }
+  body.theme-vento #bg-vignette {
+    background: linear-gradient(135deg, #FFF3C0 0%, #FFE880 50%, #FFF0A8 100%) !important;
+  }
+
+  /* ─── Shared light theme rules ────────────────────────────── */
+  body[class*="theme-"]:not(.theme-dark) nav {
+    background: rgba(255,255,255,.95) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a { color: var(--text-dim); }
+  body[class*="theme-"]:not(.theme-dark) .nav-links a:hover { color: var(--gold); }
+  body[class*="theme-"]:not(.theme-dark) .nav-logo { color: var(--text); }
+  body[class*="theme-"]:not(.theme-dark) #ticker {
+    background: rgba(0,0,0,.06) !important;
+    border-color: var(--border) !important;
+  }
+  body[class*="theme-"]:not(.theme-dark) .ticker-item { color: var(--gold-d) !important; }
+  body[class*="theme-"]:not(.theme-dark) .post,
+  body[class*="theme-"]:not(.theme-dark) .ds,
+  body[class*="theme-"]:not(.theme-dark) .cs,
+  body[class*="theme-"]:not(.theme-dark) .sidebar-card,
+  body[class*="theme-"]:not(.theme-dark) .premise-card,
+  body[class*="theme-"]:not(.theme-dark) .thread-card,
+  body[class*="theme-"]:not(.theme-dark) .gm-oc-card,
+  body[class*="theme-"]:not(.theme-dark) .reply-box,
+  body[class*="theme-"]:not(.theme-dark) .forum-row,
+  body[class*="theme-"]:not(.theme-dark) .oc-card,
+  body[class*="theme-"]:not(.theme-dark) .board-card,
+  body[class*="theme-"]:not(.theme-dark) .chat-wrap {
+    background: rgba(255,255,255,.88);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .fi,
+  body[class*="theme-"]:not(.theme-dark) .fta,
+  body[class*="theme-"]:not(.theme-dark) .fsel {
+    background: rgba(255,255,255,.82);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-bar {
+    background: rgba(255,255,255,.88) !important;
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+  body[class*="theme-"]:not(.theme-dark) .back-link { color: var(--gold-d); }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost {
+    color: var(--text-dim);
+    border-color: var(--border);
+  }
+  body[class*="theme-"]:not(.theme-dark) .btn-ghost:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
 </style>
 </head>
 <body>
@@ -1638,6 +1754,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -1681,6 +1798,7 @@
     <li><a href="dnd.html">D&amp;D</a></li>
   </ul>
   <div class="nav-right">
+    <button class="btn btn-ghost btn-sm nav-hide-sm" id="darkModeBtn" onclick="toggleThemePicker()" title="Theme" style="font-size:.85rem;padding:.28rem .5rem;">🎨</button>
     <a href="index.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">← Home</a>
     <a href="create-oc.html" class="btn btn-ghost btn-sm nav-hide-sm" style="text-decoration:none;">+ OC</a>
     <button class="btn btn-gold btn-sm" onclick="window.location.href='index.html#roster'">Roster</button>
@@ -2423,524 +2541,482 @@ function toggleArt(header) {
 </script>
 <script>
 
-
 /* ================================================================
-   GM PANEL — gm.html
+   GM PANEL — full JavaScript
+   All functions for the GM Control Panel page (gm.html)
 ================================================================ */
-// Supabase already initialised by shared script — alias here
-let sb2 = null; // initialized in initGMAuth
 
-let currentUser2 = null, currentProfile2 = null, isGM2 = false;
+const SUPABASE_URL_GM = 'https://azzonqzxmtoilhqsrshq.supabase.co';
+const SUPABASE_ANON_GM = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6em9ucXp4bXRvaWxocXNyc2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzE2NjcsImV4cCI6MjA4OTIwNzY2N30.Dm5AjdtiEMraiajsE_Pjut7KRdvmrYAjcL5B2BfqXME';
+
+// Reuse existing sb client if available, otherwise create one
+const sbGM = (typeof sb !== 'undefined' && sb) ? sb :
+  (window.supabase ? window.supabase.createClient(SUPABASE_URL_GM, SUPABASE_ANON_GM, {
+    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+  }) : null);
+
+let gmUser    = null;
+let gmProfile = null;
+let gmRole    = null;
+let allPendingOCs = [];
+let allApprovedOCs = [];
 
 /* ── Auth ─────────────────────────────────────────────────── */
 async function initGMAuth() {
-  try {
-    // Reuse the existing sb client from shared JS — don't create a second GoTrueClient
-    sb2 = (typeof sb !== 'undefined' && sb) ? sb : null;
-    if(!sb2) { showAccessDenied('Supabase not connected.'); return; }
+  if (!sbGM) { showGMDenied('Supabase not connected.'); return; }
 
-    const { data:sessionData, error:sessErr } = await sb2.auth.getSession();
-    if(sessErr) { showAccessDenied('Session error: ' + sessErr.message); return; }
-    if(!sessionData?.session) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    currentUser2 = sessionData.session.user;
-
-    // Verify GM status
-    const { data:gm, error:gmErr } = await sb2.from('gm_roles')
-      .select('role,is_active')
-      .eq('auth_id', currentUser2.id)
-      .maybeSingle();
-
-    if(gmErr) { showAccessDenied('Error checking GM status: ' + gmErr.message); return; }
-    if(!gm)   { showAccessDenied('No GM record found. Ask the server owner to add you as a GM.'); return; }
-    if(!gm.is_active) { showAccessDenied('Your GM account is inactive. Contact the server owner.'); return; }
-
-    isGM2 = true;
-
-    const { data:prof } = await sb2.from('profiles')
-      .select('username').eq('id', currentUser2.id).maybeSingle();
-    currentProfile2 = prof;
-
-    const welcome = document.getElementById('gmWelcome');
-    const roleEl  = document.getElementById('gmRole');
-    const denied  = document.getElementById('gmAccessDenied');
-    const content = document.getElementById('gmContent');
-
-    if(welcome) welcome.textContent = 'Welcome, ' + (prof?.username || 'GM');
-    if(roleEl)  roleEl.textContent  = (gm.role || 'GM').toUpperCase();
-    if(denied)  denied.style.display  = 'none';
-    if(content) content.style.display = 'block';
-
-    refreshAll();
-
-  } catch(err) {
-    showAccessDenied('Unexpected error: ' + (err.message || err));
-    console.error('initGMAuth error:', err);
+  const { data: { session }, error: sessErr } = await sbGM.auth.getSession();
+  if (sessErr || !session) {
+    window.location.href = 'login.html';
+    return;
   }
+  gmUser = session.user;
+
+  const { data: gm, error: gmErr } = await sbGM
+    .from('gm_roles')
+    .select('role, is_active, username')
+    .eq('auth_id', gmUser.id)
+    .maybeSingle();
+
+  if (gmErr || !gm || !gm.is_active) {
+    showGMDenied(gmErr ? 'Error: ' + gmErr.message : 'You do not have GM access.');
+    return;
+  }
+  gmRole = gm.role;
+
+  document.getElementById('gmWelcome').textContent = 'Welcome, ' + (gm.username || gmUser.email?.split('@')[0] || 'GM');
+  document.getElementById('gmRole').textContent = (gm.role || 'GM').toUpperCase();
+  document.getElementById('gmAccessDenied').style.display = 'none';
+  document.getElementById('gmContent').style.display = 'block';
+
+  loadPendingOCs();
+  updateStats();
 }
 
-function showAccessDenied(msg) {
-  document.getElementById('gmAccessDenied').textContent = msg;
-  document.getElementById('gmAccessDenied').style.display = 'flex';
-  document.getElementById('gmContent').style.display = 'none';
+function showGMDenied(msg) {
+  const el = document.getElementById('gmAccessDenied');
+  if (el) { el.textContent = msg; el.style.display = 'flex'; }
+  const content = document.getElementById('gmContent');
+  if (content) content.style.display = 'none';
 }
 
-/* ── Tab navigation ───────────────────────────────────────── */
+/* ── Tab switching ────────────────────────────────────────── */
 function switchGMTab(tab, btn) {
   document.querySelectorAll('.gm-tab').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.gm-tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('gmTab' + tab.charAt(0).toUpperCase() + tab.slice(1))?.classList.add('active');
-  if(tab === 'pending')  loadPendingOCs();
-  if(tab === 'stands')   loadPendingStands();
-  if(tab === 'approved') loadApprovedOCs();
-  if(tab === 'players')  loadPlayers();
-  if(tab === 'parts')    loadPartsGM();
-  if(tab === 'announce') {}
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById('gmTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+  if (panel) panel.classList.add('active');
+
+  if (tab === 'pending')  loadPendingOCs();
+  if (tab === 'stands')   loadPendingStands();
+  if (tab === 'approved') loadApprovedOCs();
+  if (tab === 'players')  loadPlayers();
+  if (tab === 'parts')    loadPartsGM();
 }
 
-/* ── Load queues ──────────────────────────────────────────── */
-async function loadGMQueue() {
-  await Promise.all([loadPendingOCs(), loadPendingStands(), loadPartsGM()]);
+/* ── Stats ────────────────────────────────────────────────── */
+async function updateStats() {
+  if (!sbGM) return;
+  const [pending, approved, players] = await Promise.all([
+    sbGM.from('ocs').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+    sbGM.from('ocs').select('id', { count: 'exact', head: true }).eq('status', 'approved'),
+    sbGM.from('profiles').select('id', { count: 'exact', head: true }),
+  ]);
+  const setEl = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val ?? '—'; };
+  setEl('pendingBadge', pending.count ?? 0);
+  setEl('statApproved', approved.count ?? 0);
+  setEl('statPlayers',  players.count ?? 0);
 }
 
+/* ── Pending OCs ──────────────────────────────────────────── */
 async function loadPendingOCs() {
-  /* el redeclared */ el = document.getElementById('pendingOCsList');
-  if(!el || !sb2) return;
+  const el = document.getElementById('pendingOCsList');
+  if (!el || !sbGM) return;
   el.innerHTML = '<div class="gm-empty">Loading…</div>';
 
-  const { data, error } = await sb2.from('ocs')
-    .select('*').eq('status','pending')
+  const { data, error } = await sbGM
+    .from('ocs')
+    .select('*')
+    .eq('status', 'pending')
     .order('created_at', { ascending: true });
 
-  const badge = document.getElementById('pendingBadge');
-  if(badge) badge.textContent = data?.length || 0;
+  if (error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  allPendingOCs = data || [];
 
-  if(error) { el.innerHTML = '<div class="gm-empty" style="color:var(--pink-l);">Error: ' + error.message + '</div>'; return; }
-  if(!data || !data.length) { el.innerHTML = '<div class="gm-empty">✓ No pending OC submissions.</div>'; return; }
-  el.innerHTML = data.map(oc => renderOCCard(oc)).join('');
+  const badge = document.getElementById('pendingBadge');
+  if (badge) badge.textContent = allPendingOCs.length;
+
+  if (!allPendingOCs.length) {
+    el.innerHTML = '<div class="gm-empty">No pending submissions ✓</div>';
+    return;
+  }
+  el.innerHTML = allPendingOCs.map(oc => renderOCCard(oc, false)).join('');
 }
 
+function filterOCs() {
+  const q = document.getElementById('ocSearch')?.value.toLowerCase() || '';
+  const el = document.getElementById('pendingOCsList');
+  if (!el) return;
+  const filtered = allPendingOCs.filter(o =>
+    (o.name || '').toLowerCase().includes(q) ||
+    (o.player_username || '').toLowerCase().includes(q)
+  );
+  el.innerHTML = filtered.length
+    ? filtered.map(oc => renderOCCard(oc, false)).join('')
+    : '<div class="gm-empty">No results.</div>';
+}
+
+/* ── Pending Stands (OCs with stand_name) ─────────────────── */
 async function loadPendingStands() {
   const el = document.getElementById('pendingStandsList');
-  if(!el || !sb2) return;
+  if (!el || !sbGM) return;
   el.innerHTML = '<div class="gm-empty">Loading…</div>';
 
-  const { data, error } = await sb2.from('ocs')
-    .select('*').eq('status','pending').not('stand_name','is',null)
+  const { data, error } = await sbGM
+    .from('ocs')
+    .select('*')
+    .eq('status', 'pending')
+    .not('stand_name', 'is', null)
     .order('created_at', { ascending: true });
 
+  if (error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
   const badge = document.getElementById('standBadge');
-  if(badge) badge.textContent = data?.length || 0;
-
-  if(error) { el.innerHTML = '<div class="gm-empty" style="color:var(--pink-l);">Error: ' + error.message + '</div>'; return; }
-  if(!data || !data.length) { el.innerHTML = '<div class="gm-empty">✓ No pending Stand submissions.</div>'; return; }
-  el.innerHTML = data.map(oc => renderOCCard(oc)).join('');
+  if (badge) badge.textContent = (data || []).length;
+  el.innerHTML = (data || []).length
+    ? data.map(oc => renderOCCard(oc, true)).join('')
+    : '<div class="gm-empty">No pending Stand submissions.</div>';
 }
 
+/* ── Approved OCs ─────────────────────────────────────────── */
 async function loadApprovedOCs() {
   const el = document.getElementById('approvedOCsList');
-  if(!el || !sb2) return;
+  if (!el || !sbGM) return;
   el.innerHTML = '<div class="gm-empty">Loading…</div>';
 
-  const { data, error } = await sb2.from('ocs')
-    .select('*').eq('status','approved')
+  const { data, error } = await sbGM
+    .from('ocs')
+    .select('*')
+    .eq('status', 'approved')
     .order('created_at', { ascending: false });
 
-  if(error) { el.innerHTML = '<div class="gm-empty" style="color:var(--pink-l);">Error: ' + error.message + '</div>'; return; }
-  if(!data || !data.length) { el.innerHTML = '<div class="gm-empty">No approved characters yet.</div>'; return; }
-  el.innerHTML = data.map(oc => renderOCCard(oc)).join('');
+  if (error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  allApprovedOCs = data || [];
+  const stat = document.getElementById('statApproved');
+  if (stat) stat.textContent = allApprovedOCs.length;
+  el.innerHTML = allApprovedOCs.length
+    ? allApprovedOCs.map(oc => renderOCCard(oc, false)).join('')
+    : '<div class="gm-empty">No approved characters yet.</div>';
 }
 
-async function loadPlayers() {
-  const el = document.getElementById('playersList');
-  if(!el || !sb2) return;
-  el.innerHTML = '<div class="gm-empty">Loading…</div>';
-
-  const { data, error } = await sb2.from('profiles')
-    .select('id,username,is_banned,created_at')
-    .order('created_at', { ascending: false }).limit(100);
-
-  if(error) { el.innerHTML = '<div class="gm-empty" style="color:var(--pink-l);">Error: ' + error.message + '</div>'; return; }
-  if(!data || !data.length) { el.innerHTML = '<div class="gm-empty">No registered players yet.</div>'; return; }
-
-  el.innerHTML = '<table class="players-table"><thead><tr><th>Username</th><th>Joined</th><th>Status</th><th>Action</th></tr></thead><tbody>' +
-    data.map(p => '<tr>' +
-      '<td><a href="profile.html?user=' + (p.username||'') + '" style="color:var(--gold-l);text-decoration:none;">@' + (p.username||'(no username)') + '</a></td>' +
-      '<td style="color:var(--text-xs);font-size:.75rem;">' + new Date(p.created_at).toLocaleDateString() + '</td>' +
-      '<td><span style="color:' + (p.is_banned ? 'var(--pink-l)' : '#81C784') + ';font-family:Inter,sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;">' + (p.is_banned ? 'Banned' : 'Active') + '</span></td>' +
-      '<td>' + (!p.is_banned
-        ? '<button class="btn-action ban" onclick="banPlayer(\'' + p.id + '\',\'' + (p.username||'').replace(/'/g,'') + '\')">Ban</button>'
-        : '<button class="btn-action unban" onclick="unbanPlayer(\'' + p.id + '\')">Unban</button>') + '</td>' +
-      '</tr>'
-    ).join('') +
-    '</tbody></table>';
-}
-
-/* ── Parts management ─────────────────────────────────────── */
-async function loadPartsGM() {
-  const el = document.getElementById('partsGMList');
-  if(!el || !sb2) return;
-  el.innerHTML = '<div class="gm-empty">Loading…</div>';
-
-  const { data, error } = await sb2.from('boards').select('*').order('created_at', { ascending: false });
-
-  if(error) { el.innerHTML = '<div class="gm-empty" style="color:var(--pink-l);">Error: ' + error.message + '</div>'; return; }
-  if(!data || !data.length) { el.innerHTML = '<div class="gm-empty">No Part boards created yet.</div>'; return; }
-
-  el.innerHTML = data.map(b => {
-    const col = b.color || '#C8960C';
-    const statusLabel = { planning:'Recruiting', open:'Active', closed:'Closed' }[b.status] || b.status;
-    const statusCol   = { planning:'var(--gold)', open:'#81C784', closed:'var(--text-xs)' }[b.status] || 'var(--text-xs)';
-    return '<div class="part-gm-card" style="border-left-color:' + col + ';">' +
-      '<div class="pgc-header">' +
-        '<div>' +
-          '<div class="pgc-title" style="color:' + col + ';">' + b.title + '</div>' +
-          '<div class="pgc-meta">' + (b.era||'') + ' · GM: ' + (b.gm_username||'TBD') + ' · Max ' + (b.max_players||8) + ' players</div>' +
-        '</div>' +
-        '<span style="font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:' + statusCol + ';">' + statusLabel + '</span>' +
-      '</div>' +
-      '<p class="pgc-desc">' + (b.description||'') + '</p>' +
-      '<div class="pgc-actions">' +
-        '<a href="part.html?id=' + b.id + '" class="btn-action view" target="_blank">View Page</a>' +
-        '<button class="btn-action edit" onclick="openEditPart(\'' + b.id + '\')">Edit</button>' +
-        '<button class="btn-action ' + (b.status==='open'?'ban':'unban') + '" onclick="togglePartStatus(\'' + b.id + '\',\'' + b.status + '\')">' +
-          (b.status === 'open' ? 'Close' : b.status === 'closed' ? 'Reopen' : 'Open') +
-        '</button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-}
-
-async function togglePartStatus(id, currentStatus) {
-  if(!sb2) return;
-  const next = currentStatus === 'open' ? 'closed' : currentStatus === 'planning' ? 'open' : 'open';
-  const { error } = await sb2.from('boards').update({ status: next }).eq('id', id);
-  if(error) { alert('Error: ' + error.message); return; }
-  loadPartsGM();
-}
-
-function openEditPart(id) {
-  document.getElementById('editPartId').value = id;
-  document.getElementById('editPartModal').style.display = 'flex';
-  // Load current values
-  if(!sb2) return;
-  sb2.from('boards').select('*').eq('id', id).single().then(({ data:b }) => {
-    if(!b) return;
-    document.getElementById('epTitle').value = b.title || '';
-    document.getElementById('epDesc').value = b.description || '';
-    document.getElementById('epEra').value = b.era || '';
-    document.getElementById('epGM').value = b.gm_username || '';
-    document.getElementById('epMax').value = b.max_players || 8;
-    document.getElementById('epColor').value = b.color || '#C8960C';
-    document.getElementById('epStatus').value = b.status || 'planning';
-    document.getElementById('epAbilityEra').value = b.ability_era || '';
-  });
-}
-
-async function saveEditPart() {
-  const id = document.getElementById('editPartId').value;
-  if(!id || !sb2) return;
-  /* msg redeclared */ msg = document.getElementById('epMsg');
-  msg.textContent = 'Saving…'; msg.style.color = 'var(--text-dim)';
-
-  const { error } = await sb2.from('boards').update({
-    title:       document.getElementById('epTitle').value.trim(),
-    description: document.getElementById('epDesc').value.trim(),
-    era:         document.getElementById('epEra').value.trim() || null,
-    gm_username: document.getElementById('epGM').value.trim() || null,
-    max_players: parseInt(document.getElementById('epMax').value) || 8,
-    color:       document.getElementById('epColor').value,
-    status:      document.getElementById('epStatus').value,
-    ability_era: document.getElementById('epAbilityEra').value.trim() || null,
-  }).eq('id', id);
-
-  if(error) { msg.textContent = 'Error: ' + error.message; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = '✓ Saved!'; msg.style.color = '#81C784';
-  setTimeout(() => { document.getElementById('editPartModal').style.display = 'none'; loadPartsGM(); }, 900);
-}
-
-/* ── Create Part ──────────────────────────────────────────── */
-async function submitGMBoard() {
-  if(!sb2) return;
-  const msg = document.getElementById('gbMsg');
-  /* n redeclared */ n = document.getElementById('gbName')?.value.trim();
-  /* d redeclared */ d = document.getElementById('gbDesc')?.value.trim();
-  if(!n || !d) { msg.textContent = 'Name and description required.'; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = 'Creating…'; msg.style.color = 'var(--text-dim)';
-
-  const { error } = await sb2.from('boards').insert([{
-    title:       n,
-    description: d,
-    gm_username: document.getElementById('gbGM')?.value.trim() || currentProfile2?.username || 'GM',
-    era:         document.getElementById('gbEra')?.value.trim() || null,
-    color:       document.getElementById('gbColor')?.value || '#C8960C',
-    status:      document.getElementById('gbStatus')?.value || 'planning',
-    ability_era: document.getElementById('gbAbilityEra')?.value || null,
-    max_players: parseInt(document.getElementById('gbMax')?.value) || 8,
-    created_by:  currentUser2?.id,
-  }]);
-
-  if(error) { msg.textContent = 'Error: ' + error.message; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = '✓ Part created!'; msg.style.color = '#81C784';
-  ['gbName','gbDesc','gbEra','gbGM'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  setTimeout(() => { msg.textContent = ''; loadPartsGM(); switchGMTab('parts', document.querySelector('[data-tab="parts"]')); }, 1000);
-}
-
-/* ── Review OC ────────────────────────────────────────────── */
-async function reviewOC(id, status) {
-  if(!sb2 || !isGM2) return;
-  const note = document.getElementById('note-' + id)?.value.trim() || null;
-  /* btn redeclared */ btn = document.querySelector('#oc-card-' + id + ' .btn-' + (status === 'approved' ? 'approve' : status === 'denied' ? 'deny' : 'revision'));
-  if(btn) btn.disabled = true;
-
-  const { error } = await sb2.from('ocs')
-    .update({ status, gm_note: note, reviewed_by: currentUser2?.id, reviewed_at: new Date().toISOString() })
-    .eq('id', id);
-
-  if(error) { alert('Error: ' + error.message); if(btn) btn.disabled = false; return; }
-
-  const card = document.getElementById('oc-card-' + id);
-  if(card) {
-    card.style.opacity = '0.4';
-    card.style.pointerEvents = 'none';
-    const actions = card.querySelector('.gm-actions');
-    if(actions) {
-      const statusLabel = { approved:'✓ Approved', denied:'✕ Denied', revision:'⟳ Revision Requested' }[status];
-      const statusColor = { approved:'#81C784', denied:'var(--pink-l)', revision:'var(--gold-d)' }[status];
-      actions.innerHTML = '<span style="font-family:Inter,sans-serif;font-size:.75rem;font-weight:600;color:' + statusColor + ';">' + statusLabel + '</span>';
-    }
-  }
-
-  // Update badge counts
-  const badge = document.getElementById('pendingBadge');
-  if(badge) badge.textContent = Math.max(0, parseInt(badge.textContent || '0') - 1);
-}
-
-/* ── Ban/Unban ────────────────────────────────────────────── */
-async function banPlayer(uid, username) {
-  if(!sb2 || !isGM2) return;
-  if(!confirm('Ban @' + username + '?')) return;
-  const { error } = await sb2.from('profiles').update({ is_banned: true }).eq('id', uid);
-  if(error) { alert('Error: ' + error.message); return; }
-  loadPlayers();
-}
-async function unbanPlayer(uid) {
-  if(!sb2 || !isGM2) return;
-  const { error } = await sb2.from('profiles').update({ is_banned: false, banned_until: null }).eq('id', uid);
-  if(error) { alert('Error: ' + error.message); return; }
-  loadPlayers();
-}
-
-/* ── Post announcement ────────────────────────────────────── */
-async function postAnnouncement() {
-  if(!sb2 || !isGM2) return;
-  const title = document.getElementById('annTitle')?.value.trim();
-  /* body redeclared */ body = document.getElementById('annBody')?.value.trim();
-  const cat   = document.getElementById('annCat')?.value || 'update';
-  const pin   = document.getElementById('annPin')?.value === 'true';
-  const msg   = document.getElementById('annMsg');
-  if(!title || !body) { msg.textContent = 'Title and body required.'; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = 'Posting…'; msg.style.color = 'var(--text-dim)';
-  const { error } = await sb2.from('announcements').insert([{
-    title, body, category: cat, pinned: pin,
-    author_id: currentUser2.id, author_username: currentProfile2?.username || 'GM',
-  }]);
-  if(error) { msg.textContent = 'Error: ' + error.message; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = '✓ Posted!'; msg.style.color = '#81C784';
-  document.getElementById('annTitle').value = '';
-  document.getElementById('annBody').value = '';
-}
-
-/* ── Stand Arrow ──────────────────────────────────────────── */
-async function triggerStandArrow() {
-  if(!sb2 || !isGM2) return;
-  /* board redeclared */ board = document.getElementById('arrowBoard')?.value.trim();
-  const note  = document.getElementById('arrowNote')?.value.trim() || null;
-  const msg   = document.getElementById('arrowMsg');
-  if(!board) { msg.textContent = 'Enter a Part board name.'; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = 'Triggering…'; msg.style.color = 'var(--text-dim)';
-  const { error } = await sb2.from('announcements').insert([{
-    title: '🏹 A Stand Arrow has appeared in ' + board,
-    body:  note || 'A Stand Arrow has surfaced in the ' + board + ' arc. Players who wish to have their character pierced should submit a request to the GM team. Those without sufficient potential will not survive.',
-    category: 'event', pinned: true,
-    author_id: currentUser2.id, author_username: currentProfile2?.username || 'GM',
-    metadata: JSON.stringify({ type:'stand_arrow', board }),
-  }]);
-  if(error) { msg.textContent = 'Error: ' + error.message; msg.style.color = 'var(--pink-l)'; return; }
-  msg.textContent = '✓ Stand Arrow event posted!'; msg.style.color = '#81C784';
-  document.getElementById('arrowBoard').value = '';
-  document.getElementById('arrowNote').value = '';
-}
-
-/* ── Render OC Card (full sheet) ──────────────────────────── */
-const GRADE_COLORS = {S:'#FFD700',A:'#C8960C',B:'#81C784',C:'#9E9E9E',D:'#EF9A9A',E:'#C8004A'};
-// STAT_KEYS already defined in shared JS
-// gradeFromVal defined in shared JS
-
-function renderOCCard(oc) {
-  /* ab redeclared */ ab = oc.ability_type || 'none';
-  const typeColors = { stand:'#7E3AA0',hamon:'#B08000',spin:'#4A8C00',vampire:'#8B0000',pillar:'#7A4A00',none:'#555' };
-  const typeLabels = { stand:'Stand',hamon:'Hamon',spin:'Spin',vampire:'Vampire',pillar:'Pillar Man',none:'Human' };
-  const col = typeColors[ab] || '#555';
-  const subDate = new Date(oc.created_at).toLocaleDateString();
+/* ── Render OC Card ───────────────────────────────────────── */
+function renderOCCard(oc, standFocus) {
   const isApproved = oc.status === 'approved';
-  const isDenied   = oc.status === 'denied';
+  const typeClass  = 'type-' + (oc.ability_type || 'none');
+  const typeLabel  = (oc.ability_type || 'None').charAt(0).toUpperCase() + (oc.ability_type || 'none').slice(1);
+  const subDate    = new Date(oc.created_at).toLocaleDateString();
 
-  // Parse stand stats
   let statsHTML = '';
-  if(oc.stand_stats) {
+  if (oc.stand_stats) {
     try {
-      /* s redeclared */ s = typeof oc.stand_stats === 'string' ? JSON.parse(oc.stand_stats) : oc.stand_stats;
-      statsHTML = '<div class="gm-stats">' + Object.entries(s).map(([k,v]) =>
-        '<span class="gm-stat" style="color:' + (GRADE_COLORS[v]||'#9E9E9E') + ';">' + k.charAt(0).toUpperCase() + ': ' + v + '</span>'
+      const stats = typeof oc.stand_stats === 'string' ? JSON.parse(oc.stand_stats) : oc.stand_stats;
+      statsHTML = '<div class="gm-stats">' + Object.entries(stats).map(([k,v]) =>
+        '<span class="gm-stat gs-' + v + '">' + k.charAt(0).toUpperCase() + ': ' + v + '</span>'
       ).join('') + '</div>';
-    } catch(e){}
+    } catch(e) {}
   }
 
-  // All fields to show
   const quickFields = [
-    ['Player', '@' + (oc.player_username||'?')],
-    ['Race', oc.race || 'Human'],
-    ['Age', oc.age],
-    ['Height', oc.height],
-    ['Build', oc.build],
-    ['Blood Type', oc.blood_type],
-    ['Birthdate', oc.birthdate],
-    ['Birthplace', oc.birthplace],
-    ['Gender', oc.gender],
-    ['Submitted', subDate],
-    ['Type', (oc.submission_type||'simple').toUpperCase()],
-    ['Part Board', oc.board_name || 'Unassigned'],
+    ['Player', oc.player_username], ['Race', oc.race || 'Human'], ['Age', oc.age],
+    ['Part Board', oc.board_name || 'Unassigned'], ['Submitted', subDate],
   ].filter(([,v]) => v);
 
   const longFields = [
-    ['Voice', oc.voice],
-    ['Scars / Burns', oc.scars],
-    ['Birthmarks / Tattoos', oc.markings],
-    ['Distinctive Features', oc.distinctive],
-    ['Religion', oc.religion],
-    ['Appearance', oc.appearance],
-    ['Personality', oc.personality],
-    ['Ideals', oc.ideals],
-    ['Flaws', oc.flaws],
-    ['Worries', oc.worries],
-    ['Special Skills', oc.skills],
-    ['Education / Record', oc.education],
-    ['Formative Experiences', oc.formative],
-    ['Fears', oc.fears],
-    ['Dreams', oc.dreams],
-    ['Goal / Motivation', oc.goal],
-    ['Backstory', oc.backstory],
-    ['Stand Name', oc.stand_name],
-    ['Stand Type', oc.stand_type],
-    ['Stand Cry', oc.stand_cry],
-    ['Stand Ability', oc.stand_ability],
-    ['Activation', oc.stand_activation],
-    ['Combat Application', oc.stand_combat],
-    ['Weakness', oc.stand_weakness],
-    ['Minions / Equipment', oc.stand_minions],
-    ['Stand Notes', oc.stand_notes],
-    ['Hamon Style', oc.hamon_style],
-    ['Hamon Rank', oc.hamon_rank],
-    ['Spin Background', oc.spin_background],
-    ['Spin Tier', oc.spin_tier],
-    ['Family', oc.family],
-    ['Friends / Allies', oc.friends],
-    ['Romantic', oc.romantic],
-    ['Known Connections', oc.relations],
-    ['Notes for GM', oc.notes],
-  ].filter(([,v]) => v);
+    ['Appearance', oc.appearance], ['Personality', oc.personality],
+    ['Ideals', oc.ideals], ['Flaws', oc.flaws], ['Backstory', oc.backstory],
+    ['Goal', oc.goal], ['Fears', oc.fears],
+    standFocus && ['Stand Name', oc.stand_name],
+    standFocus && ['Stand Type', oc.stand_type],
+    standFocus && ['Stand Ability', oc.stand_ability],
+    standFocus && ['Stand Weakness', oc.stand_weakness],
+    standFocus && ['Stand Cry', oc.stand_cry],
+    ['Family', oc.family], ['Friends', oc.friends],
+    ['Romantic', oc.romantic], ['Problem Relationships', oc.problem_rel],
+    ['GM Notes', oc.notes],
+  ].filter(f => f && f[1]);
 
-  const statusBanner = isDenied ? '<div style="background:rgba(200,0,74,.1);border:1px solid rgba(200,0,74,.3);padding:.4rem .75rem;font-family:Inter,sans-serif;font-size:.72rem;color:var(--pink-l);margin-bottom:.75rem;">✕ Denied' + (oc.gm_note ? ' — ' + oc.gm_note : '') + '</div>' :
-    isApproved ? '<div style="background:rgba(129,199,132,.08);border:1px solid rgba(129,199,132,.3);padding:.4rem .75rem;font-family:Inter,sans-serif;font-size:.72rem;color:#81C784;margin-bottom:.75rem;">✓ Approved</div>' : '';
+  const cardId = 'oc-card-' + oc.id;
+  const bodyId = 'ocbody-' + oc.id;
+  const chevId = 'chev-' + oc.id;
+  const noteId = 'note-' + oc.id;
 
-  return '<div class="gm-oc-card" id="oc-card-' + oc.id + '" style="--oc-accent:' + col + ';">' +
-    '<div class="gm-oc-header" onclick="toggleOCCard(\'' + oc.id + '\')">' +
-      '<div class="gm-oc-header-left">' +
-        '<div class="gm-oc-name">' + (oc.name||'Unnamed') + '</div>' +
-        '<div class="gm-oc-meta">@' + (oc.player_username||'?') + ' · ' + subDate + (oc.board_name ? ' · ' + oc.board_name : '') + '</div>' +
-      '</div>' +
-      '<div class="gm-oc-header-right">' +
-        '<span class="gm-oc-type-badge" style="color:' + col + ';border-color:' + col + '40;">' + typeLabels[ab] + '</span>' +
-        (oc.stand_name ? '<span class="gm-oc-stand-badge">✦ ' + oc.stand_name + '</span>' : '') +
-        '<svg class="oc-chevron" id="chev-' + oc.id + '" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-      '</div>' +
-    '</div>' +
+  const actionBar = isApproved
+    ? '<div class="gm-actions">'
+        + '<span class="approved-badge">✓ APPROVED</span>'
+        + '<button class="btn-deny" onclick="reviewOC(\'' + oc.id + '\',\'pending\')">Revoke Approval</button>'
+      + '</div>'
+    : '<div class="gm-actions">'
+        + '<input class="gm-note-input" id="' + noteId + '" placeholder="Note to player (optional)"/>'
+        + '<button class="btn-approve" onclick="reviewOC(\'' + oc.id + '\',\'approved\')">✓ Approve</button>'
+        + '<button class="btn-revision" onclick="reviewOC(\'' + oc.id + '\',\'revision\')">⟳ Revision</button>'
+        + '<button class="btn-deny" onclick="reviewOC(\'' + oc.id + '\',\'denied\')">✕ Deny</button>'
+      + '</div>';
 
-    '<div class="gm-oc-body" id="ocbody-' + oc.id + '">' +
-      statusBanner +
-
-      // Quick fields grid
-      '<div class="gm-field-grid">' +
-        quickFields.map(([l,v]) =>
-          '<div class="gm-field"><span class="gm-field-label">' + l + '</span><span class="gm-field-val">' + v + '</span></div>'
-        ).join('') +
-      '</div>' +
-
-      // Reference image
-      (oc.image_url ? '<div class="gm-field" style="margin-bottom:.85rem;"><span class="gm-field-label">Reference Image</span><a href="' + oc.image_url + '" target="_blank" rel="noopener" style="color:var(--gold-d);font-size:.82rem;font-family:DM Sans,sans-serif;">View image ↗</a></div>' : '') +
-
-      // Stand stats
-      statsHTML +
-
-      // Long text fields
-      '<div class="gm-long-fields">' +
-        longFields.map(([l,v]) =>
-          '<div class="gm-field gm-field-long"><span class="gm-field-label">' + l + '</span><span class="gm-field-val">' + v + '</span></div>'
-        ).join('') +
-      '</div>' +
-
-      // Character profile link
-      '<div style="margin:.75rem 0;"><a href="character.html?id=' + oc.id + '" target="_blank" style="font-family:Inter,sans-serif;font-size:.68rem;color:var(--gold-d);letter-spacing:.06em;text-decoration:none;">View full character page ↗</a></div>' +
-
-      // Action bar
-      (!isApproved && !isDenied ? 
-        '<div class="gm-actions">' +
-          '<input class="gm-note-input" id="note-' + oc.id + '" placeholder="Note to player (optional — shown on deny / revision)"/>' +
-          '<button class="btn-approve" onclick="reviewOC(\'' + oc.id + '\',\'approved\')">✓ Approve</button>' +
-          '<button class="btn-revision" onclick="reviewOC(\'' + oc.id + '\',\'revision\')">⟳ Revision</button>' +
-          '<button class="btn-deny" onclick="reviewOC(\'' + oc.id + '\',\'denied\')">✕ Deny</button>' +
-        '</div>'
-      : isApproved ?
-        '<div class="gm-actions">' +
-          '<span style="font-family:Inter,sans-serif;font-size:.72rem;color:#81C784;font-weight:600;">✓ APPROVED</span>' +
-          '<button class="btn-deny" onclick="reviewOC(\'' + oc.id + '\',\'denied\')" style="margin-left:auto;">Revoke</button>' +
-        '</div>'
-      : '') +
-    '</div>' +
-  '</div>';
+  return '<div class="gm-oc-card' + (standFocus ? ' stand-card' : '') + '" id="' + cardId + '">'
+    + '<div class="gm-oc-header" data-ocid="' + oc.id + '" onclick="toggleOCCard(this.dataset.ocid)">'
+      + '<div>'
+        + '<div class="gm-oc-name">' + (oc.name || 'Unnamed') + '</div>'
+        + '<div class="gm-oc-meta">@' + (oc.player_username || '?') + ' · ' + subDate + '</div>'
+      + '</div>'
+      + '<span class="gm-oc-type ' + typeClass + '">' + typeLabel + '</span>'
+      + '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" id="' + chevId + '" style="flex-shrink:0;transition:transform .2s;">'
+          + '<path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
+        + '</svg>'
+    + '</div>'
+    + '<div class="gm-oc-body" id="' + bodyId + '">'
+      + '<div class="gm-field-grid">'
+        + quickFields.map(([l,v]) => '<div class="gm-field"><span class="gm-field-label">' + l + '</span><span class="gm-field-val">' + v + '</span></div>').join('')
+      + '</div>'
+      + statsHTML
+      + longFields.map(([l,v]) => '<div class="gm-field" style="margin-bottom:.65rem;"><span class="gm-field-label">' + l + '</span><span class="gm-field-val">' + v + '</span></div>').join('')
+      + (oc.image_url ? '<div class="gm-field" style="margin-bottom:.8rem;"><span class="gm-field-label">Reference Image</span><a href="' + oc.image_url + '" target="_blank" rel="noopener" style="color:var(--gold-d);font-family:DM Sans,sans-serif;font-size:.8rem;">View ↗</a></div>' : '')
+      + actionBar
+    + '</div>'
+  + '</div>';
 }
 
 function toggleOCCard(id) {
   const body = document.getElementById('ocbody-' + id);
   const chev = document.getElementById('chev-' + id);
-  const isOpen = body?.classList.toggle('open');
-  if(chev) chev.style.transform = isOpen ? 'rotate(180deg)' : '';
+  const open = body?.classList.toggle('open');
+  if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
 }
 
-/* ── Search OC list ───────────────────────────────────────── */
-function filterOCs() {
-  const q = document.getElementById('ocSearch')?.value.toLowerCase() || '';
-  document.querySelectorAll('.gm-oc-card').forEach(card => {
-    const text = card.querySelector('.gm-oc-name')?.textContent.toLowerCase() + ' ' +
-                 card.querySelector('.gm-oc-meta')?.textContent.toLowerCase();
-    card.style.display = text.includes(q) ? '' : 'none';
-  });
+/* ── Review OC ────────────────────────────────────────────── */
+async function reviewOC(id, status) {
+  if (!sbGM) return;
+  const note = document.getElementById('note-' + id)?.value.trim() || null;
+
+  const { error } = await sbGM
+    .from('ocs')
+    .update({
+      status,
+      gm_note: note,
+      reviewed_by: gmUser?.id,
+      reviewed_at: new Date().toISOString()
+    })
+    .eq('id', id);
+
+  if (error) { showGMToast('Error: ' + error.message, 'err'); return; }
+
+  const labels = { approved: '✓ Approved', denied: '✕ Denied', revision: '⟳ Revision requested', pending: '↩ Approval revoked' };
+  showGMToast(labels[status] || status, status === 'approved' ? 'ok' : 'warn');
+
+  // Refresh the relevant list
+  if (status === 'approved') {
+    loadPendingOCs();
+  } else if (status === 'pending') {
+    loadApprovedOCs();
+  } else {
+    loadPendingOCs();
+  }
+  updateStats();
 }
 
-/* ── Refresh all panels ────────────────────────────────── */
-function refreshAll() {
-  loadGMQueue();
+function showGMToast(msg, type) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);'
+    + 'padding:.5rem 1.2rem;font-family:Inter,sans-serif;font-size:.78rem;font-weight:600;'
+    + 'letter-spacing:.06em;z-index:9999;pointer-events:none;';
+  t.style.background = type === 'ok'  ? 'rgba(129,199,132,.15)' :
+                        type === 'err' ? 'rgba(200,0,74,.1)' : 'rgba(200,150,12,.1)';
+  t.style.border = '1px solid ' + (type === 'ok' ? 'rgba(129,199,132,.4)' : type === 'err' ? 'rgba(200,0,74,.3)' : 'rgba(200,150,12,.3)');
+  t.style.color  = type === 'ok' ? '#81C784' : type === 'err' ? 'var(--pink-l)' : 'var(--gold-l)';
+  t.textContent  = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+/* ── Players ──────────────────────────────────────────────── */
+async function loadPlayers() {
+  const el = document.getElementById('playersList');
+  if (!el || !sbGM) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sbGM
+    .from('profiles')
+    .select('id, username, is_banned, created_at')
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  const stat = document.getElementById('statPlayers');
+  if (stat) stat.textContent = (data || []).length;
+
+  el.innerHTML = '<div style="background:rgba(8,0,14,.72);border:1px solid var(--border);">'
+    + (data || []).map(p =>
+        '<div class="player-row">'
+          + '<span class="player-name">@' + (p.username || 'unknown') + '</span>'
+          + '<span class="player-date">' + new Date(p.created_at).toLocaleDateString() + '</span>'
+          + (p.is_banned
+              ? '<button class="btn-approve btn-sm" onclick="setBan(\'' + p.id + '\',false)">Unban</button>'
+              : '<button class="btn-deny btn-sm" onclick="setBan(\'' + p.id + '\',true)">Ban</button>')
+          + '<a href="profile.html?user=' + (p.username || '') + '" class="btn btn-ghost btn-sm" style="text-decoration:none;font-size:.6rem;padding:.2rem .5rem;" target="_blank">Profile ↗</a>'
+        + '</div>'
+      ).join('')
+    + '</div>';
+}
+
+async function setBan(uid, banned) {
+  if (!sbGM) return;
+  await sbGM.from('profiles').update({ is_banned: banned }).eq('id', uid);
+  showGMToast(banned ? 'Player banned.' : 'Player unbanned.', 'warn');
+  loadPlayers();
+}
+
+/* ── Part Boards ──────────────────────────────────────────── */
+async function loadPartsGM() {
+  const el = document.getElementById('partsGMList');
+  if (!el || !sbGM) return;
+  el.innerHTML = '<div class="gm-empty">Loading…</div>';
+
+  const { data, error } = await sbGM
+    .from('boards')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) { el.innerHTML = '<div class="gm-empty">Error: ' + error.message + '</div>'; return; }
+  if (!data?.length) { el.innerHTML = '<div class="gm-empty">No boards yet.</div>'; return; }
+
+  const statusLabels = { planning:'Recruiting', open:'Active', closed:'Closed' };
+  el.innerHTML = '<div class="parts-gm-grid">'
+    + data.map(b => {
+        const col = b.color || '#C8960C';
+        return '<div class="board-card-gm" style="--bc:' + col + ';">'
+          + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.3rem;">'
+            + '<div class="bc-title">' + b.title + '</div>'
+            + '<span class="board-status-pill">' + (statusLabels[b.status] || b.status) + '</span>'
+          + '</div>'
+          + (b.era ? '<div class="bc-era">' + b.era + '</div>' : '')
+          + '<p class="bc-desc">' + (b.description || '').slice(0, 100) + '…</p>'
+          + '<div style="display:flex;gap:.4rem;margin-top:.6rem;">'
+            + '<a href="part.html?id=' + b.id + '" class="btn btn-ghost btn-sm" style="text-decoration:none;" target="_blank">View ↗</a>'
+            + '<button class="btn btn-ghost btn-sm" onclick="openEditPart(\'' + b.id + '\')">Edit</button>'
+          + '</div>'
+        + '</div>';
+      }).join('')
+    + '</div>';
+}
+
+async function submitGMBoard() {
+  const n = document.getElementById('gbName')?.value.trim();
+  const d = document.getElementById('gbDesc')?.value.trim();
+  const msg = document.getElementById('gbMsg');
+  if (!n || !d) { msg.textContent = 'Name and description are required.'; return; }
+  msg.textContent = 'Creating…';
+
+  const { error } = await sbGM.from('boards').insert([{
+    title:       n,
+    description: d,
+    gm_username: document.getElementById('gbGM')?.value.trim() || null,
+    era:         document.getElementById('gbEra')?.value.trim() || null,
+    color:       document.getElementById('gbColor')?.value || '#C8960C',
+    status:      document.getElementById('gbStatus')?.value || 'planning',
+    ability_era: document.getElementById('gbAbilityEra')?.value || 'Stand era',
+    max_players: parseInt(document.getElementById('gbMax')?.value) || 8,
+    created_by:  gmUser?.id,
+  }]);
+
+  if (error) { msg.textContent = 'Error: ' + error.message; msg.style.color = 'var(--pink-l)'; return; }
+  msg.textContent = '✓ Board created!'; msg.style.color = '#81C784';
+  document.getElementById('gbName').value = '';
+  document.getElementById('gbDesc').value = '';
   loadPartsGM();
 }
 
-/* ── Init ─────────────────────────────────────────────────── */
-initGMAuth();
+function openEditPart(id) {
+  if (!sbGM) return;
+  sbGM.from('boards').select('*').eq('id', id).single().then(({ data: b }) => {
+    if (!b) return;
+    document.getElementById('editPartId').value = b.id;
+    document.getElementById('epTitle').value    = b.title || '';
+    document.getElementById('epColor').value    = b.color || '#C8960C';
+    document.getElementById('epEra').value      = b.era || '';
+    document.getElementById('epGM').value       = b.gm_username || '';
+    document.getElementById('epStatus').value   = b.status || 'planning';
+    document.getElementById('epMax').value      = b.max_players || 8;
+    document.getElementById('epAbilityEra').value = b.ability_era || '';
+    document.getElementById('epDesc').value     = b.description || '';
+    document.getElementById('editPartModal').style.display = 'flex';
+  });
+}
 
+async function saveEditPart() {
+  const id  = document.getElementById('editPartId').value;
+  const msg = document.getElementById('epMsg');
+  if (!id) return;
+  msg.textContent = 'Saving…';
+
+  const { error } = await sbGM.from('boards').update({
+    title:       document.getElementById('epTitle').value.trim(),
+    color:       document.getElementById('epColor').value,
+    era:         document.getElementById('epEra').value.trim(),
+    gm_username: document.getElementById('epGM').value.trim(),
+    status:      document.getElementById('epStatus').value,
+    max_players: parseInt(document.getElementById('epMax').value) || 8,
+    ability_era: document.getElementById('epAbilityEra').value.trim(),
+    description: document.getElementById('epDesc').value.trim(),
+  }).eq('id', id);
+
+  if (error) { msg.textContent = 'Error: ' + error.message; return; }
+  msg.textContent = '✓ Saved!';
+  setTimeout(() => { document.getElementById('editPartModal').style.display = 'none'; loadPartsGM(); }, 800);
+}
+
+/* ── Announcements ────────────────────────────────────────── */
+async function postAnnouncement() {
+  const title = document.getElementById('annTitle')?.value.trim();
+  const body  = document.getElementById('annBody')?.value.trim();
+  const msg   = document.getElementById('annMsg');
+  if (!title || !body) { msg.textContent = 'Title and body are required.'; return; }
+  msg.textContent = 'Posting…';
+
+  const { error } = await sbGM.from('announcements').insert([{
+    title,
+    body,
+    category:         document.getElementById('annCat')?.value || 'update',
+    pinned:           document.getElementById('annPin')?.value === 'true',
+    author_id:        gmUser?.id,
+    author_username:  gmRole || 'GM',
+  }]);
+
+  if (error) { msg.textContent = 'Error: ' + error.message; msg.style.color='var(--pink-l)'; return; }
+  msg.textContent = '✓ Posted!'; msg.style.color = '#81C784';
+  document.getElementById('annTitle').value = '';
+  document.getElementById('annBody').value = '';
+}
+
+async function triggerStandArrow() {
+  const board = document.getElementById('arrowBoard')?.value.trim();
+  const note  = document.getElementById('arrowNote')?.value.trim();
+  const msg   = document.getElementById('arrowMsg');
+  if (!board) { msg.textContent = 'Enter the Part board name.'; return; }
+  msg.textContent = 'Posting…';
+
+  await sbGM.from('announcements').insert([{
+    title: '🏹 A Stand Arrow has appeared in ' + board,
+    body: 'A Stand Arrow has surfaced in the ' + board + ' arc.' + (note ? '\n\n' + note : '') + '\n\nPlayers wishing to have their character pierced should contact the GM team.',
+    category: 'event', pinned: true,
+    author_id: gmUser?.id, author_username: 'GM',
+  }]);
+
+  msg.textContent = '✓ Stand Arrow event posted!'; msg.style.color = '#81C784';
+  document.getElementById('arrowBoard').value = '';
+  document.getElementById('arrowNote').value  = '';
+}
+
+/* ── Boot ─────────────────────────────────────────────────── */
+initGMAuth();
 
 
 </script>
