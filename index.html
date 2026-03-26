@@ -1906,7 +1906,7 @@
     <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openOCModal()">+ OC</button>
     <button class="btn btn-ghost btn-sm nav-hide-sm" onclick="openModal('standModal')">+ Stand</button>
     <button class="btn btn-gold btn-sm" onclick="openModal('threadModal')">+ Thread</button>
-    <button class="btn btn-ghost btn-sm gm-only nav-hide-sm" id="gmToggleBtn" onclick="toggleGM()" title="GM Panel" style="padding:.3rem .5rem;">🎩</button>
+    <a href="gm.html" class="btn btn-ghost btn-sm gm-only nav-hide-sm" id="gmToggleBtn" title="GM Panel" style="padding:.3rem .5rem;text-decoration:none;">🎩 GM Panel</a>
   </div>
 </nav>
 
@@ -3278,11 +3278,12 @@ async function loadBoards(){
 
   const { data: boards, error } = await sb
     .from('boards')
-    .select('*')
+    .select('id,title,description,gm_username,era,color,status,ability_era,max_players,created_at')
     .order('created_at', { ascending: false });
 
   if(error){
-    console.warn('loadBoards error:', error);
+    console.warn('loadBoards error:', error.message || error.code || JSON.stringify(error));
+    grid.innerHTML = '<div class="board-placeholder"><div style="font-size:2rem;opacity:.15;">🎩</div><p>Could not load boards.<br/><small style="opacity:.5;">' + (error.message||error.code||'Unknown error') + '</small></p></div>';
     return;
   }
 
