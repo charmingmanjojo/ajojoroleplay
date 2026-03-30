@@ -2697,35 +2697,43 @@ async function loadPendingStands() {
 function renderStandCard(s) {
   var ts = s.created_at ? new Date(s.created_at).toLocaleDateString() : '';
   var meta = '';
-  if (s.linked_character) meta += 'Character: ' + escH(s.linked_character) + ' &middot; ';
-  if (s.owner_username) meta += '@' + escH(s.owner_username) + ' &middot; ';
-  if (s.type) meta += escH(s.type) + ' &middot; ';
+  if (s.linked_character) meta += 'Character: ' + escH(s.linked_character) + ' \u00b7 ';
+  if (s.owner_username) meta += '@' + escH(s.owner_username) + ' \u00b7 ';
+  if (s.type) meta += escH(s.type) + ' \u00b7 ';
   meta += ts;
-  var crySect = s.cry ? ('<div class="oc-field"><span class="oc-label">Stand Cry</span><span>' + escH(s.cry) + '</span></div>') : '';
-  var sid = escH(String(s.id));
-  return (
-    '<div class="oc-card" id="stand-' + sid + '">' +
-      '<div class="oc-card-header" onclick="toggleOCCard(this)">' +
-        '<div>' +
-          '<div class="oc-name">' + escH(s.name || 'Unnamed Stand') + '</div>' +
-          '<div class="oc-meta">' + meta + '</div>' +
-        '</div>' +
+  var crySect = s.cry
+    ? '<div class="oc-field"><span class="oc-label">Stand Cry</span><span>' + escH(s.cry) + '</span></div>'
+    : '';
+  var sid = String(s.id);
+  var esc = JSON.stringify(sid);
+  var header =
+    '<div class="oc-card-header" onclick="toggleOCCard(' + esc + ')">' +
+      '<div>' +
+        '<div class="oc-name">' + escH(s.name || 'Unnamed Stand') + '</div>' +
+        '<div class="oc-meta">' + meta + '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:.5rem;">' +
         '<div class="oc-status status-pending">Pending</div>' +
+        '<svg id="chev-' + sid + '" width="14" height="14" viewBox="0 0 14 14" fill="none" style="color:var(--text-xs);transition:transform .2s;">' +
+          '<path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg>' +
       '</div>' +
-      '<div class="oc-card-body" style="display:none;">' +
-        '<div class="oc-field"><span class="oc-label">Ability</span><span>' + escH(s.ability || '—') + '</span></div>' +
-        '<div class="oc-field"><span class="oc-label">Weakness</span><span>' + escH(s.weakness || '—') + '</span></div>' +
-        crySect +
-        '<div class="oc-actions">' +
-          '<button class="btn btn-gold btn-sm" onclick="reviewStand(\`' + sid + '\`,\`approved\`)">Approve</button>' +
-          '<button class="btn btn-ghost btn-sm" onclick="reviewStand(\`' + sid + '\`,\`revision\`)">Needs Revision</button>' +
-          '<button class="btn btn-ghost btn-sm" style="color:var(--pink-l);" onclick="reviewStand(\`' + sid + '\`,\`denied\`)">Deny</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>'
-  );
+    '</div>';
+  var actions =
+    '<div class="oc-actions">' +
+      '<button class="btn btn-gold btn-sm" onclick="reviewStand(' + esc + ',\'approved\')">Approve</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="reviewStand(' + esc + ',\'revision\')">Needs Revision</button>' +
+      '<button class="btn btn-ghost btn-sm" style="color:var(--pink-l);" onclick="reviewStand(' + esc + ',\'denied\')">Deny</button>' +
+    '</div>';
+  var body =
+    '<div id="ocbody-' + sid + '" class="oc-card-body">' +
+      '<div class="oc-field"><span class="oc-label">Ability</span><span>' + escH(s.ability || '\u2014') + '</span></div>' +
+      '<div class="oc-field"><span class="oc-label">Weakness</span><span>' + escH(s.weakness || '\u2014') + '</span></div>' +
+      crySect +
+      actions +
+    '</div>';
+  return '<div class="oc-card" id="stand-' + sid + '">' + header + body + '</div>';
 }
-
 async function reviewStand(id, status) {
   if (!sbGM) return;
   const { error } = await sbGM.from('stands').update({ status }).eq('id', id);
